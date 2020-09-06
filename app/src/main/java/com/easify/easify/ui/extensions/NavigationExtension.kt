@@ -32,9 +32,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
  * This sample is a workaround until the Navigation Component supports multiple back stacks.
  */
 fun BottomNavigationView.setupWithNavController(
-  navGraphIds: List<Int>,
-  fragmentManager: FragmentManager,
-  containerId: Int
+    navGraphIds: List<Int>,
+    fragmentManager: FragmentManager,
+    containerId: Int
 ): LiveData<NavController> {
 
   // Map of tags
@@ -150,8 +150,8 @@ fun BottomNavigationView.setupWithNavController(
 }
 
 private fun BottomNavigationView.setupItemReselected(
-  graphIdToTagMap: SparseArray<String>,
-  fragmentManager: FragmentManager
+    graphIdToTagMap: SparseArray<String>,
+    fragmentManager: FragmentManager
 ) {
   setOnNavigationItemReselectedListener { item ->
     val newlySelectedItemTag = graphIdToTagMap[item.itemId]
@@ -166,8 +166,8 @@ private fun BottomNavigationView.setupItemReselected(
 }
 
 private fun detachNavHostFragment(
-  fragmentManager: FragmentManager,
-  navHostFragment: NavHostFragment
+    fragmentManager: FragmentManager,
+    navHostFragment: NavHostFragment
 ) {
   fragmentManager.beginTransaction()
     .detach(navHostFragment)
@@ -175,9 +175,9 @@ private fun detachNavHostFragment(
 }
 
 private fun attachNavHostFragment(
-  fragmentManager: FragmentManager,
-  navHostFragment: NavHostFragment,
-  isPrimaryNavFragment: Boolean
+    fragmentManager: FragmentManager,
+    navHostFragment: NavHostFragment,
+    isPrimaryNavFragment: Boolean
 ) {
   fragmentManager.beginTransaction()
     .attach(navHostFragment)
@@ -187,14 +187,13 @@ private fun attachNavHostFragment(
       }
     }
     .commitNow()
-
 }
 
 private fun obtainNavHostFragment(
-  fragmentManager: FragmentManager,
-  fragmentTag: String,
-  navGraphId: Int,
-  containerId: Int
+    fragmentManager: FragmentManager,
+    fragmentTag: String,
+    navGraphId: Int,
+    containerId: Int
 ): NavHostFragment {
   // If the Nav Host fragment exists, return it
   val existingFragment = fragmentManager.findFragmentByTag(fragmentTag) as NavHostFragment?

@@ -1,9 +1,23 @@
 <resources>
   <string name="app_name">Easify</string>
+  <string name="app_slogan">enrich your spotify experience</string>
+
+  <string name="com_spotify_sdk_redirect_scheme">com.easify.easify</string>
+  <string name="com_spotify_sdk_redirect_host">callback</string>
+  <string name="spotify_uri_callback">com.easify.easify://callback</string>
 
   <!-- Bottom Nav Menu -->
   <string name="home">Home</string>
   <string name="history">History</string>
   <string name="favorites">Favorites</string>
   <string name="profile">Profile</string>
+
+  <string name="dialog_error_title">Ups</string>
+  <string name="dialog_positive_button_text">Try Again</string>
+  <string name="dialog_negative_button_text">Exit</string>
+  <string name="dialog_ok">OK</string>
+  <string name="dialog_common_error_text">Something went wrong. Please go back and try again.</string>
+
+
+
 </resources>

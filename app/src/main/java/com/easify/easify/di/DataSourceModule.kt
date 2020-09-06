@@ -20,8 +20,7 @@ object DataSourceModule {
 
   @Provides
   @ActivityRetainedScoped
-  fun provideUserDataSource(spotifyService: SpotifyService) : UserDataSource {
+  fun provideUserDataSource(spotifyService: SpotifyService): UserDataSource {
     return UserDataSourceImpl(spotifyService)
   }
-
 }

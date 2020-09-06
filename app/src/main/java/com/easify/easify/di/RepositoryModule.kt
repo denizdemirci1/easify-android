@@ -3,6 +3,7 @@ package com.easify.easify.di
 import com.easify.easify.data.remote.datasource.UserDataSource
 import com.easify.easify.data.repositories.UserRepository
 import com.easify.easify.data.repositories.UserRepositoryImpl
+import com.easify.easify.util.manager.UserManager
 import com.easify.easify.util.storage.Storage
 import dagger.Module
 import dagger.Provides
@@ -22,10 +23,9 @@ object RepositoryModule {
   @Provides
   @ActivityRetainedScoped
   fun provideUserRepository(
-    userDataSource: UserDataSource,
-    storage: Storage
+      userDataSource: UserDataSource,
+      userManager: UserManager
   ): UserRepository {
-    return UserRepositoryImpl(userDataSource, storage)
+    return UserRepositoryImpl(userDataSource, userManager)
   }
-
 }
