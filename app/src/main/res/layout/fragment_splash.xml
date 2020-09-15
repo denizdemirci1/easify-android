@@ -34,7 +34,6 @@
             android:layout_marginBottom="180dp"
             android:elevation="2dp"
             android:text="@string/app_name"
-            android:textColor="@color/colorSpotifyWhite"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,6 @@
             android:elevation="2dp"
             android:fontFamily="@font/roboto"
             android:text="@string/app_slogan"
-            android:textColor="@color/colorSpotifyWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logo" />

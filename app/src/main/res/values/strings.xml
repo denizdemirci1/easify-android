@@ -12,12 +12,18 @@
   <string name="favorites">Favorites</string>
   <string name="profile">Profile</string>
 
+  <!-- Dialog -->
   <string name="dialog_error_title">Ups</string>
   <string name="dialog_positive_button_text">Try Again</string>
   <string name="dialog_negative_button_text">Exit</string>
   <string name="dialog_ok">OK</string>
   <string name="dialog_common_error_text">Something went wrong. Please go back and try again.</string>
+  <string name="dialog_should_open_spotify">In order to play songs for the first time, you need to open Spotify.</string>
 
+  <!-- Profile Fragment -->
+  <string name="fragment_profile_follower_count">Followers: %d</string>
 
+  <!-- History Fragment -->
+  <string name="fragment_history_recently_listened">Recently Listened</string>
 
 </resources>

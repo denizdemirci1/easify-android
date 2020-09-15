@@ -1,10 +1,12 @@
 package com.easify.easify.di
 
+import com.easify.easify.data.remote.datasource.PlayerDataSource
 import com.easify.easify.data.remote.datasource.UserDataSource
+import com.easify.easify.data.repositories.PlayerRepository
+import com.easify.easify.data.repositories.PlayerRepositoryImpl
 import com.easify.easify.data.repositories.UserRepository
 import com.easify.easify.data.repositories.UserRepositoryImpl
 import com.easify.easify.util.manager.UserManager
-import com.easify.easify.util.storage.Storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,5 +29,13 @@ object RepositoryModule {
       userManager: UserManager
   ): UserRepository {
     return UserRepositoryImpl(userDataSource, userManager)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun providePlayerRepository(
+    playerDataSource: PlayerDataSource
+  ): PlayerRepository {
+    return PlayerRepositoryImpl(playerDataSource)
   }
 }

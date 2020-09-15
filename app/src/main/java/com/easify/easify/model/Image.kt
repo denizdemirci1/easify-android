@@ -6,7 +6,7 @@ package com.easify.easify.model
  */
 
 data class Image(
-  val height: Int,
-  val url: String,
-  val width: Int
+    val height: Int,
+    val url: String,
+    val width: Int
 )

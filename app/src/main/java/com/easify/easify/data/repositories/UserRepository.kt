@@ -20,9 +20,9 @@ interface UserRepository {
 }
 
 class UserRepositoryImpl @Inject constructor(
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)  
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal val userDataSource: UserDataSource,
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)  
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal val userManager: UserManager
 ) : UserRepository {
 

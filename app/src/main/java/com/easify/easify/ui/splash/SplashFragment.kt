@@ -12,10 +12,10 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentSplashBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.util.EventObserver
-import dagger.hilt.android.AndroidEntryPoint
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_splash.*
 
 /**
@@ -31,6 +31,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentSplashBinding>(splashRoot)?.apply {
+      lifecycleOwner = this@SplashFragment.viewLifecycleOwner
       viewModel = this@SplashFragment.viewModel
     }
     showBottomNavigation(false)
@@ -109,6 +110,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
   companion object {
     private const val SPOTIFY_REQUEST_CODE = 1337
     private const val SCOPES = "user-read-recently-played," +
+            "user-read-currently-playing," +
             "user-library-modify," +
             "user-read-email," +
             "user-read-private," +
@@ -116,6 +118,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             "user-follow-read," +
             "user-follow-modify," +
             "user-modify-playback-state," +
+            "user-read-playback-state," +
             "playlist-read-private," +
             "playlist-read-collaborative," +
             "playlist-modify-public," +

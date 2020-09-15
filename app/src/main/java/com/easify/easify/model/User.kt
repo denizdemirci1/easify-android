@@ -6,23 +6,18 @@ package com.easify.easify.model
  */
 
 data class User(
-  val country: String,
-  val display_name: String,
-  val email: String,
-  val external_urls: ExternalUrl,
-  val followers: Follower,
-  val id: String,
-  val images: ArrayList<Image>,
-  val product: String,
-  val type: String,
-  val uri: String
+    val country: String,
+    val display_name: String,
+    val email: String,
+    val external_urls: ExternalUrl,
+    val followers: Follower,
+    val id: String,
+    val images: List<Image>,
+    val product: String,
+    val type: String,
+    val uri: String
 ) {
-
   data class ExternalUrl(
-    val spotify: String
-  )
-
-  data class Follower(
-    val total: Int
+      val spotify: String
   )
 }

@@ -1,4 +1,4 @@
-package com.easify.easify.ui.home
+package com.easify.easify.ui.profile
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -8,10 +8,13 @@ import com.easify.easify.util.manager.UserManager
 
 /**
  * @author: deniz.demirci
- * @date: 9/5/2020
+ * @date: 9/8/2020
  */
 
-class HomeViewModel @ViewModelInject constructor(
+class ProfileViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val userManager: UserManager
-) : ViewModel()
+) : ViewModel() {
+
+  fun getUser() = userManager.user
+}

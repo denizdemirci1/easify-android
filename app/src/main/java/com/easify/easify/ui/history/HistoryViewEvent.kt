@@ -1,0 +1,22 @@
+package com.easify.easify.ui.history
+
+import com.easify.easify.model.History
+import com.easify.easify.model.Track
+
+/**
+ * @author: deniz.demirci
+ * @date: 9/13/2020
+ */
+
+sealed class HistoryViewEvent {
+
+  object ShowOpenSpotifyWarning: HistoryViewEvent()
+
+  data class OnAddClicked(val track: Track) : HistoryViewEvent()
+
+  data class NotifyDataChanged(val historyList: ArrayList<History>) : HistoryViewEvent()
+
+  data class ShowError(val message: String) : HistoryViewEvent()
+
+  data class HandleClickedTrack(val position: Int) : HistoryViewEvent()
+}

@@ -1,7 +1,11 @@
 package com.easify.easify.data.service
 
-import com.easify.easify.model.User
+import com.easify.easify.model.*
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
 /**
  * @author: deniz.demirci
@@ -16,4 +20,22 @@ interface SpotifyService {
 
   @GET("me")
   suspend fun fetchUser(): User
+
+  @GET("me/player/recently-played")
+  suspend fun fetchRecentlyPlayed(
+      @Query("type") type: String = "track",
+      @Query("limit") limit: Int = 50
+  ): HistoryResponse
+
+  @PUT("me/player/play")
+  suspend fun play(
+    @Query("device_id") deviceId: String,
+    @Body playObject: PlayObject
+  ): Response<Unit>
+
+  @GET("me/player/devices")
+  suspend fun getDevices(): DevicesResponse
+
+  @GET("me/player/currently-playing")
+  suspend fun getCurrentlyPlayingTrack(): CurrentlyPlayingTrackResponse?
 }

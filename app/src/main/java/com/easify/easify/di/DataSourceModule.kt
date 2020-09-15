@@ -1,5 +1,7 @@
 package com.easify.easify.di
 
+import com.easify.easify.data.remote.datasource.PlayerDataSource
+import com.easify.easify.data.remote.datasource.PlayerDataSourceImpl
 import com.easify.easify.data.remote.datasource.UserDataSource
 import com.easify.easify.data.remote.datasource.UserDataSourceImpl
 import com.easify.easify.data.service.SpotifyService
@@ -22,5 +24,11 @@ object DataSourceModule {
   @ActivityRetainedScoped
   fun provideUserDataSource(spotifyService: SpotifyService): UserDataSource {
     return UserDataSourceImpl(spotifyService)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun providePlayerDataSource(spotifyService: SpotifyService): PlayerDataSource {
+    return PlayerDataSourceImpl(spotifyService)
   }
 }

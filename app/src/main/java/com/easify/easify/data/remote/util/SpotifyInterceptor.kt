@@ -1,9 +1,9 @@
 package com.easify.easify.data.remote.util
 
 import com.easify.easify.util.manager.UserManager
+import javax.inject.Inject
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
 
 /**
  * @author: deniz.demirci
@@ -11,7 +11,7 @@ import javax.inject.Inject
  */
 
 class SpotifyInterceptor @Inject constructor(
-  private val userManager: UserManager
+    private val userManager: UserManager
 ) : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {

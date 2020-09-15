@@ -13,11 +13,12 @@ import javax.inject.Singleton
 
 @Singleton
 class UserManager @Inject constructor(
-  private val storage: Storage
+    private val storage: Storage
 ) {
 
   companion object {
     const val TOKEN = "easify.token"
+    const val DEVICE_ID = "easify.deviceId"
     const val USER = "easify.user"
     const val TOKEN_REFRESHED = "easify.tokenRefreshed"
   }
@@ -35,4 +36,8 @@ class UserManager @Inject constructor(
   var tokenRefreshed: Boolean
     get() = storage.getBoolean(TOKEN_REFRESHED)
     set(value) = storage.setBoolean(TOKEN_REFRESHED, value)
+
+  var deviceId: String?
+    get() = storage.getString(DEVICE_ID)
+    set(value) = storage.setString(DEVICE_ID, value)
 }

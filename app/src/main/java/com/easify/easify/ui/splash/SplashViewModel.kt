@@ -6,11 +6,12 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.UserRepository
-import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
+import com.easify.easify.model.Result.Success
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * @author: deniz.demirci
@@ -55,7 +56,6 @@ class SplashViewModel @ViewModelInject constructor(
     } else {
       fetchUser()
     }
-
   }
 
   /***

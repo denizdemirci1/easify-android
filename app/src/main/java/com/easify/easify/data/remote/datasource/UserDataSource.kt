@@ -11,11 +11,12 @@ import javax.inject.Inject
  */
 
 interface UserDataSource {
+
   suspend fun fetchUser(): Result<User>?
 }
 
 class UserDataSourceImpl @Inject constructor(
-    val spotifyService: SpotifyService
+    private val spotifyService: SpotifyService
 ) : UserDataSource {
 
   override suspend fun fetchUser(): Result<User>? {
