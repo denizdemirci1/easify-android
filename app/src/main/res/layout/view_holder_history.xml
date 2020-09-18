@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorSpotifyBlack"
         android:layout_marginBottom="16dp"
-
         android:onClick="@{() -> historyViewModel.onTrackClicked(track)}">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -52,8 +51,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@{track.name}"
-                app:currentlyPlayingTrack="@{historyViewModel.currentlyPlayingTrack}"
-                app:trackId="@{track.id}"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 app:layout_constraintBottom_toTopOf="@id/track_owner"

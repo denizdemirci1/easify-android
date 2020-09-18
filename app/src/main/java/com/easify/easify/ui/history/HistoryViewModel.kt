@@ -27,9 +27,7 @@ class HistoryViewModel @ViewModelInject constructor(
     val event: LiveData<Event<HistoryViewEvent>> = _event
 
     private val historyToShow = ArrayList<History>()
-    var currentlyPlayingTrack = MutableLiveData<CurrentlyPlayingTrackResponse>()
     private var clickedTrack: Track? = null
-    private var clickedTrackPosition: Int = -1
 
     private fun sendEvent(event: HistoryViewEvent) {
         _event.value = Event(event)
@@ -70,8 +68,7 @@ class HistoryViewModel @ViewModelInject constructor(
                     is Success -> {
                         result.data?.let { currentlyPlayingTrackResponse ->
                             if (currentlyPlayingTrackResponse.item.id == clickedTrack?.id) {
-                                currentlyPlayingTrack.value = currentlyPlayingTrackResponse
-                                sendEvent(HistoryViewEvent.HandleClickedTrack(clickedTrackPosition))
+                                // TODO: song is playing. make its text green
                             }
                         } ?: run { sendEvent(HistoryViewEvent.ShowOpenSpotifyWarning) }
                     }
@@ -96,9 +93,8 @@ class HistoryViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onTrackClicked(track: Track, position: Int) {
+    fun onTrackClicked(track: Track) {
         clickedTrack = track
-        clickedTrackPosition = position
         viewModelScope.launch {
             if (userManager.deviceId.isNullOrEmpty()) {
                 getDeviceId()

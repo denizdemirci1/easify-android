@@ -15,15 +15,3 @@ import com.easify.easify.model.CurrentlyPlayingTrackResponse
 fun TextView.setFollowerCount(followerCount: Int) {
   this.text = this.context.getString(R.string.fragment_profile_follower_count, followerCount)
 }
-
-@BindingAdapter(value = ["currentlyPlayingTrack", "trackId"])
-fun TextView.setPlayingTrackTextColor(
-  currentlyPlayingTrackResponse: CurrentlyPlayingTrackResponse?,
-  trackId: String
-) {
-  currentlyPlayingTrackResponse?.let {
-    if (it.item.id == trackId) {
-      this.setTextColor(ContextCompat.getColor(this.context, R.color.colorSpotifyGreen))
-    }
-  }
-}

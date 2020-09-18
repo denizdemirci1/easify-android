@@ -48,7 +48,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         is HistoryViewEvent.OnAddClicked -> onAddClicked(event.track)
         is HistoryViewEvent.NotifyDataChanged -> onViewDataChange(event.historyList)
         is HistoryViewEvent.ShowError -> showError(event.message)
-        is HistoryViewEvent.HandleClickedTrack -> notifyItemChanged(event.position)
       }
     })
   }
@@ -60,10 +59,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   private fun onViewDataChange(history: ArrayList<History>) {
     historyAdapter.submitList(history)
-  }
-
-  private fun notifyItemChanged(position: Int) {
-    historyAdapter.notifyItemChanged(position)
   }
 
   private fun showError(message: String) {
