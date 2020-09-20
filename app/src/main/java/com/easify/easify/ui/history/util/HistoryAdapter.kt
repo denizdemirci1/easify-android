@@ -7,6 +7,7 @@ import com.easify.easify.databinding.ViewHolderHistoryBinding
 import com.easify.easify.model.History
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseListAdapter
+import com.easify.easify.ui.base.BasePagedListAdapter
 import com.easify.easify.ui.base.BaseViewHolder
 import com.easify.easify.ui.history.HistoryViewModel
 
@@ -15,9 +16,11 @@ import com.easify.easify.ui.history.HistoryViewModel
  * @date: 9/13/2020
  */
 
-class HistoryAdapter(private val historyViewModel: HistoryViewModel) : BaseListAdapter<History>(
+class HistoryAdapter(
+  private val historyViewModel: HistoryViewModel
+) : BasePagedListAdapter<History>(
   itemsSame = { old, new -> old.track.id == new.track.id },
-  contentsSame = { old, new -> old == new }
+  contentsSame = { old, new -> old.track.id == new.track.id }
 ) {
 
   override fun onCreateViewHolder(
@@ -30,7 +33,9 @@ class HistoryAdapter(private val historyViewModel: HistoryViewModel) : BaseListA
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder) {
-      is HistoryViewHolder -> holder.bind(getItem(position).track, historyViewModel)
+      is HistoryViewHolder -> {
+        getItem(position)?.let { history -> holder.bind(history.track, historyViewModel) }
+      }
     }
   }
 }
@@ -42,7 +47,7 @@ class HistoryViewHolder(
   binding = ViewHolderHistoryBinding.inflate(inflater, parent, false)
 ) {
 
-  fun bind(track: Track, historyViewModel: HistoryViewModel) {
+  fun bind(track: Track?, historyViewModel: HistoryViewModel) {
     binding.track = track
     binding.historyViewModel = historyViewModel
     binding.executePendingBindings()

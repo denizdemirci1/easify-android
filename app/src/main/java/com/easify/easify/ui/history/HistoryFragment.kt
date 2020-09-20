@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHistoryBinding
 import com.easify.easify.model.History
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.history.util.HistoryAdapter
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +44,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     }
     setupObservers()
     setupHistoryAdapter()
-    viewModel.fetchRecentlyPlayedSongs()
   }
 
   private fun setupObservers() {
@@ -46,9 +51,12 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       when (event) {
         HistoryViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
         is HistoryViewEvent.OnAddClicked -> onAddClicked(event.track)
-        is HistoryViewEvent.NotifyDataChanged -> onViewDataChange(event.historyList)
         is HistoryViewEvent.ShowError -> showError(event.message)
       }
+    })
+
+    buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
+      historyAdapter.submitList(list)
     })
   }
 
@@ -57,8 +65,13 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     binding.tracksRecyclerView.adapter = historyAdapter
   }
 
-  private fun onViewDataChange(history: ArrayList<History>) {
-    historyAdapter.submitList(history)
+  private fun buildPagedListLiveData(): LiveData<PagedList<History>> {
+    return LivePagedListBuilder(
+      object : DataSource.Factory<String, History>() {
+        override fun create(): DataSource<String, History> {
+          return HistoryDataSource(viewModel)
+        }
+      }, 30).build()
   }
 
   private fun showError(message: String) {

@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 interface PlayerDataSource {
 
-  suspend fun fetchRecentlyPlayed(): Result<HistoryResponse>
+  suspend fun fetchRecentlyPlayed(before: String?): Result<HistoryResponse>
 
   suspend fun play(deviceId: String, playObject: PlayObject)
 
@@ -24,9 +24,9 @@ class PlayerDataSourceImpl @Inject constructor(
     private val spotifyService: SpotifyService
 ) : PlayerDataSource {
 
-  override suspend fun fetchRecentlyPlayed(): Result<HistoryResponse> {
+  override suspend fun fetchRecentlyPlayed(before: String?): Result<HistoryResponse> {
     return try {
-      val history = spotifyService.fetchRecentlyPlayed()
+      val history = spotifyService.fetchRecentlyPlayed(before = before)
       Result.Success(history)
     } catch (e: Exception) {
       Result.Error(e)

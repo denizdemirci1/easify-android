@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 interface PlayerRepository {
 
-  suspend fun fetchRecentlyPlayed(): Result<HistoryResponse>
+  suspend fun fetchRecentlyPlayed(before: String?): Result<HistoryResponse>
 
   suspend fun play(deviceId: String, playObject: PlayObject)
 
@@ -26,8 +26,8 @@ class PlayerRepositoryImpl @Inject constructor(
     private val playerDataSource: PlayerDataSource
 ) : PlayerRepository {
 
-  override suspend fun fetchRecentlyPlayed(): Result<HistoryResponse> {
-    return playerDataSource.fetchRecentlyPlayed()
+  override suspend fun fetchRecentlyPlayed(before: String?): Result<HistoryResponse> {
+    return playerDataSource.fetchRecentlyPlayed(before)
   }
 
   override suspend fun play(deviceId: String, playObject: PlayObject) {

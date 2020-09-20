@@ -14,7 +14,5 @@ sealed class HistoryViewEvent {
 
   data class OnAddClicked(val track: Track) : HistoryViewEvent()
 
-  data class NotifyDataChanged(val historyList: ArrayList<History>) : HistoryViewEvent()
-
   data class ShowError(val message: String) : HistoryViewEvent()
 }

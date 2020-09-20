@@ -24,7 +24,8 @@ interface SpotifyService {
   @GET("me/player/recently-played")
   suspend fun fetchRecentlyPlayed(
       @Query("type") type: String = "track",
-      @Query("limit") limit: Int = 50
+      @Query("limit") limit: Int = 30,
+      @Query("before") before: String? = null
   ): HistoryResponse
 
   @PUT("me/player/play")

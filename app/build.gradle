@@ -121,6 +121,9 @@ dependencies {
     //Material Dialog
     implementation "com.afollestad.material-dialogs:core:$material_dialog_version"
 
+    // Paging 2
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
     // Retrofit & OkHttp
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"

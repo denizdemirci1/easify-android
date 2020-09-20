@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.easify.easify.ui.history.HistoryViewModel" />
@@ -26,6 +27,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <ProgressBar
+            android:id="@+id/history_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/history_label"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tracks_recycler_view"
             android:layout_width="match_parent"
@@ -34,7 +44,7 @@
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="@drawable/bg_scrollbar"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/history_label"
+            app:layout_constraintTop_toBottomOf="@id/history_progress"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/view_holder_history"/>
 

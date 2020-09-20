@@ -26,24 +26,27 @@ class HistoryViewModel @ViewModelInject constructor(
     private val _event = MutableLiveData<Event<HistoryViewEvent>>()
     val event: LiveData<Event<HistoryViewEvent>> = _event
 
-    private val historyToShow = ArrayList<History>()
+    private val _loading = MutableLiveData(false)
+    val loading: LiveData<Boolean> = _loading
+
     private var clickedTrack: Track? = null
 
     private fun sendEvent(event: HistoryViewEvent) {
         _event.value = Event(event)
     }
 
-    fun fetchRecentlyPlayedSongs() {
+    fun fetchRecentlyPlayedSongs(before: String?, onSuccess: (data: HistoryResponse) -> Unit) {
         viewModelScope.launch {
-            playerRepository.fetchRecentlyPlayed().let { result ->
+            _loading.value = true
+            playerRepository.fetchRecentlyPlayed(before).let { result ->
                 when (result) {
                     is Success -> {
-                        historyToShow.clear()
-                        historyToShow.addAll(result.data.items.distinctBy { it.track.id })
-                        sendEvent(HistoryViewEvent.NotifyDataChanged(ArrayList(historyToShow)))
+                        _loading.value = false
+                        result.data.let(onSuccess)
                     }
 
                     is Error -> {
+                        _loading.value = false
                         sendEvent(HistoryViewEvent.ShowError(parseNetworkError(result.exception)))
                     }
                 }
