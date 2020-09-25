@@ -1,10 +1,9 @@
 package com.easify.easify.util.bindings
 
-import androidx.appcompat.widget.AppCompatImageView
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.easify.easify.R
 import com.easify.easify.model.Image
-import com.easify.easify.model.Track
 import com.easify.easify.ui.extensions.loadWithPlaceHolder
 
 /**
@@ -13,7 +12,7 @@ import com.easify.easify.ui.extensions.loadWithPlaceHolder
  */
 
 @BindingAdapter("trackImage")
-fun loadTrackImage(view: AppCompatImageView, images: List<Image>) {
+fun loadTrackImage(view: ImageView, images: List<Image>) {
   if (images.isNullOrEmpty()) {
     view.setImageResource(R.drawable.ic_music_note)
   } else {

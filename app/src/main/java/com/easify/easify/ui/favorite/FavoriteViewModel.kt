@@ -4,7 +4,6 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.easify.easify.data.repositories.PersonalizationRepository
 
 /**
  * @author: deniz.demirci
@@ -12,8 +11,7 @@ import com.easify.easify.data.repositories.PersonalizationRepository
  */
 
 class FavoriteViewModel @ViewModelInject constructor(
-  @Assisted private val savedStateHandle: SavedStateHandle,
-  private val personalizationRepository: PersonalizationRepository
+  @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
 }

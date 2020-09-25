@@ -1,6 +1,6 @@
 <resources>
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/colorSpotifyBlack</item>
     <item name="colorPrimaryDark">@color/colorSpotifyBlack</item>
@@ -61,8 +61,6 @@
     <item name="android:textColor">@color/colorSpotifyWhite</item>
   </style>
   <style name="Material.Button" parent="TextAppearance.MaterialComponents.Button">
-    <item name="fontFamily">@font/roboto</item>
-    <item name="android:fontFamily">@font/roboto</item>
     <item name="android:textSize">14sp</item>
     <item name="android:textColor">@color/colorSpotifyWhite</item>
   </style>
@@ -81,6 +79,22 @@
 
   <style name="Track.Owner.Name" parent="Material.Subtitle2">
     <item name="android:textColor">@color/colorTextGray</item>
+  </style>
+
+  <style name="Button.Green" parent="Material.Button">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:background">@color/colorSpotifyGreen</item>
+    <item name="android:paddingStart">16dp</item>
+    <item name="android:paddingEnd">16dp</item>
+  </style>
+
+  <style name="Input.Layout" parent="Material.Body1">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:textColorHint">@color/colorSpotifyWhite</item>
+    <item name="android:background">@drawable/bg_input_layout</item>
+    <item name="android:paddingStart">8dp</item>
   </style>
 
 </resources>

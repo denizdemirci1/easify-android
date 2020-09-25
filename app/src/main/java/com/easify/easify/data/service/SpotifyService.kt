@@ -2,10 +2,7 @@ package com.easify.easify.data.service
 
 import com.easify.easify.model.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PUT
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * @author: deniz.demirci
@@ -39,4 +36,18 @@ interface SpotifyService {
 
   @GET("me/player/currently-playing")
   suspend fun getCurrentlyPlayingTrack(): CurrentlyPlayingTrackResponse?
+
+  @GET("me/top/{type}")
+  suspend fun fetchTopArtists(
+    @Path("type") type: String? = "artists",
+    @Query("time_range") timeRange: String?,
+    @Query("limit") limit: Int
+  ): TopArtist
+
+  @GET("me/top/{type}")
+  suspend fun fetchTopTracks(
+    @Path("type") type: String? = "tracks",
+    @Query("time_range") timeRange: String?,
+    @Query("limit") limit: Int
+  ): TopTrack
 }

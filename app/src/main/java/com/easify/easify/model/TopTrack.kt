@@ -2,11 +2,11 @@ package com.easify.easify.model
 
 /**
  * @author: deniz.demirci
- * @date: 9/18/2020
+ * @date: 9/20/2020
  */
 
-data class TopArtist(
-  val items: List<Artist>,
+data class TopTrack(
+  val items: List<Track>,
   val limit: Int,
   val next: String?,
   val offset: Int,

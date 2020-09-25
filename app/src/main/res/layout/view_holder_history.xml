@@ -20,7 +20,7 @@
         android:layout_marginBottom="16dp"
         android:onClick="@{() -> historyViewModel.onTrackClicked(track)}">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/track_image"
             android:layout_width="64dp"
             android:layout_height="64dp"
@@ -42,7 +42,7 @@
             app:layout_constraintStart_toEndOf="@id/track_image"
             app:layout_constraintEnd_toStartOf="@id/add">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/track_title"
                 style="@style/Material.Subtitle1"
                 android:layout_width="0dp"
@@ -58,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="What Kind Of Man What Kind Of Man What Kind Of Man"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/track_owner"
                 style="@style/Track.Owner.Name"
                 android:layout_width="0dp"
@@ -76,7 +76,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

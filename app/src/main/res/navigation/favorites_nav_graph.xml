@@ -6,5 +6,46 @@
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.easify.easify.ui.favorite.FavoriteFragment"
-        android:label="FavoriteFragment" />
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_topArtistsFragment"
+            app:destination="@id/topArtistsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_favoriteFragment_to_topTracksFragment"
+            app:destination="@id/topTracksFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/topArtistsFragment"
+        android:name="com.easify.easify.ui.favorite.artists.TopArtistsFragment"
+        android:label="TopArtistsFragment" >
+        <argument
+            android:name="timeRange"
+            app:argType="string"/>
+        <argument
+            android:name="amount"
+            app:argType="integer"
+            android:defaultValue="50" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/topTracksFragment"
+        android:name="com.easify.easify.ui.favorite.tracks.TopTracksFragment"
+        android:label="TopTracksFragment" >
+        <argument
+            android:name="timeRange"
+            app:argType="string"/>
+        <argument
+            android:name="amount"
+            app:argType="integer"
+            android:defaultValue="50" />
+    </fragment>
 </navigation>

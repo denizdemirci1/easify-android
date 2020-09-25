@@ -26,4 +26,13 @@
   <!-- History Fragment -->
   <string name="fragment_history_recently_listened">Recently Listened</string>
 
+  <!-- Favorites Fragment -->
+  <string name="fragment_favorites_title">Best songs &amp; artists in the world</string>
+  <string name="fragment_favorites_show">Show</string>
+  <string name="fragment_favorites_hint_type">Type</string>
+  <string name="fragment_favorites_hint_time_range">Time range</string>
+  <string name="fragment_favorites_hint_limit">Amount</string>
+  <string name="fragment_favorites_type_empty_error">Please select a type. Artists or Tracks?</string>
+  <string name="fragment_favorites_amount_zero_error">Amount must be greater than zero.</string>
+
 </resources>
