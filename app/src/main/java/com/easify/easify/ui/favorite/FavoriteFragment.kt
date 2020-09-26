@@ -12,6 +12,9 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFavoriteBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.extensions.hideKeyboard
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
@@ -41,7 +44,19 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       viewModel = this@FavoriteFragment.viewModel
       binding = this
     }
+    initAds()
     setupListeners()
+  }
+
+  private fun initAds() {
+    MobileAds.initialize(activity) {}
+    MobileAds.setRequestConfiguration(
+      RequestConfiguration.Builder()
+        .setTestDeviceIds(listOf("0D0FF4FD4C0328983D7FFC930B2555E3"))
+        .build()
+    )
+    val adRequest = AdRequest.Builder().build()
+    binding.adView.loadAd(adRequest)
   }
 
   private fun setupListeners() {
@@ -111,5 +126,20 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       message(text = message)
       positiveButton(R.string.dialog_ok)
     }
+  }
+
+  override fun onPause() {
+    binding.adView.pause()
+    super.onPause()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    binding.adView.resume()
+  }
+
+  override fun onDestroyView() {
+    binding.adView.destroy()
+    super.onDestroyView()
   }
 }

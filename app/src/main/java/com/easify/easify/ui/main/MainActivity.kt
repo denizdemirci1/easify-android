@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.MobileAds
 import com.easify.easify.R
 import com.easify.easify.ui.extensions.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    MobileAds.initialize(this)
 
     if (savedInstanceState == null) {
       setupBottomNavigationBar()
