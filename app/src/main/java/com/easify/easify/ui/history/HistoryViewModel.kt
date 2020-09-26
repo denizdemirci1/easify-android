@@ -69,8 +69,8 @@ class HistoryViewModel @ViewModelInject constructor(
             playerRepository.getCurrentlyPlayingTrack().let { result ->
                 when (result) {
                     is Success -> {
-                        result.data?.let { currentlyPlayingTrackResponse ->
-                            if (currentlyPlayingTrackResponse.item.id == clickedTrack?.id) {
+                        result.data?.item?.let { currentlyPlayingTrack ->
+                            if (currentlyPlayingTrack.id == clickedTrack?.id) {
                                 // TODO: song is playing. make its text green
                             }
                         } ?: run { sendEvent(HistoryViewEvent.ShowOpenSpotifyWarning) }

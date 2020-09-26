@@ -10,6 +10,7 @@
   <string name="admob_app_id_test">ca-app-pub-3940256099942544/2247696110</string>
   <string name="admob_test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
   <string name="banner_ad_unit_id_favorite_fragment">ca-app-pub-5017818231308624/8371456256</string>
+  <string name="banner_ad_unit_id_history_fragment">ca-app-pub-5017818231308624/3007448931</string>
 
   <!-- Bottom Nav Menu -->
   <string name="home">Home</string>

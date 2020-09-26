@@ -6,6 +6,6 @@ package com.easify.easify.model
  */
 
 data class CurrentlyPlayingTrackResponse(
-  val item: Track,
+  val item: Track?,
   val isPlaying: Boolean
 )
