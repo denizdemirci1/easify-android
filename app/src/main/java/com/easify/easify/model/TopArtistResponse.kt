@@ -5,11 +5,12 @@ package com.easify.easify.model
  * @date: 9/18/2020
  */
 
-data class TopArtist(
+data class TopArtistResponse(
   val items: List<Artist>,
+  val total: Int,
   val limit: Int,
-  val next: String?,
   val offset: Int,
   val previous: String?,
-  val total: Int
+  val href: String,
+  val next: String?
 )

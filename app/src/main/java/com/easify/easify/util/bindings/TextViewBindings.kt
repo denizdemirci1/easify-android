@@ -15,3 +15,8 @@ import com.easify.easify.model.CurrentlyPlayingTrackResponse
 fun TextView.setFollowerCount(followerCount: Int) {
   this.text = this.context.getString(R.string.fragment_profile_follower_count, followerCount)
 }
+
+@BindingAdapter("setTopArtistsTitle")
+fun TextView.setTopArtistsTitle(amount: Int) {
+  this.text = this.context.getString(R.string.fragment_top_artists_title, amount)
+}

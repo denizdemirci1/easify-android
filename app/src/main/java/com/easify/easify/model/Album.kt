@@ -7,6 +7,7 @@ package com.easify.easify.model
 
 data class Album(
     val album_type: String,
+    val external_urls: ExternalUrl,
     val id: String,
     val images: List<Image>,
     val name: String,

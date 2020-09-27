@@ -37,12 +37,12 @@ interface SpotifyService {
   @GET("me/player/currently-playing")
   suspend fun getCurrentlyPlayingTrack(): CurrentlyPlayingTrackResponse?
 
-  @GET("me/top/{type}")
+  @GET("me/top/artists")
   suspend fun fetchTopArtists(
-    @Path("type") type: String? = "artists",
     @Query("time_range") timeRange: String?,
-    @Query("limit") limit: Int
-  ): TopArtist
+    @Query("limit") limit: Int,
+    @Query("offset") offset: Int,
+  ): TopArtistResponse
 
   @GET("me/top/{type}")
   suspend fun fetchTopTracks(

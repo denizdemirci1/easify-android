@@ -28,7 +28,3 @@ data class Context(
     val type: String,
     val uri: String
 )
-
-data class ExternalUrl(
-    val spotify: String
-)

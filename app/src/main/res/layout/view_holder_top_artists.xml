@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="artist"
+            type="com.easify.easify.model.Artist" />
+        <variable
+            name="viewModel"
+            type="com.easify.easify.ui.favorite.artists.TopArtistsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/artist_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSpotifyBlack"
+        android:layout_marginBottom="16dp"
+        android:onClick="@{() -> viewModel.openArtistFragment(artist)}">
+
+        <ImageView
+            android:id="@+id/artist_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="fitCenter"
+            app:artistImage="@{artist.images}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:background="@drawable/ic_person"/>
+
+        <TextView
+            android:id="@+id/artistName"
+            style="@style/Material.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{artist.name}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/artist_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Lana Del Rey"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,4 +1,4 @@
-package com.easify.easify.ui.history.util
+package com.easify.easify.ui.history.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.easify.easify.databinding.ViewHolderHistoryBinding
 import com.easify.easify.model.History
 import com.easify.easify.model.Track
-import com.easify.easify.ui.base.BaseListAdapter
 import com.easify.easify.ui.base.BasePagedListAdapter
 import com.easify.easify.ui.base.BaseViewHolder
 import com.easify.easify.ui.history.HistoryViewModel

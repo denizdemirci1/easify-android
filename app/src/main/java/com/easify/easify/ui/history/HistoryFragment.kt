@@ -5,7 +5,6 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -16,7 +15,7 @@ import com.easify.easify.model.History
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.history.data.HistoryDataSource
-import com.easify.easify.ui.history.util.HistoryAdapter
+import com.easify.easify.ui.history.adapter.HistoryAdapter
 import com.easify.easify.util.EventObserver
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
