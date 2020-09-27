@@ -12,7 +12,7 @@ import com.easify.easify.model.TopTrack
 
 interface PersonalizationRepository {
 
-  suspend fun fetchTopArtists(timeRange: String?, limit: Int, offset: Int): Result<TopArtistResponse>
+  suspend fun fetchTopArtists(timeRange: String?, offset: Int): Result<TopArtistResponse>
 
   suspend fun fetchTopTracks(timeRange: String?, limit: Int): Result<TopTrack>
 }
@@ -22,10 +22,9 @@ class PersonalizationRepositoryImpl(
 ) : PersonalizationRepository {
   override suspend fun fetchTopArtists(
     timeRange: String?,
-    limit: Int,
     offset: Int
   ): Result<TopArtistResponse> {
-    return personalizationDataSource.fetchTopArtists(timeRange, limit, offset)
+    return personalizationDataSource.fetchTopArtists(timeRange, offset)
   }
 
   override suspend fun fetchTopTracks(

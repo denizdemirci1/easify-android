@@ -42,6 +42,6 @@
   <string name="fragment_favorites_amount_zero_error">Amount must be greater than zero.</string>
 
   <!-- Top Artists Fragment -->
-  <string name="fragment_top_artists_title">Best %d artists in the world</string>
+  <string name="fragment_top_artists_title">Best artists in the world</string>
 
 </resources>

@@ -89,34 +89,21 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
         else -> longTerm.second
       }
 
-      val amount = when {
-        binding.limit.text.toString() == "0" -> {
-          showError(getString(R.string.fragment_favorites_amount_zero_error))
-          return@setOnClickListener
-        }
-        binding.limit.text.toString().isNotEmpty() -> Integer.parseInt(binding.limit.text.toString())
-        else -> 50
-      }
-
       when (binding.type.text.toString()) {
-        KEY_ARTISTS -> openTopArtistsFragment(timeRange, amount)
-        KEY_TRACKS -> openTopTracksFragment(timeRange, amount)
+        KEY_ARTISTS -> openTopArtistsFragment(timeRange)
+        KEY_TRACKS -> openTopTracksFragment(timeRange)
         else -> showError(resources.getString(R.string.fragment_favorites_type_empty_error))
       }
     }
   }
 
-  private fun openTopArtistsFragment(timeRange: String, amount: Int) {
-    val action = FavoriteFragmentDirections.actionFavoriteFragmentToTopArtistsFragment(
-      timeRange, amount
-    )
+  private fun openTopArtistsFragment(timeRange: String) {
+    val action = FavoriteFragmentDirections.actionFavoriteFragmentToTopArtistsFragment(timeRange)
     findNavController().navigate(action)
   }
 
-  private fun openTopTracksFragment(timeRange: String, amount: Int) {
-    val action = FavoriteFragmentDirections.actionFavoriteFragmentToTopTracksFragment(
-      timeRange, amount
-    )
+  private fun openTopTracksFragment(timeRange: String) {
+    val action = FavoriteFragmentDirections.actionFavoriteFragmentToTopTracksFragment(timeRange)
     findNavController().navigate(action)
   }
 

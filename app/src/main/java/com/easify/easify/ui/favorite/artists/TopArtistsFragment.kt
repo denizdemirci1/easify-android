@@ -41,7 +41,6 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     DataBindingUtil.bind<FragmentTopArtistsBinding>(topArtistsRoot)?.apply {
       lifecycleOwner = this@TopArtistsFragment.viewLifecycleOwner
       viewModel = this@TopArtistsFragment.viewModel
-      amount = args.amount
       binding = this
     }
     setupObservers()
@@ -69,7 +68,7 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, Artist>() {
         override fun create(): DataSource<String, Artist> {
-          return TopArtistsDataSource(args.timeRange, args.amount, viewModel)
+          return TopArtistsDataSource(args.timeRange, viewModel)
         }
       }, 20).build()
   }

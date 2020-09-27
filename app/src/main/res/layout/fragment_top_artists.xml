@@ -26,10 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            app:setTopArtistsTitle="@{amount}"
+            android:text="@string/fragment_top_artists_title"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Best 13 artists in the world"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <ProgressBar
             android:id="@+id/top_artists_progress"
