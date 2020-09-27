@@ -34,13 +34,12 @@ class TopArtistsViewModel @ViewModelInject constructor(
 
   fun getTopArtists(
     timeRange: String,
-    limit: Int,
     offset: Int,
     onSuccess: (data: TopArtistResponse) -> Unit
   ) {
     viewModelScope.launch {
       _loading.value = true
-      personalizationRepository.fetchTopArtists(timeRange, limit, offset).let { result ->
+      personalizationRepository.fetchTopArtists(timeRange, offset).let { result ->
         _loading.value = false
         when (result) {
           is Success -> result.data.let(onSuccess)

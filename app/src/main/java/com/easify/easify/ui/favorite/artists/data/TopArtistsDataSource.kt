@@ -13,40 +13,27 @@ import javax.inject.Inject
 
 class TopArtistsDataSource @Inject constructor(
   private val timeRange: String,
-  private var userRequestedLimit: Int,
   private val viewModel: TopArtistsViewModel
 ) : PageKeyedDataSource<String, Artist>() {
+
+  private var callCount = 0
 
   override fun loadInitial(
     params: LoadInitialParams<String>,
     callback: LoadInitialCallback<String, Artist>
   ) {
-    val limit = if (userRequestedLimit < params.requestedLoadSize)
-      userRequestedLimit else
-      params.requestedLoadSize
-
-    viewModel.getTopArtists(timeRange, limit, 0) { data: TopArtistResponse ->
-      callback.onResult(
-        data.items,
-        null,
-        data.next
-      )
+    viewModel.getTopArtists(timeRange, 0) { data: TopArtistResponse ->
+      callback.onResult(data.items, null, data.next)
+      callCount++
     }
-    userRequestedLimit -= params.requestedLoadSize
   }
 
   override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Artist>) {}
 
   override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Artist>) {
-    val limit = if (userRequestedLimit < params.requestedLoadSize)
-      userRequestedLimit else
-      params.requestedLoadSize
-    viewModel.getTopArtists(timeRange, limit, params.requestedLoadSize) { data: TopArtistResponse ->
-      callback.onResult(
-        if (userRequestedLimit <= 0) listOf() else data.items,
-        data.next
-      )
+    viewModel.getTopArtists(timeRange, 20 * callCount) { data: TopArtistResponse ->
+      callCount++
+      callback.onResult(data.items, data.next)
     }
-    userRequestedLimit -= params.requestedLoadSize
   }
 }

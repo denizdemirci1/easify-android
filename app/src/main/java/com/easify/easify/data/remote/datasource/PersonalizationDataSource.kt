@@ -11,7 +11,7 @@ import com.easify.easify.model.TopTrack
  */
 
 interface PersonalizationDataSource {
-  suspend fun fetchTopArtists(timeRange: String?, limit: Int, offset: Int): Result<TopArtistResponse>
+  suspend fun fetchTopArtists(timeRange: String?, offset: Int): Result<TopArtistResponse>
 
   suspend fun fetchTopTracks(timeRange: String?, limit: Int): Result<TopTrack>
 }
@@ -22,11 +22,10 @@ class PersonalizationDataSourceImpl(
 
   override suspend fun fetchTopArtists(
     timeRange: String?,
-    limit: Int,
     offset: Int,
   ): Result<TopArtistResponse> {
     return try {
-      val topArtist = service.fetchTopArtists(timeRange, limit, offset)
+      val topArtist = service.fetchTopArtists(timeRange, offset = offset)
       Result.Success(topArtist)
     } catch (e: Exception) {
       Result.Error(e)

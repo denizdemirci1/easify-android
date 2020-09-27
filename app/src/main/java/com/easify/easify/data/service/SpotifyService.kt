@@ -40,7 +40,7 @@ interface SpotifyService {
   @GET("me/top/artists")
   suspend fun fetchTopArtists(
     @Query("time_range") timeRange: String?,
-    @Query("limit") limit: Int,
+    @Query("limit") limit: Int = 20,
     @Query("offset") offset: Int,
   ): TopArtistResponse
 
