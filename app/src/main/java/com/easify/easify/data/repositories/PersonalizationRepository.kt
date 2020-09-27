@@ -3,7 +3,7 @@ package com.easify.easify.data.repositories
 import com.easify.easify.data.remote.datasource.PersonalizationDataSource
 import com.easify.easify.model.Result
 import com.easify.easify.model.TopArtistResponse
-import com.easify.easify.model.TopTrack
+import com.easify.easify.model.TopTrackResponse
 
 /**
  * @author: deniz.demirci
@@ -14,7 +14,7 @@ interface PersonalizationRepository {
 
   suspend fun fetchTopArtists(timeRange: String?, offset: Int): Result<TopArtistResponse>
 
-  suspend fun fetchTopTracks(timeRange: String?, limit: Int): Result<TopTrack>
+  suspend fun fetchTopTracks(timeRange: String?, offset: Int): Result<TopTrackResponse>
 }
 
 class PersonalizationRepositoryImpl(
@@ -29,8 +29,8 @@ class PersonalizationRepositoryImpl(
 
   override suspend fun fetchTopTracks(
     timeRange: String?,
-    limit: Int
-  ): Result<TopTrack> {
-    return personalizationDataSource.fetchTopTracks(timeRange, limit)
+    offset: Int
+  ): Result<TopTrackResponse> {
+    return personalizationDataSource.fetchTopTracks(timeRange, offset)
   }
 }

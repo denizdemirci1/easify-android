@@ -5,7 +5,7 @@ package com.easify.easify.model
  * @date: 9/20/2020
  */
 
-data class TopTrack(
+data class TopTrackResponse(
   val items: List<Track>,
   val limit: Int,
   val next: String?,

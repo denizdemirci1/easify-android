@@ -14,14 +14,39 @@
         android:id="@+id/topTracksRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:background="@color/colorSpotifyBlack">
+        android:background="@color/colorSpotifyBlack" >
 
         <TextView
+            android:id="@+id/top_tracks_label"
+            style="@style/Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/fragment_top_tracks_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/top_tracks_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="fav tracks"
-            android:textColor="@color/colorSpotifyWhite" />
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/top_tracks_label"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_tracks_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/bg_scrollbar"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/top_tracks_progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/view_holder_top_tracks"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

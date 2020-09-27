@@ -44,10 +44,10 @@ interface SpotifyService {
     @Query("offset") offset: Int,
   ): TopArtistResponse
 
-  @GET("me/top/{type}")
+  @GET("me/top/tracks")
   suspend fun fetchTopTracks(
-    @Path("type") type: String? = "tracks",
     @Query("time_range") timeRange: String?,
-    @Query("limit") limit: Int
-  ): TopTrack
+    @Query("limit") limit: Int = 20,
+    @Query("offset") offset: Int,
+  ): TopTrackResponse
 }

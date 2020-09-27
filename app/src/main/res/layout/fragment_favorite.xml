@@ -15,17 +15,16 @@
         android:id="@+id/favoriteRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:background="@color/colorSpotifyBlack">
 
         <TextView
             android:id="@+id/favorite_label"
-            style="@style/Material.Headline6"
+            style="@style/Toolbar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/fragment_favorites_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:hint="@string/fragment_favorites_hint_type"
             app:layout_constraintTop_toBottomOf="@id/favorite_label"
             app:layout_constraintStart_toStartOf="parent">
@@ -56,6 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:hint="@string/fragment_favorites_hint_time_range"
             app:layout_constraintTop_toBottomOf="@id/type_layout"
             app:layout_constraintStart_toStartOf="parent">

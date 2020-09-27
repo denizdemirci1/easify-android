@@ -44,4 +44,7 @@
   <!-- Top Artists Fragment -->
   <string name="fragment_top_artists_title">Best artists in the world</string>
 
+  <!-- Top Tracks Fragment -->
+  <string name="fragment_top_tracks_title">Best tracks in the world</string>
+
 </resources>
