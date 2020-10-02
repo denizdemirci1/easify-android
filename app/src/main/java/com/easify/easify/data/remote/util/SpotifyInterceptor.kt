@@ -1,5 +1,6 @@
 package com.easify.easify.data.remote.util
 
+import android.util.Log
 import com.easify.easify.util.manager.UserManager
 import javax.inject.Inject
 import okhttp3.Interceptor
@@ -19,6 +20,8 @@ class SpotifyInterceptor @Inject constructor(
 
     val token: String? = userManager.token ?: ""
     token?.let { builder.addHeader("Authorization", "Bearer $it") }
+    // TODO: remove log
+    Log.i("Spotify Token", "\nBearer $token")
 
     val request = builder.build()
     return chain.proceed(request)

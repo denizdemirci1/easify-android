@@ -57,16 +57,16 @@ class HistoryViewModel @ViewModelInject constructor(
     private fun playTrack(track: Track) {
         viewModelScope.launch {
             playerRepository.play(
-                userManager.deviceId ?: "",
-                PlayObject(listOf(track.uri))
+                userManager.deviceId,
+                PlayObject(uris = listOf(track.uri))
             )
-            getCurrentlyPlayingTrack()
+            getCurrentPlayback()
         }
     }
 
-    private fun getCurrentlyPlayingTrack() {
+    private fun getCurrentPlayback() {
         viewModelScope.launch {
-            playerRepository.getCurrentlyPlayingTrack().let { result ->
+            playerRepository.getCurrentPlayback().let { result ->
                 when (result) {
                     is Success -> {
                         result.data?.item?.let { currentlyPlayingTrack ->

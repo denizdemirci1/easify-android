@@ -14,11 +14,11 @@ interface PlayerRepository {
 
   suspend fun fetchRecentlyPlayed(before: String?): Result<HistoryResponse>
 
-  suspend fun play(deviceId: String, playObject: PlayObject)
+  suspend fun play(deviceId: String? = null, playObject: PlayObject)
 
   suspend fun getDevices(): Result<DevicesResponse>
 
-  suspend fun getCurrentlyPlayingTrack(): Result<CurrentlyPlayingTrackResponse?>
+  suspend fun getCurrentPlayback(): Result<CurrentPlaybackResponse?>
 }
 
 class PlayerRepositoryImpl @Inject constructor(
@@ -30,7 +30,7 @@ class PlayerRepositoryImpl @Inject constructor(
     return playerDataSource.fetchRecentlyPlayed(before)
   }
 
-  override suspend fun play(deviceId: String, playObject: PlayObject) {
+  override suspend fun play(deviceId: String?, playObject: PlayObject) {
     playerDataSource.play(deviceId, playObject)
   }
 
@@ -38,7 +38,7 @@ class PlayerRepositoryImpl @Inject constructor(
     return playerDataSource.getDevices()
   }
 
-  override suspend fun getCurrentlyPlayingTrack(): Result<CurrentlyPlayingTrackResponse?> {
-    return  playerDataSource.getCurrentlyPlayingTrack()
+  override suspend fun getCurrentPlayback(): Result<CurrentPlaybackResponse?> {
+    return  playerDataSource.getCurrentPlayback()
   }
 }

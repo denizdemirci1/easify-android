@@ -13,11 +13,11 @@ interface PlayerDataSource {
 
   suspend fun fetchRecentlyPlayed(before: String?): Result<HistoryResponse>
 
-  suspend fun play(deviceId: String, playObject: PlayObject)
+  suspend fun play(deviceId: String?, playObject: PlayObject)
 
   suspend fun getDevices(): Result<DevicesResponse>
 
-  suspend fun getCurrentlyPlayingTrack(): Result<CurrentlyPlayingTrackResponse?>
+  suspend fun getCurrentPlayback(): Result<CurrentPlaybackResponse?>
 }
 
 class PlayerDataSourceImpl @Inject constructor(
@@ -33,7 +33,7 @@ class PlayerDataSourceImpl @Inject constructor(
     }
   }
 
-  override suspend fun play(deviceId: String, playObject: PlayObject) {
+  override suspend fun play(deviceId: String?, playObject: PlayObject) {
     spotifyService.play(deviceId, playObject)
   }
 
@@ -46,9 +46,9 @@ class PlayerDataSourceImpl @Inject constructor(
     }
   }
 
-  override suspend fun getCurrentlyPlayingTrack(): Result<CurrentlyPlayingTrackResponse?> {
+  override suspend fun getCurrentPlayback(): Result<CurrentPlaybackResponse?> {
     return try {
-      val track = spotifyService.getCurrentlyPlayingTrack()
+      val track = spotifyService.getCurrentPlayback()
       Result.Success(track)
     } catch (e: Exception) {
       Result.Error(e)

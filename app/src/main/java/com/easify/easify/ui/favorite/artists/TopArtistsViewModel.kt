@@ -52,6 +52,6 @@ class TopArtistsViewModel @ViewModelInject constructor(
   }
 
   fun openArtistFragment(artist: Artist) {
-
+    // TODO: do
   }
 }

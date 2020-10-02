@@ -1,5 +1,6 @@
 package com.easify.easify.ui.splash
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject

@@ -2,6 +2,7 @@ package com.easify.easify.di
 
 import com.easify.easify.data.remote.datasource.PersonalizationDataSource
 import com.easify.easify.data.remote.datasource.PlayerDataSource
+import com.easify.easify.data.remote.datasource.PlaylistDataSource
 import com.easify.easify.data.remote.datasource.UserDataSource
 import com.easify.easify.data.repositories.*
 import com.easify.easify.util.manager.UserManager
@@ -43,5 +44,13 @@ object RepositoryModule {
     personalizationDataSource: PersonalizationDataSource
   ): PersonalizationRepository {
     return PersonalizationRepositoryImpl(personalizationDataSource)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun providePlaylistRepository(
+    playlistDataSource: PlaylistDataSource
+  ): PlaylistRepository {
+    return PlaylistRepositoryImpl(playlistDataSource)
   }
 }

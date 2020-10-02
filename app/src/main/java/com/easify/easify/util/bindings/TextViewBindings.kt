@@ -1,10 +1,8 @@
 package com.easify.easify.util.bindings
 
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.easify.easify.R
-import com.easify.easify.model.CurrentlyPlayingTrackResponse
 
 /**
  * @author: deniz.demirci

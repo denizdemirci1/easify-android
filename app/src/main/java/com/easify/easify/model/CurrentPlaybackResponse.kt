@@ -5,7 +5,10 @@ package com.easify.easify.model
  * @date: 9/15/2020
  */
 
-data class CurrentlyPlayingTrackResponse(
+data class CurrentPlaybackResponse(
+  val timestamp: Long,
+  val context: Context?,
+  val progress_ms: Int,
   val item: Track?,
   val isPlaying: Boolean
 )

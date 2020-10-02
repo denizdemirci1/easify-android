@@ -24,10 +24,7 @@
   <string name="dialog_negative_button_text">Exit</string>
   <string name="dialog_ok">OK</string>
   <string name="dialog_common_error_text">Something went wrong. Please go back and try again.</string>
-  <string name="dialog_should_open_spotify">In order to play songs for the first time, you need to open Spotify.</string>
-
-  <!-- Profile Fragment -->
-  <string name="fragment_profile_follower_count">Followers: %d</string>
+  <string name="dialog_should_open_spotify">There is a problem but WE CAN FIX IT. \nOpen your Spotify and then try again.</string>
 
   <!-- History Fragment -->
   <string name="fragment_history_recently_listened">Recently Listened</string>
@@ -46,5 +43,17 @@
 
   <!-- Top Tracks Fragment -->
   <string name="fragment_top_tracks_title">Best tracks in the world</string>
+
+  <!-- Profile Fragment -->
+  <string name="fragment_profile_playlists">Playlists</string>
+  <string name="fragment_profile_followed_artists">Followed artists</string>
+  <string name="fragment_profile_rate">Rate us</string>
+  <string name="fragment_profile_follower_count">Followers: %d</string>
+
+  <!-- Playlist Fragment -->
+  <string name="fragment_playlist_title">Your playlists</string>
+
+  <!-- Followed Artists Fragment -->
+  <string name="fragment_followed_artists_title">Artists you follow</string>
 
 </resources>

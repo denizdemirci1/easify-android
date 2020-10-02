@@ -7,4 +7,12 @@
         android:id="@+id/profileFragment"
         android:name="com.easify.easify.ui.profile.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.easify.easify.ui.profile.playlists.PlaylistFragment"
+        android:label="PlaylistFragment" />
+    <fragment
+        android:id="@+id/followedArtistsFragment"
+        android:name="com.easify.easify.ui.profile.follows.FollowedArtistsFragment"
+        android:label="FollowedArtistsFragment" />
 </navigation>

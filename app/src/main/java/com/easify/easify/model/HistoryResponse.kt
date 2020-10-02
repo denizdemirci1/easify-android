@@ -19,7 +19,7 @@ data class HistoryResponse(
 data class History(
     val track: Track,
     val played_at: String,
-    val context: Context
+    val context: Context?
 )
 
 data class Context(

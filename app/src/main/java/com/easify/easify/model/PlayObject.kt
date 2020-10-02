@@ -6,5 +6,6 @@ package com.easify.easify.model
  */
 
 data class PlayObject(
-  val uris: List<String>
+  val context_uri: String? = null,
+  val uris: List<String>? = null
 )

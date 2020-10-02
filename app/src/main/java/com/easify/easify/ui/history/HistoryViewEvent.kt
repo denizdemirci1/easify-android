@@ -1,6 +1,5 @@
 package com.easify.easify.ui.history
 
-import com.easify.easify.model.History
 import com.easify.easify.model.Track
 
 /**

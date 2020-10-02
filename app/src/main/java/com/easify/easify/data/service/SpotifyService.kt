@@ -27,15 +27,15 @@ interface SpotifyService {
 
   @PUT("me/player/play")
   suspend fun play(
-    @Query("device_id") deviceId: String,
+    @Query("device_id") deviceId: String? = null,
     @Body playObject: PlayObject
   ): Response<Unit>
 
   @GET("me/player/devices")
   suspend fun getDevices(): DevicesResponse
 
-  @GET("me/player/currently-playing")
-  suspend fun getCurrentlyPlayingTrack(): CurrentlyPlayingTrackResponse?
+  @GET("me/player")
+  suspend fun getCurrentPlayback(): CurrentPlaybackResponse?
 
   @GET("me/top/artists")
   suspend fun fetchTopArtists(
@@ -50,4 +50,10 @@ interface SpotifyService {
     @Query("limit") limit: Int = 20,
     @Query("offset") offset: Int,
   ): TopTrackResponse
+
+  @GET("me/playlists")
+  suspend fun fetchPlaylists(
+    @Query("limit") limit: Int = 20,
+    @Query("offset") offset: Int,
+  ): PlaylistResponse
 }
