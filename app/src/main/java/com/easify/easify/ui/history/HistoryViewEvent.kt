@@ -9,6 +9,8 @@ import com.easify.easify.model.Track
 
 sealed class HistoryViewEvent {
 
+  object GetDevices: HistoryViewEvent()
+
   object ShowOpenSpotifyWarning: HistoryViewEvent()
 
   data class OnAddClicked(val track: Track) : HistoryViewEvent()

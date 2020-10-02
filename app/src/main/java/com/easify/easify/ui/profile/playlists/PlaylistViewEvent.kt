@@ -9,5 +9,7 @@ sealed class PlaylistViewEvent {
 
   object ShowOpenSpotifyWarning: PlaylistViewEvent()
 
+  object GetDevices: PlaylistViewEvent()
+
   data class ShowError(val message: String) : PlaylistViewEvent()
 }

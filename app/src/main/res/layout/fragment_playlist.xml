@@ -6,7 +6,7 @@
     <data>
         <import type="android.view.View" />
         <variable
-            name="viewModel"
+            name="playlistViewModel"
             type="com.easify.easify.ui.profile.playlists.PlaylistViewModel" />
     </data>
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{playlistViewModel.loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toBottomOf="@id/playlists_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -46,7 +46,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/playlists_progress"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/view_holder_playlists"/>
+            tools:listitem="@layout/view_holder_playlist"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

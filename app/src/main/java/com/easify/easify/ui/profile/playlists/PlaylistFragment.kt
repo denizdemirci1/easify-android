@@ -16,6 +16,7 @@ import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.profile.playlists.adapter.PlaylistAdapter
 import com.easify.easify.ui.profile.playlists.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
+import com.easify.easify.util.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist.*
 
@@ -27,7 +28,9 @@ import kotlinx.android.synthetic.main.fragment_playlist.*
 @AndroidEntryPoint
 class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
 
-  private val viewModel by viewModels<PlaylistViewModel>()
+  private val playlistViewModel by viewModels<PlaylistViewModel>()
+
+  private val playerViewModel by viewModels<PlayerViewModel>()
 
   private lateinit var binding: FragmentPlaylistBinding
 
@@ -37,7 +40,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentPlaylistBinding>(playlists_root)?.apply {
       lifecycleOwner = this@PlaylistFragment.viewLifecycleOwner
-      viewModel = this@PlaylistFragment.viewModel
+      playlistViewModel = this@PlaylistFragment.playlistViewModel
       binding = this
     }
     setupObservers()
@@ -45,11 +48,18 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
   }
 
   private fun setupObservers() {
-    viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+    playlistViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        PlaylistViewEvent.GetDevices -> getDevices()
         PlaylistViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
         is PlaylistViewEvent.ShowError -> showError(event.message)
       }
+    })
+
+    playerViewModel.deviceId.observe(viewLifecycleOwner, { deviceId ->
+      deviceId?.let { _ ->
+        playlistViewModel.playClickedPlaylist()
+      } ?: run { showOpenSpotifyWarning() }
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
@@ -58,7 +68,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
   }
 
   private fun setupPlaylistAdapter() {
-    playlistAdapter = PlaylistAdapter(viewModel)
+    playlistAdapter = PlaylistAdapter(playlistViewModel)
     binding.playlistsRecyclerView.adapter = playlistAdapter
   }
 
@@ -66,9 +76,13 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, Playlist>() {
         override fun create(): DataSource<String, Playlist> {
-          return PlaylistDataSource(viewModel)
+          return PlaylistDataSource(playlistViewModel)
         }
       }, 20).build()
+  }
+
+  private fun getDevices() {
+    playerViewModel.getDevices()
   }
 
   private fun showOpenSpotifyWarning() {

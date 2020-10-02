@@ -55,7 +55,7 @@
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_listen"
             android:visibility="@{viewModel.isListenable ? View.VISIBLE : View.GONE}"
-            android:onClick="@{() -> viewModel.playPlaylistClicked(playlist)}"
+            android:onClick="@{() -> viewModel.playIconClicked(playlist)}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

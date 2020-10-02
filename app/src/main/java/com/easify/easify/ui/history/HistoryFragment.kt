@@ -17,6 +17,7 @@ import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.history.adapter.HistoryAdapter
 import com.easify.easify.util.EventObserver
+import com.easify.easify.util.viewmodels.PlayerViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
@@ -31,7 +32,9 @@ import kotlinx.android.synthetic.main.fragment_history.*
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
-  private val viewModel by viewModels<HistoryViewModel>()
+  private val historyViewModel by viewModels<HistoryViewModel>()
+
+  private val playerViewModel by viewModels<PlayerViewModel>()
 
   private lateinit var binding: FragmentHistoryBinding
 
@@ -41,7 +44,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentHistoryBinding>(historyRoot)?.apply {
       lifecycleOwner = this@HistoryFragment.viewLifecycleOwner
-      viewModel = this@HistoryFragment.viewModel
+      historyViewModel = this@HistoryFragment.historyViewModel
       binding = this
     }
     initAds()
@@ -50,12 +53,19 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   }
 
   private fun setupObservers() {
-    viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+    historyViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        HistoryViewEvent.GetDevices -> getDevices()
         HistoryViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
         is HistoryViewEvent.OnAddClicked -> onAddClicked(event.track)
         is HistoryViewEvent.ShowError -> showError(event.message)
       }
+    })
+
+    playerViewModel.deviceId.observe(viewLifecycleOwner, { deviceId ->
+      deviceId?.let { _ ->
+        historyViewModel.playClickedTrack()
+      } ?: run { showOpenSpotifyWarning() }
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
@@ -64,7 +74,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   }
 
   private fun setupHistoryAdapter() {
-    historyAdapter = HistoryAdapter(viewModel)
+    historyAdapter = HistoryAdapter(historyViewModel)
     binding.tracksRecyclerView.adapter = historyAdapter
   }
 
@@ -72,9 +82,13 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, History>() {
         override fun create(): DataSource<String, History> {
-          return HistoryDataSource(viewModel)
+          return HistoryDataSource(historyViewModel)
         }
       }, 30).build()
+  }
+
+  private fun getDevices() {
+    playerViewModel.getDevices()
   }
 
   private fun showError(message: String) {

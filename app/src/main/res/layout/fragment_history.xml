@@ -7,7 +7,7 @@
     <data>
         <import type="android.view.View" />
         <variable
-            name="viewModel"
+            name="historyViewModel"
             type="com.easify.easify.ui.history.HistoryViewModel" />
     </data>
 
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{historyViewModel.loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toBottomOf="@id/history_label"/>
 
         <androidx.recyclerview.widget.RecyclerView

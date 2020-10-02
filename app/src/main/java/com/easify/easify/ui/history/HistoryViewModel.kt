@@ -54,16 +54,6 @@ class HistoryViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun playTrack(track: Track) {
-        viewModelScope.launch {
-            playerRepository.play(
-                userManager.deviceId,
-                PlayObject(uris = listOf(track.uri))
-            )
-            getCurrentPlayback()
-        }
-    }
-
     private fun getCurrentPlayback() {
         viewModelScope.launch {
             playerRepository.getCurrentPlayback().let { result ->
@@ -84,15 +74,17 @@ class HistoryViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun getDeviceId() {
+    fun playClickedTrack() {
+        clickedTrack?.let { playTrack(it) }
+    }
+
+    private fun playTrack(track: Track) {
         viewModelScope.launch {
-            playerRepository.getDevices().let { result ->
-                when (result) {
-                    is Success -> {
-                        saveDeviceId(result.data.devices)
-                    }
-                }
-            }
+            playerRepository.play(
+                userManager.deviceId,
+                PlayObject(uris = listOf(track.uri))
+            )
+            getCurrentPlayback()
         }
     }
 
@@ -100,7 +92,7 @@ class HistoryViewModel @ViewModelInject constructor(
         clickedTrack = track
         viewModelScope.launch {
             if (userManager.deviceId.isNullOrEmpty()) {
-                getDeviceId()
+                sendEvent(HistoryViewEvent.GetDevices)
             } else {
                 playTrack(track)
             }
@@ -109,20 +101,5 @@ class HistoryViewModel @ViewModelInject constructor(
 
     fun onAddClicked(track: Track) {
         sendEvent(HistoryViewEvent.OnAddClicked(track))
-    }
-
-    /**
-     * if there is a smartphone in devices, save its id
-     * otherwise tell user to open spotify from smartphone
-     */
-    private fun saveDeviceId(devices: List<Device>) {
-        devices.find { device ->
-            device.type == DeviceType.SMART_PHONE.type
-        }?.let { device ->
-            userManager.deviceId = device.id
-            clickedTrack?.let { playTrack(it) }
-        } ?: run {
-            sendEvent(HistoryViewEvent.ShowOpenSpotifyWarning)
-        }
     }
 }

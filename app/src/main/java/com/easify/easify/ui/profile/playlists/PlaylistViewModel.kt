@@ -59,15 +59,19 @@ class PlaylistViewModel @ViewModelInject constructor(
     // TODO: open playlist detail page
   }
 
-  fun playPlaylistClicked(playlist: Playlist) {
+  fun playIconClicked(playlist: Playlist) {
     clickedPlaylist = playlist
     viewModelScope.launch {
       if (userManager.deviceId.isNullOrEmpty()) {
-        getDeviceId()
+        sendEvent(PlaylistViewEvent.GetDevices)
       } else {
         playPlaylist(playlist)
       }
     }
+  }
+
+  fun playClickedPlaylist() {
+    clickedPlaylist?.let { playPlaylist(it) }
   }
 
   private fun playPlaylist(playlist: Playlist) {
@@ -96,33 +100,4 @@ class PlaylistViewModel @ViewModelInject constructor(
       }
     }
   }
-
-  // region Device Id Operations
-  private fun getDeviceId() {
-    viewModelScope.launch {
-      playerRepository.getDevices().let { result ->
-        when (result) {
-          is Success -> {
-            saveDeviceId(result.data.devices)
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * if there is a smartphone in devices, save its id
-   * otherwise tell user to open spotify from smartphone
-   */
-  private fun saveDeviceId(devices: List<Device>) {
-    devices.find { device ->
-      device.type == DeviceType.SMART_PHONE.type
-    }?.let { device ->
-      userManager.deviceId = device.id
-      clickedPlaylist?.let { playPlaylist(it) }
-    } ?: run {
-      sendEvent(PlaylistViewEvent.ShowOpenSpotifyWarning)
-    }
-  }
-  //endregion
 }
