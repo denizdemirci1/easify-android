@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/playlistFragment"
-        android:name="com.easify.easify.ui.profile.playlists.PlaylistFragment"
+        android:name="com.easify.easify.ui.profile.playlists.main.PlaylistFragment"
         android:label="PlaylistFragment" >
         <action
             android:id="@+id/action_playlistFragment_to_playlistDetailFragment"
@@ -31,5 +31,9 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.easify.easify.ui.profile.playlists.create.CreatePlaylistFragment"
+        android:label="CreatePlaylistFragment" />
 
 </navigation>

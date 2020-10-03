@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.playlists
+package com.easify.easify.ui.profile.playlists.main
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject

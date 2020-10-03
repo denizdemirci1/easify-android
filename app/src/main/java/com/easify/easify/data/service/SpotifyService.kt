@@ -68,4 +68,10 @@ interface SpotifyService {
     @Path("playlist_id") playlistId: String,
     @Body removeTrackObject: RemoveTrackObject
   )
+
+  @POST("users/{user_id}/playlists")
+  suspend fun createPlaylist(
+    @Path("user_id") userId: String,
+    @Body createPlaylistBody: CreatePlaylistBody
+  ): Playlist
 }

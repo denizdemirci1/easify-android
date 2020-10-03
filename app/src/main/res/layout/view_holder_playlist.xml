@@ -10,7 +10,7 @@
             type="com.easify.easify.model.Playlist" />
         <variable
             name="viewModel"
-            type="com.easify.easify.ui.profile.playlists.PlaylistViewModel" />
+            type="com.easify.easify.ui.profile.playlists.main.PlaylistViewModel" />
 
     </data>
 

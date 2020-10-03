@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.playlists
+package com.easify.easify.ui.profile.playlists.main
 
 import android.os.Bundle
 import android.view.View
@@ -14,8 +14,8 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistBinding
 import com.easify.easify.model.Playlist
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.profile.playlists.adapter.PlaylistAdapter
-import com.easify.easify.ui.profile.playlists.data.PlaylistDataSource
+import com.easify.easify.ui.profile.playlists.main.adapter.PlaylistAdapter
+import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.util.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,8 +44,15 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
       playlistViewModel = this@PlaylistFragment.playlistViewModel
       binding = this
     }
+    setupListeners()
     setupObservers()
     setupPlaylistAdapter()
+  }
+
+  private fun setupListeners() {
+    binding.createPlaylist.setOnClickListener {
+      findNavController().navigate(R.id.createPlaylistFragment)
+    }
   }
 
   private fun setupObservers() {

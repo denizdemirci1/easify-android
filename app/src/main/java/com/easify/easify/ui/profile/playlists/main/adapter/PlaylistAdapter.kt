@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.playlists.adapter
+package com.easify.easify.ui.profile.playlists.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import com.easify.easify.databinding.ViewHolderPlaylistBinding
 import com.easify.easify.model.Playlist
 import com.easify.easify.ui.base.BasePagedListAdapter
 import com.easify.easify.ui.base.BaseViewHolder
-import com.easify.easify.ui.profile.playlists.PlaylistViewModel
+import com.easify.easify.ui.profile.playlists.main.PlaylistViewModel
 
 /**
  * @author: deniz.demirci

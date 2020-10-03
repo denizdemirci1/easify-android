@@ -52,10 +52,20 @@
 
   <!-- Playlist Fragment -->
   <string name="fragment_playlist_title">Your playlists</string>
+  <string name="fragment_playlist_create_button_text">New</string>
 
   <!-- Playlist Detail Fragment -->
   <string name="fragment_playlist_detail_removed">%s is removed from this playlist</string>
   <string name="fragment_playlist_detail_empty_playlist">This playlist is empty</string>
+
+  <!-- Create Playlist Fragment -->
+  <string name="fragment_create_playlist_title">Create a playlist</string>
+  <string name="fragment_create_playlist_name_hint">Name</string>
+  <string name="fragment_create_playlist_description_hint">Description</string>
+  <string name="fragment_create_playlist_create">Create</string>
+  <string name="fragment_create_playlist_default_playlist_name">Easify</string>
+  <string name="fragment_create_playlist_default_playlist_description">Created via Easify</string>
+  <string name="fragment_create_playlist_user_id_not_found_error">We could not get your user id.\nPlease restart app and try again.</string>
 
   <!-- Followed Artists Fragment -->
   <string name="fragment_followed_artists_title">Artists you follow</string>

@@ -6,5 +6,6 @@ package com.easify.easify.model
  */
 
 data class Follower(
+    val href: String?,
     val total: Int
 )

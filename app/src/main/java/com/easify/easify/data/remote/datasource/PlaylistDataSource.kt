@@ -1,10 +1,7 @@
 package com.easify.easify.data.remote.datasource
 
 import com.easify.easify.data.service.SpotifyService
-import com.easify.easify.model.PlaylistResponse
-import com.easify.easify.model.PlaylistTracksResponse
-import com.easify.easify.model.RemoveTrackObject
-import com.easify.easify.model.Result
+import com.easify.easify.model.*
 
 /**
  * @author: deniz.demirci
@@ -17,6 +14,8 @@ interface PlaylistDataSource {
   suspend fun fetchPlaylistTracks(playlistId: String, offset: Int): Result<PlaylistTracksResponse>
 
   suspend fun removeTracksFromPlaylist(playlistId: String, removeTracksObject: RemoveTrackObject)
+
+  suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist>
 }
 
 class PlaylistDataSourceImpl(
@@ -52,5 +51,14 @@ class PlaylistDataSourceImpl(
     removeTracksObject: RemoveTrackObject
   ) {
     service.removeTracksFromPlaylist(playlistId, removeTracksObject)
+  }
+
+  override suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist> {
+    return try {
+      val playlistObject = service.createPlaylist(userId, body)
+      Result.Success(playlistObject)
+    } catch (e: Exception) {
+      Result.Error(e)
+    }
   }
 }

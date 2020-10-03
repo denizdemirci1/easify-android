@@ -1,10 +1,7 @@
 package com.easify.easify.data.repositories
 
 import com.easify.easify.data.remote.datasource.PlaylistDataSource
-import com.easify.easify.model.PlaylistResponse
-import com.easify.easify.model.PlaylistTracksResponse
-import com.easify.easify.model.RemoveTrackObject
-import com.easify.easify.model.Result
+import com.easify.easify.model.*
 
 /**
  * @author: deniz.demirci
@@ -17,6 +14,8 @@ interface PlaylistRepository {
   suspend fun fetchPlaylistTracks(playlistId: String, offset: Int): Result<PlaylistTracksResponse>
 
   suspend fun removeTracksFromPlaylist(playlistId: String, removeTracksObject: RemoveTrackObject)
+
+  suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist>
 }
 
 class PlaylistRepositoryImpl(
@@ -39,5 +38,9 @@ class PlaylistRepositoryImpl(
     removeTracksObject: RemoveTrackObject
   ) {
     playlistDataSource.removeTracksFromPlaylist(playlistId, removeTracksObject)
+  }
+
+  override suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist> {
+    return playlistDataSource.createPlaylist(userId, body)
   }
 }
