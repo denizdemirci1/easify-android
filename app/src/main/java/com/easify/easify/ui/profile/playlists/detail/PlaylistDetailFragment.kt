@@ -6,22 +6,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistDetailBinding
-import com.easify.easify.model.PlaylistTrack
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.extensions.dpToPx
 import com.easify.easify.ui.profile.playlists.detail.adapter.PlaylistDetailAdapter
-import com.easify.easify.ui.profile.playlists.detail.data.PlaylistDetailDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.util.viewmodels.PlayerViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -48,8 +41,6 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
 
   private lateinit var playlistDetailAdapter: PlaylistDetailAdapter
 
-  private val tracksToShow: ArrayList<PlaylistTrack> = arrayListOf()
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentPlaylistDetailBinding>(playlist_detail_root)?.apply {
@@ -62,7 +53,7 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
     } ?: run { findNavController().popBackStack() }
     // TODO: inform user
     setupObservers()
-    setupPlaylistAdapter()
+    setupPlaylistDetailAdapter()
   }
 
   private fun setupObservers() {
@@ -70,10 +61,13 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
       when (event) {
         PlaylistDetailViewEvent.GetDevices -> getDevices()
         PlaylistDetailViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        is PlaylistDetailViewEvent.ShowError -> showError(event.message)
+        is PlaylistDetailViewEvent.NotifyDataChanged -> {
+          playlistDetailAdapter.submitList(event.tracks)
+        }
         is PlaylistDetailViewEvent.ShowSnackbar -> {
           showSnackbar(getString(R.string.fragment_playlist_detail_removed, event.trackName))
         }
-        is PlaylistDetailViewEvent.ShowError -> showError(event.message)
       }
     })
 
@@ -82,27 +76,15 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
         playlistDetailViewModel.playClickedTrack()
       } ?: run { showOpenSpotifyWarning() }
     })
-
-    args.playlist?.let { playlist ->
-      buildPagedListLiveData(playlist.id).observe(viewLifecycleOwner, { list ->
-        tracksToShow.addAll(list)
-        playlistDetailAdapter.submitList(list)
-      })
-    }
   }
 
-  private fun setupPlaylistAdapter() {
-    playlistDetailAdapter = PlaylistDetailAdapter(playlistDetailViewModel)
+  private fun setupPlaylistDetailAdapter() {
+    playlistDetailAdapter = PlaylistDetailAdapter(playlistDetailViewModel, ::removeClicked)
     binding.tracksRecyclerView.adapter = playlistDetailAdapter
   }
 
-  private fun buildPagedListLiveData(playlistId: String): LiveData<PagedList<PlaylistTrack>> {
-    return LivePagedListBuilder(
-      object : DataSource.Factory<String, PlaylistTrack>() {
-        override fun create(): DataSource<String, PlaylistTrack> {
-          return PlaylistDetailDataSource(playlistId, playlistDetailViewModel)
-        }
-      }, 50).build()
+  private fun removeClicked(track: Track) {
+    playlistDetailViewModel.removeTrack(track)
   }
 
   private fun getDevices() {
@@ -132,7 +114,7 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
         snackbar.view.background = ContextCompat.getDrawable(safeContext, R.drawable.bg_snackbar)
       }
       val params = snackbar.view.layoutParams as ViewGroup.MarginLayoutParams
-      params.setMargins(24, 24, 24, 24 + BOTTOM_NAV_VIEW_HEIGHT.dpToPx())
+      params.setMargins(24, 24, 24, 48 + BOTTOM_NAV_VIEW_HEIGHT.dpToPx())
       snackbar.view.layoutParams = params
       snackbar.show()
     }

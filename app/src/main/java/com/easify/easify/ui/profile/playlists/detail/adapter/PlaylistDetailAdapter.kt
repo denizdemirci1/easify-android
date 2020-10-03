@@ -2,13 +2,13 @@ package com.easify.easify.ui.profile.playlists.detail.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.easify.easify.R
 import com.easify.easify.databinding.ViewHolderPlaylistDetailBinding
 import com.easify.easify.model.PlaylistTrack
-import com.easify.easify.ui.base.BasePagedListAdapter
+import com.easify.easify.model.Track
+import com.easify.easify.ui.base.BaseListAdapter
 import com.easify.easify.ui.base.BaseViewHolder
+import com.easify.easify.ui.extensions.animateFading
 import com.easify.easify.ui.profile.playlists.detail.PlaylistDetailViewModel
 
 /**
@@ -17,10 +17,11 @@ import com.easify.easify.ui.profile.playlists.detail.PlaylistDetailViewModel
  */
 
 class PlaylistDetailAdapter(
-  private val playlistDetailViewModel: PlaylistDetailViewModel
-) : BasePagedListAdapter<PlaylistTrack>(
-  itemsSame = { old, new -> old == new },
-  contentsSame = { old, new -> old.track.id == new.track.id }
+  private val viewModel: PlaylistDetailViewModel,
+  private var removeListener: ((Track) -> Unit)? = null
+) : BaseListAdapter<PlaylistTrack>(
+  itemsSame = { old, new -> old.track.id == new.track.id },
+  contentsSame = { old, new -> old == new }
 ) {
 
   override fun onCreateViewHolder(
@@ -33,11 +34,7 @@ class PlaylistDetailAdapter(
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder) {
-      is PlaylistDetailViewHolder -> {
-        getItem(position)?.let { playlistTrack ->
-          holder.bind(playlistTrack, position, playlistDetailViewModel)
-        }
-      }
+      is PlaylistDetailViewHolder -> holder.bind(viewModel, getItem(position), removeListener)
     }
   }
 }
@@ -50,20 +47,15 @@ class PlaylistDetailViewHolder(
 ) {
 
   fun bind(
+    playlistDetailViewModel: PlaylistDetailViewModel,
     playlistTrack: PlaylistTrack,
-    position: Int,
-    playlistDetailViewModel: PlaylistDetailViewModel
+    removeListener: ((Track) -> Unit)?
   ) {
-    binding.playlistTrack = playlistTrack
-    binding.position = position
     binding.playlistDetailViewModel = playlistDetailViewModel
+    binding.playlistTrack = playlistTrack
     binding.remove.setOnClickListener {
-      playlistDetailViewModel.onRemoveClicked(playlistTrack.track)
-      binding.remove.isClickable = false
-      binding.trackRoot.isClickable = false
-      binding.trackRoot.setBackgroundColor(
-        ContextCompat.getColor(itemView.context, R.color.colorBackgroundLight)
-      )
+      binding.trackRoot.animateFading()
+      removeListener?.invoke(playlistTrack.track)
     }
     binding.executePendingBindings()
   }

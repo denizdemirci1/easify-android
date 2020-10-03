@@ -20,14 +20,18 @@
         <TextView
             android:id="@+id/playlist_detail_title"
             style="@style/Toolbar.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@{playlistDetailViewModel.title}"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Your top songs 2020"/>
+            ads:layout_constraintEnd_toEndOf="parent"
+            tools:text="Your top songs 2020 Your top songs 2020"/>
 
         <ProgressBar
             android:id="@+id/playlist_detail_progress"
@@ -49,6 +53,31 @@
             app:layout_constraintTop_toBottomOf="@id/playlist_detail_progress"
             ads:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/view_holder_playlist_detail"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/no_tracks_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:visibility="@{playlistDetailViewModel.showNoTracksLayout ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/no_tracks_info"
+                style="@style/Material.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_playlist_detail_empty_playlist"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,12 +9,20 @@ import com.easify.easify.data.repositories.PlaylistRepository
 import com.easify.easify.model.*
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
+import com.easify.easify.model.Result.Success
+import com.easify.easify.model.Result.Error
 import kotlinx.coroutines.launch
 
 /**
  * @author: deniz.demirci
  * @date: 10/3/2020
  */
+
+/**
+ * Max & Default track count to fetch at once
+ * from spotify api for a playlist
+ */
+private const val MAX_ITEM_COUNT = 100
 
 class PlaylistDetailViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
@@ -25,7 +33,10 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
 
   // region variables
   private var clickedTrack: Track? = null
-  private var playlist: Playlist? = null
+  private lateinit var playlist: Playlist
+
+  private val playlistsTracksToShow = ArrayList<PlaylistTrack>()
+  private var requestCount = 0
 
   private val _title = MutableLiveData<String>()
   val title: LiveData<String> = _title
@@ -52,21 +63,31 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
     this.playlist = playlist
     _title.value = playlist.name
     _isEditable.value = playlist.owner.id == userManager.user?.id
+    getPlaylistTracks(playlist.id)
   }
 
-  fun getPlaylistTracks(
-    playlistId: String,
-    offset: Int,
-    onSuccess: (data: PlaylistTracksResponse) -> Unit
-  ) {
+  private fun getPlaylistTracks(playlistId: String) {
     viewModelScope.launch {
       _loading.value = true
-      playlistRepository.fetchPlaylistTracks(playlistId, offset).let { result ->
+      playlistRepository.fetchPlaylistTracks(
+        playlistId,
+        requestCount * MAX_ITEM_COUNT
+      ).let { result ->
         _loading.value = false
         when (result) {
-          is Result.Success -> result.data.let(onSuccess)
-
-          is Result.Error -> {
+          is Success -> {
+            requestCount++
+            playlistsTracksToShow.addAll(result.data.items)
+            if (playlistsTracksToShow.size < result.data.total) {
+              getPlaylistTracks(playlistId)
+            } else {
+              sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(ArrayList(playlistsTracksToShow)))
+              if (playlistsTracksToShow.isEmpty()) {
+                _showNoTracksLayout.value = true
+              }
+            }
+          }
+          is Error -> {
             sendEvent(PlaylistDetailViewEvent.ShowError(parseNetworkError(result.exception)))
           }
         }
@@ -91,24 +112,25 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
 
   private fun playTrack(track: Track) {
     viewModelScope.launch {
-      playlist?.let { safePlaylist ->
-        playerRepository.play(
-          userManager.deviceId,
-          PlayObject(context_uri = safePlaylist.uri, offset = Offset(uri = track.uri))
-        )
-        getCurrentPlayback(safePlaylist.uri)
-      }
+      playerRepository.play(
+        userManager.deviceId,
+        PlayObject(context_uri = playlist.uri, offset = Offset(uri = track.uri))
+      )
+      getCurrentPlayback(playlist.uri)
     }
   }
 
-  fun onRemoveClicked(track: Track) {
-    playlist?.let { safePlaylist ->
-      viewModelScope.launch {
-        val tracks = listOf(TracksToDelete(uri = track.uri))
-        playlistRepository.removeTracksFromPlaylist(safePlaylist.id, RemoveTrackObject(tracks))
-        sendEvent(PlaylistDetailViewEvent.ShowSnackbar(track.name))
-        //sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(ArrayList(playlistsTracksToShow)))
-      }
+  fun removeTrack(track: Track) {
+    playlistsTracksToShow.removeAll { it.track.id == track.id }
+    removeTrackFromPlaylist(track)
+  }
+
+  private fun removeTrackFromPlaylist(track: Track) {
+    viewModelScope.launch {
+      val tracksToDelete = listOf(TracksToDelete(uri = track.uri))
+      playlistRepository.removeTracksFromPlaylist(playlist.id, RemoveTrackObject(tracksToDelete))
+      sendEvent(PlaylistDetailViewEvent.ShowSnackbar(track.name))
+      sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(ArrayList(playlistsTracksToShow)))
     }
   }
 
@@ -116,7 +138,7 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
     viewModelScope.launch {
       playerRepository.getCurrentPlayback().let { result ->
         when (result) {
-          is Result.Success -> {
+          is Success -> {
             result.data?.context?.let { currentPlaybackContext ->
               if (currentPlaybackContext.uri.contains(clickedPlaylistUri)) {
                 // TODO: playlist is playing
@@ -124,7 +146,7 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
             } ?: run { sendEvent(PlaylistDetailViewEvent.ShowOpenSpotifyWarning) }
           }
 
-          is Result.Error -> sendEvent(PlaylistDetailViewEvent.ShowOpenSpotifyWarning)
+          is Error -> sendEvent(PlaylistDetailViewEvent.ShowOpenSpotifyWarning)
         }
       }
     }

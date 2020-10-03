@@ -9,9 +9,6 @@
             name="playlistTrack"
             type="com.easify.easify.model.PlaylistTrack" />
         <variable
-            name="position"
-            type="Integer" />
-        <variable
             name="playlistDetailViewModel"
             type="com.easify.easify.ui.profile.playlists.detail.PlaylistDetailViewModel" />
     </data>

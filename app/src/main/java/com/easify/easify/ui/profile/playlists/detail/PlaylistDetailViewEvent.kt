@@ -1,6 +1,6 @@
 package com.easify.easify.ui.profile.playlists.detail
 
-import com.easify.easify.model.Track
+import com.easify.easify.model.PlaylistTrack
 
 /**
  * @author: deniz.demirci
@@ -11,6 +11,8 @@ sealed class PlaylistDetailViewEvent {
   object ShowOpenSpotifyWarning: PlaylistDetailViewEvent()
 
   object GetDevices : PlaylistDetailViewEvent()
+
+  data class NotifyDataChanged(val tracks: ArrayList<PlaylistTrack>) : PlaylistDetailViewEvent()
 
   data class ShowSnackbar(val trackName: String) : PlaylistDetailViewEvent()
 
