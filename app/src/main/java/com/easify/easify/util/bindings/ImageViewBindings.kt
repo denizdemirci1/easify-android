@@ -1,12 +1,11 @@
 package com.easify.easify.util.bindings
 
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.easify.easify.R
 import com.easify.easify.model.Image
-import com.easify.easify.model.Playlist
 import com.easify.easify.ui.extensions.loadWithPlaceHolder
 
 /**
@@ -15,7 +14,7 @@ import com.easify.easify.ui.extensions.loadWithPlaceHolder
  */
 
 @BindingAdapter("trackImage")
-fun loadTrackImage(view: ImageView, images: List<Image>) {
+fun loadTrackImage(view: ImageView, images: List<Image>?) {
   if (images.isNullOrEmpty()) {
     view.setImageResource(R.drawable.ic_music_note)
   } else {
@@ -27,7 +26,7 @@ fun loadTrackImage(view: ImageView, images: List<Image>) {
 }
 
 @BindingAdapter("artistImage")
-fun loadArtistImage(view: ImageView, images: List<Image>) {
+fun loadArtistImage(view: ImageView, images: List<Image>?) {
   if (images.isNullOrEmpty()) {
     view.setImageResource(R.drawable.ic_person)
   } else {
@@ -39,7 +38,7 @@ fun loadArtistImage(view: ImageView, images: List<Image>) {
 }
 
 @BindingAdapter("playlistImage")
-fun loadPlaylistImage(view: ImageView, images: List<Image>) {
+fun loadPlaylistImage(view: ImageView, images: List<Image>?) {
   if (images.isNullOrEmpty()) {
     view.setImageResource(R.drawable.ic_playlist)
   } else {

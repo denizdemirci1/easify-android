@@ -7,12 +7,29 @@
         android:id="@+id/profileFragment"
         android:name="com.easify.easify.ui.profile.ProfileFragment"
         android:label="ProfileFragment" />
+
     <fragment
         android:id="@+id/playlistFragment"
         android:name="com.easify.easify.ui.profile.playlists.PlaylistFragment"
-        android:label="PlaylistFragment" />
+        android:label="PlaylistFragment" >
+        <action
+            android:id="@+id/action_playlistFragment_to_playlistDetailFragment"
+            app:destination="@id/playlistDetailFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/followedArtistsFragment"
         android:name="com.easify.easify.ui.profile.follows.FollowedArtistsFragment"
         android:label="FollowedArtistsFragment" />
+    <fragment
+        android:id="@+id/playlistDetailFragment"
+        android:name="com.easify.easify.ui.profile.playlists.detail.PlaylistDetailFragment"
+        android:label="PlaylistDetailFragment" >
+        <argument
+            android:name="playlist"
+            app:argType="com.easify.easify.model.Playlist"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
 </navigation>

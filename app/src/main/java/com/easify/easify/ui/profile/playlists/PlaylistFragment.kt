@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -52,6 +53,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
       when (event) {
         PlaylistViewEvent.GetDevices -> getDevices()
         PlaylistViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        is PlaylistViewEvent.OpenPlaylistDetail -> openPlaylistDetailFragment(event.playlist)
         is PlaylistViewEvent.ShowError -> showError(event.message)
       }
     })
@@ -83,6 +85,11 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
 
   private fun getDevices() {
     playerViewModel.getDevices()
+  }
+
+  private fun openPlaylistDetailFragment(playlist: Playlist) {
+    val action = PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment(playlist)
+    findNavController().navigate(action)
   }
 
   private fun showOpenSpotifyWarning() {

@@ -6,9 +6,11 @@ import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.PlayerRepository
 import com.easify.easify.data.repositories.PlaylistRepository
-import com.easify.easify.model.*
-import com.easify.easify.model.Result.Success
+import com.easify.easify.model.PlayObject
+import com.easify.easify.model.Playlist
+import com.easify.easify.model.PlaylistResponse
 import com.easify.easify.model.Result.Error
+import com.easify.easify.model.Result.Success
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -56,7 +58,7 @@ class PlaylistViewModel @ViewModelInject constructor(
   }
 
   fun playlistClicked(playlist: Playlist) {
-    // TODO: open playlist detail page
+    sendEvent(PlaylistViewEvent.OpenPlaylistDetail(playlist))
   }
 
   fun playIconClicked(playlist: Playlist) {

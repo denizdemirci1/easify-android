@@ -1,10 +1,14 @@
 package com.easify.easify.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * @author: deniz.demirci
  * @date: 9/29/2020
  */
 
+@Parcelize
 data class Playlist(
   val collaborative: Boolean,
   val description: String,
@@ -20,8 +24,9 @@ data class Playlist(
   val tracks: Tracks,
   val type: String,
   val uri: String
-)
+): Parcelable
 
+@Parcelize
 data class Owner(
   val display_name: String,
   val external_urls: ExternalUrl,
@@ -29,9 +34,10 @@ data class Owner(
   val id: String,
   val type: String,
   val uri: String,
-)
+): Parcelable
 
+@Parcelize
 data class Tracks(
   val href: String,
   val total: Int
-)
+): Parcelable

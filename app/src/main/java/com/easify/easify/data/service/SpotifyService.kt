@@ -56,4 +56,17 @@ interface SpotifyService {
     @Query("limit") limit: Int = 20,
     @Query("offset") offset: Int,
   ): PlaylistResponse
+
+  @GET("playlists/{playlist_id}/tracks")
+  suspend fun fetchPlaylistTracks(
+    @Path("playlist_id") playlistId: String,
+    @Query("limit") limit: Int = 50,
+    @Query("offset") offset: Int,
+  ): PlaylistTracksResponse
+
+  @HTTP(method = "DELETE", path = "playlists/{playlist_id}/tracks", hasBody = true)
+  suspend fun removeTracksFromPlaylist(
+    @Path("playlist_id") playlistId: String,
+    @Body removeTrackObject: RemoveTrackObject
+  )
 }
