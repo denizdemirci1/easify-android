@@ -6,8 +6,10 @@ package com.easify.easify.model
  */
 
 data class Artist(
+    val external_urls: ExternalUrl,
     val followers: Follower,
     val genres: List<String>,
+    val href: String,
     val id: String,
     val images: List<Image>,
     val name: String,

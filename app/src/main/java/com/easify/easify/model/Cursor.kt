@@ -6,6 +6,6 @@ package com.easify.easify.model
  */
 
 data class Cursor(
-  val after: String,
-  val before: String
+  val after: String?,
+  val before: String?
 )

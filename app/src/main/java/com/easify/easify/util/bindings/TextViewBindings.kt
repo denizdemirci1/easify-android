@@ -11,5 +11,14 @@ import com.easify.easify.R
 
 @BindingAdapter("setFollowerCount")
 fun TextView.setFollowerCount(followerCount: Int) {
-  this.text = this.context.getString(R.string.fragment_profile_follower_count, followerCount)
+  this.text = this.context.getString(
+    R.string.fragment_followed_artist_follower_count,
+    String.format("%,d", followerCount)
+  )
+}
+
+@BindingAdapter("setPopularity")
+fun TextView.setPopularity(popularity: Int) {
+  this.text = this.context.getString(R.string.fragment_followed_artist_popularity, popularity)
+  // TODO: fix this
 }

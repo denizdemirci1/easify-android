@@ -74,4 +74,11 @@ interface SpotifyService {
     @Path("user_id") userId: String,
     @Body createPlaylistBody: CreatePlaylistBody
   ): Playlist
+
+  @GET("me/following")
+  suspend fun fetchFollowedArtists(
+    @Query("type") type: String = "artist",
+    @Query("limit") limit: Int = 30,
+    @Query("after") next: String? = null
+  ): ArtistsResponse
 }

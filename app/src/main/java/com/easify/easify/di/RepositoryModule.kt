@@ -1,9 +1,6 @@
 package com.easify.easify.di
 
-import com.easify.easify.data.remote.datasource.PersonalizationDataSource
-import com.easify.easify.data.remote.datasource.PlayerDataSource
-import com.easify.easify.data.remote.datasource.PlaylistDataSource
-import com.easify.easify.data.remote.datasource.UserDataSource
+import com.easify.easify.data.remote.datasource.*
 import com.easify.easify.data.repositories.*
 import com.easify.easify.util.manager.UserManager
 import dagger.Module
@@ -52,5 +49,13 @@ object RepositoryModule {
     playlistDataSource: PlaylistDataSource
   ): PlaylistRepository {
     return PlaylistRepositoryImpl(playlistDataSource)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideFollowRepository(
+    followDataSource: FollowDataSource
+  ): FollowRepository {
+    return FollowRepositoryImpl(followDataSource)
   }
 }

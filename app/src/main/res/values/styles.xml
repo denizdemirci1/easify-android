@@ -77,7 +77,7 @@
     <item name="android:textColor">@color/colorSpotifyWhite</item>
   </style>
 
-  <style name="Track.Owner.Name" parent="Material.Subtitle2">
+  <style name="Item.Info.Subtitle" parent="Material.Subtitle2">
     <item name="android:textColor">@color/colorTextGray</item>
   </style>
 

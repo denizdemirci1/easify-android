@@ -61,7 +61,7 @@
 
             <TextView
                 android:id="@+id/track_owner"
-                style="@style/Track.Owner.Name"
+                style="@style/Item.Info.Subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

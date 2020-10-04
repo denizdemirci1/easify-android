@@ -24,7 +24,7 @@
   <string name="dialog_negative_button_text">Exit</string>
   <string name="dialog_ok">OK</string>
   <string name="dialog_common_error_text">Something went wrong. Please go back and try again.</string>
-  <string name="dialog_should_open_spotify">There is a problem but WE CAN FIX IT. \nOpen your Spotify and then try again.</string>
+  <string name="dialog_should_open_spotify">Spotify should be open on your device to play songs.</string>
 
   <!-- History Fragment -->
   <string name="fragment_history_recently_listened">Recently Listened</string>
@@ -48,14 +48,13 @@
   <string name="fragment_profile_playlists">Playlists</string>
   <string name="fragment_profile_followed_artists">Followed artists</string>
   <string name="fragment_profile_rate">Rate us</string>
-  <string name="fragment_profile_follower_count">Followers: %d</string>
 
   <!-- Playlist Fragment -->
   <string name="fragment_playlist_title">Your playlists</string>
   <string name="fragment_playlist_create_button_text">New</string>
 
   <!-- Playlist Detail Fragment -->
-  <string name="fragment_playlist_detail_removed">%s is removed from this playlist</string>
+  <string name="fragment_playlist_detail_removed">%1$s is removed from this playlist</string>
   <string name="fragment_playlist_detail_empty_playlist">This playlist is empty</string>
 
   <!-- Create Playlist Fragment -->
@@ -69,5 +68,7 @@
 
   <!-- Followed Artists Fragment -->
   <string name="fragment_followed_artists_title">Artists you follow</string>
+  <string name="fragment_followed_artist_follower_count">Followers: %1$s</string>
+  <string name="fragment_followed_artist_popularity">Popularity: %d\%%</string>
 
 </resources>
