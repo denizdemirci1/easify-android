@@ -29,8 +29,6 @@ class HistoryViewModel @ViewModelInject constructor(
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
-    private var clickedTrack: Track? = null
-
     private fun sendEvent(event: HistoryViewEvent) {
         _event.value = Event(event)
     }
@@ -44,7 +42,6 @@ class HistoryViewModel @ViewModelInject constructor(
                         _loading.value = false
                         result.data.let(onSuccess)
                     }
-
                     is Error -> {
                         _loading.value = false
                         sendEvent(HistoryViewEvent.ShowError(parseNetworkError(result.exception)))
@@ -54,52 +51,18 @@ class HistoryViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun getCurrentPlayback() {
-        viewModelScope.launch {
-            playerRepository.getCurrentPlayback().let { result ->
-                when (result) {
-                    is Success -> {
-                        result.data?.item?.let { currentlyPlayingTrack ->
-                            if (currentlyPlayingTrack.id == clickedTrack?.id) {
-                                // TODO: song is playing. make its text green
-                            }
-                        } ?: run { sendEvent(HistoryViewEvent.ShowOpenSpotifyWarning) }
-                    }
-
-                    is Error -> {
-                        sendEvent(HistoryViewEvent.ShowOpenSpotifyWarning)
-                    }
-                }
-            }
-        }
-    }
-
-    fun playClickedTrack() {
-        clickedTrack?.let { playTrack(it) }
-    }
-
-    private fun playTrack(track: Track) {
-        viewModelScope.launch {
-            playerRepository.play(
-                userManager.deviceId,
-                PlayObject(uris = listOf(track.uri))
-            )
-            getCurrentPlayback()
-        }
-    }
-
     fun onTrackClicked(track: Track) {
-        clickedTrack = track
         viewModelScope.launch {
+            sendEvent(HistoryViewEvent.TrackClicked(track.uri))
             if (userManager.deviceId.isNullOrEmpty()) {
                 sendEvent(HistoryViewEvent.GetDevices)
             } else {
-                playTrack(track)
+                sendEvent(HistoryViewEvent.Play)
             }
         }
     }
 
     fun onAddClicked(track: Track) {
-        sendEvent(HistoryViewEvent.OnAddClicked(track))
+        sendEvent(HistoryViewEvent.AddIconClicked(track))
     }
 }

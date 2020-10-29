@@ -11,9 +11,11 @@ sealed class HistoryViewEvent {
 
   object GetDevices: HistoryViewEvent()
 
-  object ShowOpenSpotifyWarning: HistoryViewEvent()
+  object Play: HistoryViewEvent()
 
-  data class OnAddClicked(val track: Track) : HistoryViewEvent()
+  data class TrackClicked(val uri: String): HistoryViewEvent()
+
+  data class AddIconClicked(val track: Track) : HistoryViewEvent()
 
   data class ShowError(val message: String) : HistoryViewEvent()
 }

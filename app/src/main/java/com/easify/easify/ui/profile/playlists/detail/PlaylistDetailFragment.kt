@@ -14,9 +14,10 @@ import com.easify.easify.databinding.FragmentPlaylistDetailBinding
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.extensions.dpToPx
+import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.profile.playlists.detail.adapter.PlaylistDetailAdapter
 import com.easify.easify.util.EventObserver
-import com.easify.easify.util.viewmodels.PlayerViewModel
+import com.easify.easify.ui.player.PlayerViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist_detail.*
@@ -60,7 +61,8 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
     playlistDetailViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         PlaylistDetailViewEvent.GetDevices -> getDevices()
-        PlaylistDetailViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlaylistDetailViewEvent.Play -> playPlaylist()
+        is PlaylistDetailViewEvent.ListenIconClicked -> setClickedTrackUri(event.uri)
         is PlaylistDetailViewEvent.ShowError -> showError(event.message)
         is PlaylistDetailViewEvent.NotifyDataChanged -> {
           playlistDetailAdapter.submitList(event.tracks)
@@ -71,10 +73,11 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
       }
     })
 
-    playerViewModel.deviceId.observe(viewLifecycleOwner, { deviceId ->
-      deviceId?.let { _ ->
-        playlistDetailViewModel.playClickedTrack()
-      } ?: run { showOpenSpotifyWarning() }
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+      when (event) {
+        is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+      }
     })
   }
 
@@ -87,8 +90,22 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
     playlistDetailViewModel.removeTrack(track)
   }
 
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playerViewModel.play()
+    } ?: run { showOpenSpotifyWarning() }
+  }
+
   private fun getDevices() {
     playerViewModel.getDevices()
+  }
+
+  private fun setClickedTrackUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun playPlaylist() {
+    playerViewModel.play(playlistUri = args.playlist?.uri)
   }
 
   private fun showOpenSpotifyWarning() {

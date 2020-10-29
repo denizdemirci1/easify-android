@@ -23,11 +23,8 @@ import kotlinx.coroutines.launch
 class PlaylistViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
-  private val playerRepository: PlayerRepository,
   private val userManager: UserManager
 ) : ViewModel() {
-
-  private var clickedPlaylist: Playlist? = null
 
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
@@ -62,43 +59,12 @@ class PlaylistViewModel @ViewModelInject constructor(
   }
 
   fun playIconClicked(playlist: Playlist) {
-    clickedPlaylist = playlist
     viewModelScope.launch {
+      sendEvent(PlaylistViewEvent.ListenIconClicked(playlist.uri))
       if (userManager.deviceId.isNullOrEmpty()) {
         sendEvent(PlaylistViewEvent.GetDevices)
       } else {
-        playPlaylist(playlist)
-      }
-    }
-  }
-
-  fun playClickedPlaylist() {
-    clickedPlaylist?.let { playPlaylist(it) }
-  }
-
-  private fun playPlaylist(playlist: Playlist) {
-    viewModelScope.launch {
-      playerRepository.play(userManager.deviceId, PlayObject(context_uri = playlist.uri))
-      getCurrentPlayback(playlist.uri)
-    }
-  }
-
-  private fun getCurrentPlayback(clickedPlaylistUri: String) {
-    viewModelScope.launch {
-      playerRepository.getCurrentPlayback().let { result ->
-        when (result) {
-          is Success -> {
-            result.data?.context?.let { currentPlaybackContext ->
-              if (currentPlaybackContext.uri.contains(clickedPlaylistUri)) {
-                // TODO: playlist is playing
-              }
-            } ?: run { sendEvent(PlaylistViewEvent.ShowOpenSpotifyWarning) }
-          }
-
-          is Error -> {
-            sendEvent(PlaylistViewEvent.ShowOpenSpotifyWarning)
-          }
-        }
+        sendEvent(PlaylistViewEvent.Play)
       }
     }
   }

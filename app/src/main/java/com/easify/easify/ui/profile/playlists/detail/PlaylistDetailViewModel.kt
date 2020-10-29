@@ -32,7 +32,6 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
   // region variables
-  private var clickedTrack: Track? = null
   private lateinit var playlist: Playlist
 
   private val playlistsTracksToShow = ArrayList<PlaylistTrack>()
@@ -96,27 +95,13 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
   }
 
   fun onTrackClicked(track: Track) {
-    clickedTrack = track
     viewModelScope.launch {
+      sendEvent(PlaylistDetailViewEvent.ListenIconClicked(track.uri))
       if (userManager.deviceId.isNullOrEmpty()) {
         sendEvent(PlaylistDetailViewEvent.GetDevices)
       } else {
-        playTrack(track)
+        sendEvent(PlaylistDetailViewEvent.Play)
       }
-    }
-  }
-
-  fun playClickedTrack() {
-    clickedTrack?.let { playTrack(it) }
-  }
-
-  private fun playTrack(track: Track) {
-    viewModelScope.launch {
-      playerRepository.play(
-        userManager.deviceId,
-        PlayObject(context_uri = playlist.uri, offset = Offset(uri = track.uri))
-      )
-      getCurrentPlayback(playlist.uri)
     }
   }
 
@@ -131,24 +116,6 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
       playlistRepository.removeTracksFromPlaylist(playlist.id, RemoveTrackObject(tracksToDelete))
       sendEvent(PlaylistDetailViewEvent.ShowSnackbar(track.name))
       sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(ArrayList(playlistsTracksToShow)))
-    }
-  }
-
-  private fun getCurrentPlayback(clickedPlaylistUri: String) {
-    viewModelScope.launch {
-      playerRepository.getCurrentPlayback().let { result ->
-        when (result) {
-          is Success -> {
-            result.data?.context?.let { currentPlaybackContext ->
-              if (currentPlaybackContext.uri.contains(clickedPlaylistUri)) {
-                // TODO: playlist is playing
-              }
-            } ?: run { sendEvent(PlaylistDetailViewEvent.ShowOpenSpotifyWarning) }
-          }
-
-          is Error -> sendEvent(PlaylistDetailViewEvent.ShowOpenSpotifyWarning)
-        }
-      }
     }
   }
 }

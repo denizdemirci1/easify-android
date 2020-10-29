@@ -14,10 +14,12 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistBinding
 import com.easify.easify.model.Playlist
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.profile.playlists.main.adapter.PlaylistAdapter
 import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
-import com.easify.easify.util.viewmodels.PlayerViewModel
+import com.easify.easify.ui.player.PlayerViewModel
+import com.easify.easify.ui.profile.follows.FollowedArtistsViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist.*
 
@@ -59,21 +61,29 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     playlistViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         PlaylistViewEvent.GetDevices -> getDevices()
-        PlaylistViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlaylistViewEvent.Play -> playPlaylist()
+        is PlaylistViewEvent.ListenIconClicked -> setClickedPlaylistUri(event.uri)
         is PlaylistViewEvent.OpenPlaylistDetail -> openPlaylistDetailFragment(event.playlist)
         is PlaylistViewEvent.ShowError -> showError(event.message)
       }
     })
 
-    playerViewModel.deviceId.observe(viewLifecycleOwner, { deviceId ->
-      deviceId?.let { _ ->
-        playlistViewModel.playClickedPlaylist()
-      } ?: run { showOpenSpotifyWarning() }
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+      when (event) {
+        is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+      }
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
       playlistAdapter.submitList(list)
     })
+  }
+
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playerViewModel.play()
+    } ?: run { showOpenSpotifyWarning() }
   }
 
   private fun setupPlaylistAdapter() {
@@ -92,6 +102,14 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
 
   private fun getDevices() {
     playerViewModel.getDevices()
+  }
+
+  private fun setClickedPlaylistUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun playPlaylist() {
+    playerViewModel.play()
   }
 
   private fun openPlaylistDetailFragment(playlist: Playlist) {

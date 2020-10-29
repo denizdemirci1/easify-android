@@ -12,7 +12,7 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentArtistBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.util.EventObserver
-import com.easify.easify.util.viewmodels.PlayerViewModel
+import com.easify.easify.ui.player.PlayerViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_artist.*
