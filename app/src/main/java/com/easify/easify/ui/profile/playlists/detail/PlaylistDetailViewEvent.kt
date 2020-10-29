@@ -8,9 +8,12 @@ import com.easify.easify.model.PlaylistTrack
  */
 
 sealed class PlaylistDetailViewEvent {
-  object ShowOpenSpotifyWarning: PlaylistDetailViewEvent()
 
   object GetDevices : PlaylistDetailViewEvent()
+
+  object Play: PlaylistDetailViewEvent()
+
+  data class ListenIconClicked(val uri: String): PlaylistDetailViewEvent()
 
   data class NotifyDataChanged(val tracks: ArrayList<PlaylistTrack>) : PlaylistDetailViewEvent()
 

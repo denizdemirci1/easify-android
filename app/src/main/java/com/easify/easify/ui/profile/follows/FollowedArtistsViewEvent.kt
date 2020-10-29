@@ -9,9 +9,11 @@ import com.easify.easify.model.Artist
 
 sealed class FollowedArtistsViewEvent {
 
-  object ShowOpenSpotifyWarning: FollowedArtistsViewEvent()
-
   object GetDevices: FollowedArtistsViewEvent()
+
+  object Play: FollowedArtistsViewEvent()
+
+  data class ListenIconClicked(val uri: String): FollowedArtistsViewEvent()
 
   data class OpenArtistFragment(val artist: Artist) : FollowedArtistsViewEvent()
 

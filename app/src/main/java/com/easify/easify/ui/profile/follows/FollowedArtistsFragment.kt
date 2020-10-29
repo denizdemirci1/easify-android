@@ -14,10 +14,11 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFollowedArtistsBinding
 import com.easify.easify.model.Artist
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.profile.follows.adapter.FollowedArtistsAdapter
 import com.easify.easify.ui.profile.follows.data.FollowedArtistsDataSource
 import com.easify.easify.util.EventObserver
-import com.easify.easify.util.viewmodels.PlayerViewModel
+import com.easify.easify.ui.player.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_artists.*
 
@@ -53,21 +54,37 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
     followedArtistsViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         FollowedArtistsViewEvent.GetDevices -> getDevices()
-        FollowedArtistsViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        FollowedArtistsViewEvent.Play -> playArtist()
+        is FollowedArtistsViewEvent.ListenIconClicked -> setClickedArtistUri(event.uri)
         is FollowedArtistsViewEvent.ShowError -> showError(event.message)
         is FollowedArtistsViewEvent.OpenArtistFragment -> openArtistFragment(event.artist)
       }
     })
 
-    playerViewModel.deviceId.observe(viewLifecycleOwner, { deviceId ->
-      deviceId?.let { _ ->
-        followedArtistsViewModel.playSongsOfClickedArtist()
-      } ?: run { showOpenSpotifyWarning() }
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+      when (event) {
+        is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+      }
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
       followedArtistsAdapter.submitList(list)
     })
+  }
+
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playerViewModel.play()
+    } ?: run { showOpenSpotifyWarning() }
+  }
+
+  private fun setClickedArtistUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun playArtist() {
+    playerViewModel.play()
   }
 
   private fun setupFollowedArtistsAdapter() {

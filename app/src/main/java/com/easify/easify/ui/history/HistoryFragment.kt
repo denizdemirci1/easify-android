@@ -16,8 +16,9 @@ import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.history.adapter.HistoryAdapter
+import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.util.EventObserver
-import com.easify.easify.util.viewmodels.PlayerViewModel
+import com.easify.easify.ui.player.PlayerViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
@@ -56,16 +57,18 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     historyViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         HistoryViewEvent.GetDevices -> getDevices()
-        HistoryViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
-        is HistoryViewEvent.OnAddClicked -> onAddClicked(event.track)
+        HistoryViewEvent.Play -> playTrack()
+        is HistoryViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
+        is HistoryViewEvent.AddIconClicked -> onAddClicked(event.track)
         is HistoryViewEvent.ShowError -> showError(event.message)
       }
     })
 
-    playerViewModel.deviceId.observe(viewLifecycleOwner, { deviceId ->
-      deviceId?.let { _ ->
-        historyViewModel.playClickedTrack()
-      } ?: run { showOpenSpotifyWarning() }
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+      when (event) {
+        is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+      }
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
@@ -87,8 +90,22 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       }, 30).build()
   }
 
+  private fun setClickedTrackUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun playTrack() {
+    playerViewModel.play(isTrack = true)
+  }
+
   private fun getDevices() {
     playerViewModel.getDevices()
+  }
+
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playerViewModel.play(isTrack = true)
+    } ?: run { showOpenSpotifyWarning() }
   }
 
   private fun showError(message: String) {
