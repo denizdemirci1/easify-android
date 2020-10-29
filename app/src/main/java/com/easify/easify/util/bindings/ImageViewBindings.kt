@@ -2,7 +2,6 @@ package com.easify.easify.util.bindings
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.easify.easify.R
 import com.easify.easify.model.Image
@@ -34,6 +33,15 @@ fun loadArtistImage(view: ImageView, images: List<Image>?) {
       .load(images[images.size - 1].url)
       .placeholder(R.drawable.ic_person)
       .into(view)
+  }
+}
+
+@BindingAdapter("artistImageBig")
+fun loadBigArtistImage(view: ImageView, images: List<Image>?) {
+  if (images.isNullOrEmpty()) {
+    view.setImageResource(R.drawable.ic_person)
+  } else {
+    Glide.with(view.context).load(images[0].url).into(view)
   }
 }
 

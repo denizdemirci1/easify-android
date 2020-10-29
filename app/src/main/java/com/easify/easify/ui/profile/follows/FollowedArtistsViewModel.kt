@@ -42,7 +42,7 @@ class FollowedArtistsViewModel @ViewModelInject constructor(
   fun getFollowedArtists(next: String?, onSuccess: (data: ArtistsResponse) -> Unit) {
     viewModelScope.launch {
       _loading.value = true
-      followRepository.getFollowedArtists(next).let { result ->
+      followRepository.getFollowedArtists(limit = null, next = next).let { result ->
         _loading.value = false
         when (result) {
           is Success -> result.data.let(onSuccess)

@@ -11,17 +11,37 @@ import javax.inject.Inject
  */
 
 interface FollowDataSource {
-  suspend fun getFollowedArtists(next: String?): Result<ArtistsResponse>
+  suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse>
+
+  suspend fun followArtist(id: String)
+
+  suspend fun unfollowArtist(id: String)
 }
 
 class FollowDataSourceImpl @Inject constructor(
   private val spotifyService: SpotifyService
 ): FollowDataSource {
 
-  override suspend fun getFollowedArtists(next: String?): Result<ArtistsResponse> {
+  override suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse> {
     return try {
-      val artistsResponse = spotifyService.fetchFollowedArtists(next = next)
+      val artistsResponse = spotifyService.fetchFollowedArtists(limit = limit, next = next)
       Result.Success(artistsResponse)
+    } catch (e: Exception) {
+      Result.Error(e)
+    }
+  }
+
+  override suspend fun followArtist(id: String) {
+    try {
+      spotifyService.followArtist(id = id)
+    } catch (e: Exception) {
+      Result.Error(e)
+    }
+  }
+
+  override suspend fun unfollowArtist(id: String) {
+    try {
+      spotifyService.unfollowArtist(id = id)
     } catch (e: Exception) {
       Result.Error(e)
     }

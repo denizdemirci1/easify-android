@@ -12,14 +12,26 @@ import javax.inject.Inject
 
 interface FollowRepository {
 
-  suspend fun getFollowedArtists(next: String?): Result<ArtistsResponse>
+  suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse>
+
+  suspend fun followArtist(id: String)
+
+  suspend fun unfollowArtist(id: String)
 }
 
 class FollowRepositoryImpl @Inject constructor(
   private val followDataSource: FollowDataSource
 ) : FollowRepository {
 
-  override suspend fun getFollowedArtists(next: String?): Result<ArtistsResponse> {
-    return followDataSource.getFollowedArtists(next)
+  override suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse> {
+    return followDataSource.getFollowedArtists(limit = limit, next = next)
+  }
+
+  override suspend fun followArtist(id: String) {
+    followDataSource.followArtist(id)
+  }
+
+  override suspend fun unfollowArtist(id: String) {
+    followDataSource.unfollowArtist(id)
   }
 }

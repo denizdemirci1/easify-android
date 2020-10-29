@@ -2,7 +2,7 @@
     <corners
         android:radius="2dp" />
     <solid
-        android:color="@color/colorSpotifyGreen" />
+        android:color="@color/colorSpotifyRed" />
     <size
         android:width="160dp"
         android:height="40dp" />

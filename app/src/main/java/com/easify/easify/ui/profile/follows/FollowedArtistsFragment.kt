@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -38,6 +39,7 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    showBottomNavigation(false)
     DataBindingUtil.bind<FragmentFollowedArtistsBinding>(followed_artists_root)?.apply {
       lifecycleOwner = this@FollowedArtistsFragment.viewLifecycleOwner
       viewModel = this@FollowedArtistsFragment.followedArtistsViewModel
@@ -87,7 +89,9 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
   }
 
   private fun openArtistFragment(artist: Artist) {
-    // TODO: open
+    val action = FollowedArtistsFragmentDirections
+      .actionFollowedArtistsFragmentToArtistFragment(artist)
+    findNavController().navigate(action)
   }
 
   private fun showOpenSpotifyWarning() {
@@ -104,6 +108,11 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
       message(text = message)
       positiveButton(R.string.dialog_ok)
     }
+  }
+
+  override fun onDestroy() {
+    showBottomNavigation(true)
+    super.onDestroy()
   }
 
 }

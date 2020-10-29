@@ -89,6 +89,14 @@
     <item name="android:paddingEnd">16dp</item>
   </style>
 
+  <style name="Button.Red" parent="Material.Button">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:background">@color/colorSpotifyRed</item>
+    <item name="android:paddingStart">16dp</item>
+    <item name="android:paddingEnd">16dp</item>
+  </style>
+
   <style name="Input.Layout" parent="Material.Body1">
     <item name="android:textSize">14sp</item>
     <item name="android:textColor">@color/colorSpotifyWhite</item>

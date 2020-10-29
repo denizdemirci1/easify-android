@@ -78,7 +78,19 @@ interface SpotifyService {
   @GET("me/following")
   suspend fun fetchFollowedArtists(
     @Query("type") type: String = "artist",
-    @Query("limit") limit: Int = 30,
+    @Query("limit") limit: Int? = 30,
     @Query("after") next: String? = null
   ): ArtistsResponse
+
+  @PUT("me/following")
+  suspend fun followArtist(
+    @Query("type") type: String? = "artist",
+    @Query("ids") id: String
+  )
+
+  @DELETE("me/following")
+  suspend fun unfollowArtist(
+    @Query("type") type: String? = "artist",
+    @Query("ids") id: String
+  )
 }
