@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.easify.easify.ui.home.HomeViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeRoot"
         android:layout_width="match_parent"
@@ -14,10 +8,9 @@
         android:background="@color/colorSpotifyBlack">
 
         <TextView
-            android:id="@+id/textview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="home"
+            android:text="dummy"
             android:textColor="@color/colorSpotifyWhite"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

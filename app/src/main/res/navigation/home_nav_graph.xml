@@ -20,5 +20,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.easify.easify.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_dummyFragment"
+            app:destination="@id/dummyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dummyFragment"
+        android:name="com.easify.easify.ui.home.dummy.DummyFragment"
+        android:label="DummyFragment" />
 </navigation>

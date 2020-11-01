@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHomeBinding
 import com.easify.easify.ui.base.BaseFragment
@@ -26,5 +27,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       viewModel = this@HomeFragment.viewModel
     }
     showBottomNavigation(true)
+    textview.setOnClickListener {
+      findNavController().navigate(R.id.dummyFragment)
+    }
   }
 }

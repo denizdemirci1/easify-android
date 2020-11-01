@@ -159,9 +159,13 @@ private fun BottomNavigationView.setupItemReselected(
             as NavHostFragment
     val navController = selectedFragment.navController
     // Pop the back stack to the start destination of the current navController graph
-    navController.popBackStack(
-      navController.graph.startDestination, false
-    )
+    if (item.itemId != R.id.home_nav_graph) {
+      navController.popBackStack(
+        navController.graph.startDestination, false
+      )
+    } else if (navController.currentDestination?.id != R.id.homeFragment) {
+      navController.popBackStack(R.id.homeFragment, false)
+    }
   }
 }
 
