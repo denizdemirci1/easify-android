@@ -47,7 +47,7 @@ class TopArtistsViewHolder(
 
   fun bind(artist: Artist, topArtistsViewModel: TopArtistsViewModel) {
     binding.artist = artist
-    binding.viewModel = topArtistsViewModel
+    binding.topArtistsViewModel = topArtistsViewModel
     binding.executePendingBindings()
   }
 }

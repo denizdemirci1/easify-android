@@ -9,7 +9,7 @@
             name="amount"
             type="Integer" />
         <variable
-            name="viewModel"
+            name="topArtistsViewModel"
             type="com.easify.easify.ui.favorite.artists.TopArtistsViewModel" />
     </data>
 
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{topArtistsViewModel.loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toBottomOf="@id/top_artists_label"/>
 
         <androidx.recyclerview.widget.RecyclerView

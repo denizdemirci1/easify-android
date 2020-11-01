@@ -16,6 +16,8 @@ import com.easify.easify.model.Artist
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.favorite.artists.adapter.TopArtistsAdapter
 import com.easify.easify.ui.favorite.artists.data.TopArtistsDataSource
+import com.easify.easify.ui.player.PlayerViewEvent
+import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_top_artists.*
@@ -28,7 +30,9 @@ import kotlinx.android.synthetic.main.fragment_top_artists.*
 @AndroidEntryPoint
 class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
 
-  private val viewModel by viewModels<TopArtistsViewModel>()
+  private val topArtistsViewModel by viewModels<TopArtistsViewModel>()
+
+  private val playerViewModel by viewModels<PlayerViewModel>()
 
   private lateinit var binding: FragmentTopArtistsBinding
 
@@ -40,7 +44,7 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentTopArtistsBinding>(topArtistsRoot)?.apply {
       lifecycleOwner = this@TopArtistsFragment.viewLifecycleOwner
-      viewModel = this@TopArtistsFragment.viewModel
+      topArtistsViewModel = this@TopArtistsFragment.topArtistsViewModel
       binding = this
     }
     setupObservers()
@@ -48,9 +52,20 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
   }
 
   private fun setupObservers() {
-    viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+    topArtistsViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        TopArtistsViewEvent.GetDevices -> getDevices()
+        TopArtistsViewEvent.Play -> playArtist()
+        is TopArtistsViewEvent.ListenIconClicked -> setClickedArtistUri(event.uri)
+        is TopArtistsViewEvent.OpenArtistFragment -> openArtistFragment(event.artist)
         is TopArtistsViewEvent.ShowError -> showError(event.message)
+      }
+    })
+
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+      when (event) {
+        is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
       }
     })
 
@@ -60,7 +75,7 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
   }
 
   private fun setupTopArtistsAdapter() {
-    topArtistsAdapter = TopArtistsAdapter(viewModel)
+    topArtistsAdapter = TopArtistsAdapter(topArtistsViewModel)
     binding.topArtistsRecyclerView.adapter = topArtistsAdapter
   }
 
@@ -68,9 +83,39 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, Artist>() {
         override fun create(): DataSource<String, Artist> {
-          return TopArtistsDataSource(args.timeRange, viewModel)
+          return TopArtistsDataSource(args.timeRange, topArtistsViewModel)
         }
       }, 20).build()
+  }
+
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playerViewModel.play()
+    } ?: run { showOpenSpotifyWarning() }
+  }
+
+  private fun setClickedArtistUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun playArtist() {
+    playerViewModel.play()
+  }
+
+  private fun getDevices() {
+    playerViewModel.getDevices()
+  }
+
+  private fun openArtistFragment(artist: Artist) {
+    // TODO: open
+  }
+
+  private fun showOpenSpotifyWarning() {
+    MaterialDialog(requireContext()).show {
+      title(R.string.dialog_error_title)
+      message(R.string.dialog_should_open_spotify)
+      positiveButton(R.string.dialog_ok)
+    }
   }
 
   private fun showError(message: String) {

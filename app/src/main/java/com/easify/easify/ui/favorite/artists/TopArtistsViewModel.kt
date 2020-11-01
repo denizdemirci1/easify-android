@@ -10,6 +10,7 @@ import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.TopArtistResponse
 import com.easify.easify.util.Event
+import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
 
 /**
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class TopArtistsViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
-  private val personalizationRepository: PersonalizationRepository
+  private val personalizationRepository: PersonalizationRepository,
+  private val userManager: UserManager
 ) : ViewModel() {
 
   private val _loading = MutableLiveData(false)
@@ -51,7 +53,18 @@ class TopArtistsViewModel @ViewModelInject constructor(
     }
   }
 
-  fun openArtistFragment(artist: Artist) {
-    // TODO: do
+  fun onArtistClicked(artist: Artist) {
+    sendEvent(TopArtistsViewEvent.OpenArtistFragment(artist))
+  }
+
+  fun onListenIconClicked(artist: Artist) {
+    viewModelScope.launch {
+      sendEvent(TopArtistsViewEvent.ListenIconClicked(artist.uri))
+      if (userManager.deviceId.isNullOrEmpty()) {
+        sendEvent(TopArtistsViewEvent.GetDevices)
+      } else {
+        sendEvent(TopArtistsViewEvent.Play)
+      }
+    }
   }
 }
