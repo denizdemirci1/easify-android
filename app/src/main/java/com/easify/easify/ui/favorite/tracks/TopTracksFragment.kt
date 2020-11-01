@@ -16,6 +16,8 @@ import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.favorite.tracks.adapter.TopTracksAdapter
 import com.easify.easify.ui.favorite.tracks.data.TopTracksDataSource
+import com.easify.easify.ui.player.PlayerViewEvent
+import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_top_tracks.*
@@ -28,7 +30,9 @@ import kotlinx.android.synthetic.main.fragment_top_tracks.*
 @AndroidEntryPoint
 class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
 
-  private val viewModel by viewModels<TopTracksViewModel>()
+  private val topTracksViewModel by viewModels<TopTracksViewModel>()
+
+  private val playerViewModel by viewModels<PlayerViewModel>()
 
   private lateinit var binding: FragmentTopTracksBinding
 
@@ -40,7 +44,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentTopTracksBinding>(topTracksRoot)?.apply {
       lifecycleOwner = this@TopTracksFragment.viewLifecycleOwner
-      viewModel = this@TopTracksFragment.viewModel
+      topTracksViewModel = this@TopTracksFragment.topTracksViewModel
       binding = this
     }
     setupObservers()
@@ -48,9 +52,20 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
   }
 
   private fun setupObservers() {
-    viewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+    topTracksViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        TopTracksViewEvent.GetDevices -> getDevices()
+        TopTracksViewEvent.Play -> playTrack()
+        is TopTracksViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
+        is TopTracksViewEvent.AddIconClicked -> onAddClicked(event.track)
         is TopTracksViewEvent.ShowError -> showError(event.message)
+      }
+    })
+
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+      when (event) {
+        is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
       }
     })
 
@@ -60,7 +75,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
   }
 
   private fun setupTopArtistsAdapter() {
-    topTracksAdapter = TopTracksAdapter(viewModel)
+    topTracksAdapter = TopTracksAdapter(topTracksViewModel)
     binding.topTracksRecyclerView.adapter = topTracksAdapter
   }
 
@@ -68,9 +83,39 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, Track>() {
         override fun create(): DataSource<String, Track> {
-          return TopTracksDataSource(args.timeRange, viewModel)
+          return TopTracksDataSource(args.timeRange, topTracksViewModel)
         }
       }, 20).build()
+  }
+
+  private fun getDevices() {
+    playerViewModel.getDevices()
+  }
+
+  private fun playTrack() {
+    playerViewModel.play(isTrack = true)
+  }
+
+  private fun setClickedTrackUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun onAddClicked(track: Track) {
+    //TODO: open playlist page
+  }
+
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playerViewModel.play(isTrack = true)
+    } ?: run { showOpenSpotifyWarning() }
+  }
+
+  private fun showOpenSpotifyWarning() {
+    MaterialDialog(requireContext()).show {
+      title(R.string.dialog_error_title)
+      message(R.string.dialog_should_open_spotify)
+      positiveButton(R.string.dialog_ok)
+    }
   }
 
   private fun showError(message: String) {

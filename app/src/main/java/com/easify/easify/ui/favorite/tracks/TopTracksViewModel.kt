@@ -9,7 +9,9 @@ import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.TopTrackResponse
 import com.easify.easify.model.Track
+import com.easify.easify.ui.history.HistoryViewEvent
 import com.easify.easify.util.Event
+import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
 
 /**
@@ -19,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class TopTracksViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
-  private val personalizationRepository: PersonalizationRepository
+  private val personalizationRepository: PersonalizationRepository,
+  private val userManager: UserManager
 ) : ViewModel() {
 
   private val _loading = MutableLiveData(false)
@@ -51,11 +54,18 @@ class TopTracksViewModel @ViewModelInject constructor(
     }
   }
 
-  fun openTrack(track: Track) {
-    //TODO: Decide on what to do
+  fun onTrackClicked(track: Track) {
+    viewModelScope.launch {
+      sendEvent(TopTracksViewEvent.TrackClicked(track.uri))
+      if (userManager.deviceId.isNullOrEmpty()) {
+        sendEvent(TopTracksViewEvent.GetDevices)
+      } else {
+        sendEvent(TopTracksViewEvent.Play)
+      }
+    }
   }
 
-  fun openPlaylistsPage(track: Track) {
-    //TODO: Decide on what to do
+  fun onAddIconClicked(track: Track) {
+    sendEvent(TopTracksViewEvent.AddIconClicked(track))
   }
 }
