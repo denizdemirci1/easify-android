@@ -2,6 +2,7 @@
   <dictionary name="ddemirci">
     <words>
       <w>admob</w>
+      <w>bottomsheet</w>
       <w>demirci</w>
       <w>deniz</w>
       <w>easify</w>
@@ -11,6 +12,8 @@
       <w>livedata</w>
       <w>snackbar</w>
       <w>spotify</w>
+      <w>tracktoplaylist</w>
+      <w>unfollow</w>
       <w>viewmodel</w>
     </words>
   </dictionary>

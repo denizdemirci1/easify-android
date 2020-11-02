@@ -6,5 +6,19 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.easify.easify.ui.history.HistoryFragment"
-        android:label="HistoryFragment" />
+        android:label="HistoryFragment" >
+        <action
+            android:id="@+id/action_historyFragment_to_addTrackToPlaylistFragment"
+            app:destination="@id/addTrackToPlaylistFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/addTrackToPlaylistFragment"
+        android:name="com.easify.easify.ui.tracktoplaylist.AddTrackToPlaylistFragment"
+        android:label="AddTrackToPlaylistFragment" >
+        <argument
+            android:name="track"
+            app:argType="com.easify.easify.model.Track"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 </navigation>

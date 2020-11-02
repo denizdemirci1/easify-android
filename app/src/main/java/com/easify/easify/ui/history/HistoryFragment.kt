@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -125,7 +126,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   }
 
   private fun onAddClicked(track: Track) {
-    //TODO: open playlist page
+    val action = HistoryFragmentDirections.actionHistoryFragmentToAddTrackToPlaylistFragment(track)
+    findNavController().navigate(action)
   }
 
   private fun initAds() {

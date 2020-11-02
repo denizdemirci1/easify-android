@@ -9,6 +9,7 @@ import com.easify.easify.model.*
  */
 
 interface PlaylistRepository {
+
   suspend fun fetchPlaylists(offset: Int): Result<PlaylistResponse>
 
   suspend fun fetchPlaylistTracks(playlistId: String, offset: Int): Result<PlaylistTracksResponse>
@@ -16,6 +17,11 @@ interface PlaylistRepository {
   suspend fun removeTracksFromPlaylist(playlistId: String, removeTracksObject: RemoveTrackObject)
 
   suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist>
+
+  suspend fun addTrackToPlaylist(
+    playlistId: String,
+    addTrackObject: AddTrackObject
+  ): Result<SnapshotResponse>
 }
 
 class PlaylistRepositoryImpl(
@@ -42,5 +48,12 @@ class PlaylistRepositoryImpl(
 
   override suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist> {
     return playlistDataSource.createPlaylist(userId, body)
+  }
+
+  override suspend fun addTrackToPlaylist(
+    playlistId: String,
+    addTrackObject: AddTrackObject
+  ): Result<SnapshotResponse> {
+    return playlistDataSource.addTrackToPlaylist(playlistId, addTrackObject)
   }
 }

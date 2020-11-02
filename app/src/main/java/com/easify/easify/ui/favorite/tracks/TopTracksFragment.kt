@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
@@ -101,7 +102,9 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
   }
 
   private fun onAddClicked(track: Track) {
-    //TODO: open playlist page
+    val action = TopTracksFragmentDirections
+      .actionTopTracksFragmentToAddTrackToPlaylistFragment2(track)
+    findNavController().navigate(action)
   }
 
   private fun handleDeviceIdSet(deviceId: String?) {

@@ -27,7 +27,6 @@ private const val MAX_ITEM_COUNT = 100
 class PlaylistDetailViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
-  private val playerRepository: PlayerRepository,
   private val userManager: UserManager
 ) : ViewModel() {
 
