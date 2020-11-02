@@ -16,6 +16,11 @@ interface PlaylistDataSource {
   suspend fun removeTracksFromPlaylist(playlistId: String, removeTracksObject: RemoveTrackObject)
 
   suspend fun createPlaylist(userId: String, body: CreatePlaylistBody): Result<Playlist>
+
+  suspend fun addTrackToPlaylist(
+    playlistId: String,
+    addTrackObject: AddTrackObject
+  ): Result<SnapshotResponse>
 }
 
 class PlaylistDataSourceImpl(
@@ -57,6 +62,18 @@ class PlaylistDataSourceImpl(
     return try {
       val playlistObject = service.createPlaylist(userId, body)
       Result.Success(playlistObject)
+    } catch (e: Exception) {
+      Result.Error(e)
+    }
+  }
+
+  override suspend fun addTrackToPlaylist(
+    playlistId: String,
+    addTrackObject: AddTrackObject
+  ): Result<SnapshotResponse> {
+    return try {
+      val snapshotResponse = service.addTrackToPlaylist(playlistId, addTrackObject)
+      Result.Success(snapshotResponse)
     } catch (e: Exception) {
       Result.Error(e)
     }

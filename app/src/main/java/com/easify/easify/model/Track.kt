@@ -1,10 +1,14 @@
 package com.easify.easify.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * @author: deniz.demirci
  * @date: 9/8/2020
  */
 
+@Parcelize
 data class Track(
     val album: Album,
     val artists: ArrayList<Artist>,
@@ -14,4 +18,4 @@ data class Track(
     val name: String,
     val popularity: Int,
     val uri: String,
-)
+): Parcelable

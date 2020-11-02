@@ -75,6 +75,12 @@ interface SpotifyService {
     @Body createPlaylistBody: CreatePlaylistBody
   ): Playlist
 
+  @POST("playlists/{playlist_id}/tracks")
+  suspend fun addTrackToPlaylist(
+    @Path("playlist_id") playlistId: String,
+    @Body addTrackObject: AddTrackObject
+  ): SnapshotResponse
+
   @GET("me/following")
   suspend fun fetchFollowedArtists(
     @Query("type") type: String = "artist",

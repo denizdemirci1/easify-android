@@ -11,6 +11,8 @@
   <color name="colorTextGray">#a6a6a6</color>
   <color name="colorSpotifyWhite">#FFFFFF</color>
 
+  <color name="bg_snackbar_success">#0c752b</color>
+  <color name="bg_snackbar_fail">#750c16</color>
 
   <color name="brown50">#EFEBE9</color>
   <color name="brown100">#D7CCC8</color>
