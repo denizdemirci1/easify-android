@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="addTrackToPlaylistViewModel"
             type="com.easify.easify.ui.tracktoplaylist.AddTrackToPlaylistViewModel" />
@@ -33,6 +34,28 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+            <TextView
+                style="@style/Material.Headline6"
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/fragment_add_track_to_playlist_title"
+                app:layout_constraintTop_toBottomOf="@id/slider"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/playlist_detail_progress"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{addTrackToPlaylistViewModel.loading ? View.VISIBLE : View.GONE}"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:visibility="visible"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/playlists_recycler_view"
                 android:layout_width="match_parent"
@@ -41,7 +64,7 @@
                 android:scrollbars="vertical"
                 android:scrollbarThumbVertical="@drawable/bg_scrollbar"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/slider"
+                app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/view_holder_playlist_to_add"/>
 

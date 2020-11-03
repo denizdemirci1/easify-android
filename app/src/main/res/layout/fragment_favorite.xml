@@ -44,10 +44,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/type"
+                style="@style/Material.Subtitle1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:textColor="@color/colorSpotifyWhite"/>
+                android:focusable="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,10 +65,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/time_range"
+                style="@style/Material.Subtitle1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:textColor="@color/colorSpotifyWhite"/>
+                android:focusable="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
