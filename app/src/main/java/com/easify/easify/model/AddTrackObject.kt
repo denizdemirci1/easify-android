@@ -6,7 +6,7 @@ package com.easify.easify.model
  */
 
 /**
- * Used to add tracks(s) to a playlist
+ * Used to add track(s) to a playlist
  */
 data class AddTrackObject(
   val uris: List<String>

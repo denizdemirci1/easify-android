@@ -58,4 +58,12 @@ object RepositoryModule {
   ): FollowRepository {
     return FollowRepositoryImpl(followDataSource)
   }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideLibraryRepository(
+    libraryDataSource: LibraryDataSource
+  ): LibraryRepository {
+    return LibraryRepositoryImpl(libraryDataSource)
+  }
 }

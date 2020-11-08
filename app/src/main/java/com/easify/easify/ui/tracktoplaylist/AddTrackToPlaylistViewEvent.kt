@@ -17,5 +17,7 @@ sealed class AddTrackToPlaylistViewEvent {
     val playlistName: String
   ) : AddTrackToPlaylistViewEvent()
 
+  data class SaveTrack(val trackName: String, val isExist: Boolean) : AddTrackToPlaylistViewEvent()
+
   data class ShowError(val message: String) : AddTrackToPlaylistViewEvent()
 }

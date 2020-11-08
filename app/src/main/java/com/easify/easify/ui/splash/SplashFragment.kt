@@ -112,6 +112,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     private const val SCOPES = "user-read-recently-played," +
             "user-read-currently-playing," +
             "user-library-modify," +
+            "user-library-read," +
             "user-read-email," +
             "user-read-private," +
             "user-top-read," +

@@ -3,8 +3,8 @@ package com.easify.easify.ui.tracktoplaylist
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import androidx.paging.PagedList
 import com.easify.easify.data.remote.util.parseNetworkError
+import com.easify.easify.data.repositories.LibraryRepository
 import com.easify.easify.data.repositories.PlaylistRepository
 import com.easify.easify.model.*
 import com.easify.easify.util.Event
@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 class AddTrackToPlaylistViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
+  private val libraryRepository: LibraryRepository,
   private val userManager: UserManager
 ): ViewModel() {
 
@@ -126,6 +127,32 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
   fun playlistClicked(playlist: Playlist) {
     requestCount = 0
     getPlaylistTracks(playlist)
+  }
+
+  fun likedSongsClicked() {
+    viewModelScope.launch {
+      libraryRepository.checkSavedTracks(track.id).let { result ->
+        when (result) {
+          is Result.Success -> {
+            if (result.data[0]) {
+              sendEvent(AddTrackToPlaylistViewEvent.SaveTrack(track.name, true))
+            } else {
+              addTrackToLikedSongs()
+            }
+          }
+          is Result.Error -> {
+            sendEvent(AddTrackToPlaylistViewEvent.ShowError(parseNetworkError(result.exception)))
+          }
+        }
+      }
+    }
+  }
+
+  private fun addTrackToLikedSongs() {
+    viewModelScope.launch {
+      libraryRepository.saveTracks(track.id)
+      sendEvent(AddTrackToPlaylistViewEvent.SaveTrack(track.name, false))
+    }
   }
 
   fun getUserId(): String? = userManager.user?.id

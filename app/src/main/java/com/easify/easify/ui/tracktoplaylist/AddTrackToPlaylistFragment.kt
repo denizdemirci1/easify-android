@@ -73,6 +73,13 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
         is AddTrackToPlaylistViewEvent.TrackAdded -> {
           showSnackBar(event.trackName, event.playlistName, true)
         }
+        is AddTrackToPlaylistViewEvent.SaveTrack -> {
+          showSnackBar(
+            event.trackName,
+            getString(R.string.fragment_add_track_to_playlist_liked_songs),
+            event.isExist.not()
+          )
+        }
         is AddTrackToPlaylistViewEvent.ShowError -> showError(event.message)
       }
     })

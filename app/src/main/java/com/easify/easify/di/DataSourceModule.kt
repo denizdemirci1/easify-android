@@ -46,4 +46,10 @@ object DataSourceModule {
   fun provideFollowDataSource(spotifyService: SpotifyService): FollowDataSource {
     return FollowDataSourceImpl(spotifyService)
   }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideLibraryDataSource(spotifyService: SpotifyService): LibraryDataSource {
+    return LibraryDataSourceImpl(spotifyService)
+  }
 }

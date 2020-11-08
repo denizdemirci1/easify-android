@@ -99,4 +99,20 @@ interface SpotifyService {
     @Query("type") type: String? = "artist",
     @Query("ids") id: String
   )
+
+  @GET("me/tracks")
+  suspend fun fetchSavedTracks(
+    @Query("limit") limit: Int? = 50,
+    @Query("offset") offset: Int,
+  ): SavedTrackResponse
+
+  @GET("me/tracks/contains")
+  suspend fun checkSavedTracks(
+    @Query("ids") id: String
+  ): List<Boolean>
+
+  @PUT("me/tracks")
+  suspend fun saveTracks(
+    @Query("ids") id: String
+  )
 }
