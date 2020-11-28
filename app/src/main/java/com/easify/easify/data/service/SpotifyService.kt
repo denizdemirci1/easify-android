@@ -115,4 +115,11 @@ interface SpotifyService {
   suspend fun saveTracks(
     @Query("ids") id: String
   )
+
+  @GET("search")
+  suspend fun search(
+    @Query("type") type: String,
+    @Query("q") q: String,
+    @Query("limit") limit: Int = 50
+  ): SearchResponse
 }

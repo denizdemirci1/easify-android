@@ -85,4 +85,7 @@
   <string name="fragment_artist_snackbar_followed">You follow %s now!</string>
   <string name="fragment_artist_snackbar_unfollowed">You don\'t follow %s anymore</string>
 
+  <!-- Home Fragment -->
+  <string name="fragment_home_search_hint">Search</string>
+
 </resources>

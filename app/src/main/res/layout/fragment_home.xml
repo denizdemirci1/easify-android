@@ -1,24 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
-            name="viewModel"
+            name="homeViewModel"
             type="com.easify.easify.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/homeRoot"
+        android:id="@+id/home_fragment_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorSpotifyBlack">
+        android:background="@color/colorSpotifyBlack"
+        android:paddingStart="@dimen/fragment_home_root_padding"
+        android:paddingEnd="@dimen/fragment_home_root_padding"
+        android:paddingTop="@dimen/fragment_home_root_padding">
 
-        <TextView
-            android:id="@+id/textview"
+        <com.easify.easify.ui.customviews.SearchView
+            android:id="@+id/search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="home"
-            android:textColor="@color/colorSpotifyWhite"/>
+            android:layout_height="wrap_content"
+            app:hint="@string/fragment_home_search_hint"
+            app:hintColor="@color/colorSpotifyWhite"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_tracks"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/bg_scrollbar"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout="@layout/view_holder_search_track"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
