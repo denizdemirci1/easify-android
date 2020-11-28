@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/clear_icon"
-        tools:text="Search"/>
+        tools:hint="Search"/>
 
     <ImageView
         android:id="@+id/clear_icon"

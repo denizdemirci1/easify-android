@@ -31,3 +31,8 @@ fun TextView.setGenres(genres: List<String>) {
   }
   this.text = if (genreText.isEmpty()) "unknown" else genreText.substring(0, genreText.length - 2)
 }
+
+@BindingAdapter("slideText")
+fun TextView.slideText(shouldSlide: Boolean) {
+  this.isSelected = shouldSlide
+}

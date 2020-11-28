@@ -122,7 +122,43 @@
     <item name="android:maxLines">1</item>
     <item name="android:paddingStart">@dimen/search_padding_start</item>
     <item name="android:paddingEnd">@dimen/search_padding_end</item>
+  </style>
 
+  <style name="Feature.Album.Label" parent="Material.Caption">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:typeface">monospace</item>
+    <item name="android:textColor">@color/colorTextGray</item>
+  </style>
+
+  <style name="Feature.Album.Name" parent="Material.Subtitle2">
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+
+  <style name="Feature.Song.Name" parent="Material.Headline6">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="Feature.Artist.Name" parent="Material.Subtitle2">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textColor">@color/colorTextGray</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textStyle">bold</item>
   </style>
 
 </resources>

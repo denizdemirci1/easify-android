@@ -71,7 +71,7 @@ class SearchViewModel @ViewModelInject constructor(
   }
 
   fun onTrackClicked(track: Track) {
-
+    sendEvent(SearchViewEvent.OnTrackClicked(track))
   }
 
   fun onArtistClicked(artist: Artist) {
