@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.follows
+package com.easify.easify.ui.profile.follows.followed
 
 import android.os.Bundle
 import android.view.View
@@ -15,8 +15,8 @@ import com.easify.easify.databinding.FragmentFollowedArtistsBinding
 import com.easify.easify.model.Artist
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.ui.profile.follows.adapter.FollowedArtistsAdapter
-import com.easify.easify.ui.profile.follows.data.FollowedArtistsDataSource
+import com.easify.easify.ui.profile.follows.followed.adapter.FollowedArtistsAdapter
+import com.easify.easify.ui.profile.follows.followed.data.FollowedArtistsDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +48,13 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
     }
     setupObservers()
     setupFollowedArtistsAdapter()
+    setupListeners()
+  }
+
+  private fun setupListeners() {
+    binding.followNew.setOnClickListener {
+      findNavController().navigate(R.id.followFragment)
+    }
   }
 
   private fun setupObservers() {
@@ -106,8 +113,8 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
   }
 
   private fun openArtistFragment(artist: Artist) {
-    val action = FollowedArtistsFragmentDirections
-      .actionFollowedArtistsFragmentToArtistFragment(artist)
+    val action =
+      FollowedArtistsFragmentDirections.actionFollowedArtistsFragmentToArtistFragment(artist)
     findNavController().navigate(action)
   }
 

@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.follows.artist
+package com.easify.easify.ui.profile.follows.followed.artist
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject

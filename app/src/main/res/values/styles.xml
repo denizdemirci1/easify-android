@@ -114,4 +114,15 @@
     <item name="android:fontFamily">@font/roboto</item>
   </style>
 
+  <style name="Search" parent="Material.Headline6">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:background">@drawable/bg_search</item>
+    <item name="android:inputType">text</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:paddingStart">@dimen/search_padding_start</item>
+    <item name="android:paddingEnd">@dimen/search_padding_end</item>
+
+  </style>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.easify.easify.ui.home
+package com.easify.easify.ui.profile.follows.tofollow
 
 import android.os.Bundle
 import android.view.View
@@ -8,41 +8,40 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
-import com.easify.easify.databinding.FragmentHomeBinding
+import com.easify.easify.databinding.FragmentFollowBinding
+import com.easify.easify.model.Artist
 import com.easify.easify.model.SearchType
-import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.ui.search.SearchViewEvent
-import com.easify.easify.ui.search.adapter.SearchAdapter
 import com.easify.easify.ui.search.SearchViewModel
+import com.easify.easify.ui.search.adapter.SearchAdapter
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * @author: deniz.demirci
- * @date: 9/4/2020
+ * @date: 28.11.2020
  */
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(R.layout.fragment_home) {
+class FollowFragment : BaseFragment(R.layout.fragment_follow) {
 
   private val searchViewModel by viewModels<SearchViewModel>()
 
   private val playerViewModel by viewModels<PlayerViewModel>()
 
-  private lateinit var binding: FragmentHomeBinding
+  private lateinit var binding: FragmentFollowBinding
 
-  private lateinit var searchAdapter: SearchAdapter<Track>
+  private lateinit var searchAdapter: SearchAdapter<Artist>
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val root = view.findViewById<ConstraintLayout>(R.id.home_fragment_root)
-    DataBindingUtil.bind<FragmentHomeBinding>(root)?.apply {
+    val root = view.findViewById<ConstraintLayout>(R.id.follow_fragment_root)
+    DataBindingUtil.bind<FragmentFollowBinding>(root)?.apply {
       binding = this
     }
-    showBottomNavigation(true)
     setAdapters()
     setupObservers()
     setListeners()
@@ -50,23 +49,23 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private fun setListeners() {
     binding.search.onSearch = { input ->
-      searchViewModel.search(SearchType.TRACK, input)
+      searchViewModel.search(SearchType.ARTIST, input)
     }
   }
 
   private fun setAdapters() {
-    searchAdapter = SearchAdapter(searchViewModel, SearchType.TRACK)
-    binding.searchTracks.adapter = searchAdapter
+    searchAdapter = SearchAdapter(searchViewModel, SearchType.ARTIST)
+    binding.searchArtists.adapter = searchAdapter
   }
 
   private fun setupObservers() {
     searchViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         SearchViewEvent.GetDevices -> getDevices()
-        SearchViewEvent.Play -> playTrack()
-        is SearchViewEvent.OnListenIconClicked -> setClickedTrackUri(event.uri)
-        is SearchViewEvent.OnAddIconClicked -> onAddIconClicked(event.track)
-        is SearchViewEvent.NotifyTrackDataChanged -> onViewDataChange(event.trackList)
+        SearchViewEvent.Play -> playArtist()
+        is SearchViewEvent.OnArtistClicked -> onArtistClicked(event.artist)
+        is SearchViewEvent.OnListenIconClicked -> setClickedArtistUri(event.uri)
+        is SearchViewEvent.NotifyArtistDataChanged -> onViewDataChange(event.artistList)
         is SearchViewEvent.ShowError -> showError(event.message)
         else -> Unit
       }
@@ -82,28 +81,28 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private fun handleDeviceIdSet(deviceId: String?) {
     deviceId?.let {
-      playerViewModel.play(isTrack = true)
+      playerViewModel.play()
     } ?: run { showOpenSpotifyWarning() }
   }
 
-  private fun playTrack() {
-    playerViewModel.play(isTrack = true)
+  private fun playArtist() {
+    playerViewModel.play()
   }
 
   private fun getDevices() {
     playerViewModel.getDevices()
   }
 
-  private fun onAddIconClicked(track: Track) {
-    val action = HomeFragmentDirections.actionHomeFragmentToAddTrackToPlaylistFragment3(track)
+  private fun onArtistClicked(artist: Artist) {
+    val action = FollowFragmentDirections.actionFollowFragmentToArtistFragment(artist)
     findNavController().navigate(action)
   }
 
-  private fun onViewDataChange(tracks: ArrayList<Track>) {
-    searchAdapter.submitList(tracks)
+  private fun onViewDataChange(artists: ArrayList<Artist>) {
+    searchAdapter.submitList(artists)
   }
 
-  private fun setClickedTrackUri(uri: String) {
+  private fun setClickedArtistUri(uri: String) {
     playerViewModel.setUriToPlay(uri)
   }
 

@@ -5,7 +5,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.easify.easify.data.repositories.PlayerRepository
 import com.easify.easify.model.*
-import com.easify.easify.ui.profile.follows.FollowedArtistsViewEvent
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch

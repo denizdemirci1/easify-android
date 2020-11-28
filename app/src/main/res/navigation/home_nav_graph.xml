@@ -22,11 +22,17 @@
         android:name="com.easify.easify.ui.home.HomeFragment"
         android:label="HomeFragment" >
         <action
-            android:id="@+id/action_homeFragment_to_dummyFragment"
-            app:destination="@id/dummyFragment" />
+            android:id="@+id/action_homeFragment_to_addTrackToPlaylistFragment3"
+            app:destination="@id/addTrackToPlaylistFragment3" />
     </fragment>
-    <fragment
-        android:id="@+id/dummyFragment"
-        android:name="com.easify.easify.ui.home.dummy.DummyFragment"
-        android:label="DummyFragment" />
+    <dialog
+        android:id="@+id/addTrackToPlaylistFragment3"
+        android:name="com.easify.easify.ui.tracktoplaylist.AddTrackToPlaylistFragment"
+        android:label="AddTrackToPlaylistFragment" >
+        <argument
+            android:name="track"
+            app:argType="com.easify.easify.model.Track"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 </navigation>

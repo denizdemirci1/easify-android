@@ -66,4 +66,12 @@ object RepositoryModule {
   ): LibraryRepository {
     return LibraryRepositoryImpl(libraryDataSource)
   }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideSearchRepository(
+    searchDataSource: SearchDataSource
+  ): SearchRepository {
+    return SearchRepositoryImpl(searchDataSource)
+  }
 }

@@ -3,12 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <import type="android.view.View" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_fragment_root"
+        android:id="@+id/follow_fragment_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorSpotifyBlack"
@@ -20,12 +16,12 @@
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="@string/fragment_home_search_hint"
+            app:hint="@string/fragment_follow_search_hint"
             app:hintColor="@color/colorSpotifyWhite"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_tracks"
+            android:id="@+id/search_artists"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -34,7 +30,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/search"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout="@layout/view_holder_search_track"/>
+            tools:layout="@layout/view_holder_search_artist"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
