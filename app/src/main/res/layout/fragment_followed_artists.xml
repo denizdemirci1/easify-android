@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="com.easify.easify.ui.profile.follows.FollowedArtistsViewModel" />
+            type="com.easify.easify.ui.profile.follows.followed.FollowedArtistsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,6 +26,17 @@
             android:text="@string/fragment_followed_artists_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/follow_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_followed_artist_new_button_text"
+            app:icon="@drawable/ic_add"
+            app:layout_constraintTop_toTopOf="@id/followed_artists_title"
+            app:layout_constraintBottom_toBottomOf="@id/followed_artists_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
 
         <ProgressBar
             android:id="@+id/followed_artists_progress"

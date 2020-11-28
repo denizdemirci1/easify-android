@@ -10,7 +10,7 @@
             type="com.easify.easify.model.Artist" />
         <variable
             name="artistViewModel"
-            type="com.easify.easify.ui.profile.follows.artist.ArtistViewModel" />
+            type="com.easify.easify.ui.profile.follows.followed.artist.ArtistViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

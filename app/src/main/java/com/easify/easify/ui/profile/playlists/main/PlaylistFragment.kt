@@ -19,7 +19,6 @@ import com.easify.easify.ui.profile.playlists.main.adapter.PlaylistAdapter
 import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
-import com.easify.easify.ui.profile.follows.FollowedArtistsViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist.*
 

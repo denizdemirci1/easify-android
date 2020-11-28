@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/followedArtistsFragment"
-        android:name="com.easify.easify.ui.profile.follows.FollowedArtistsFragment"
+        android:name="com.easify.easify.ui.profile.follows.followed.FollowedArtistsFragment"
         android:label="FollowedArtistsFragment" >
         <action
             android:id="@+id/action_followedArtistsFragment_to_artistFragment"
@@ -41,13 +41,21 @@
         android:label="CreatePlaylistFragment" />
     <fragment
         android:id="@+id/artistFragment"
-        android:name="com.easify.easify.ui.profile.follows.artist.ArtistFragment"
+        android:name="com.easify.easify.ui.profile.follows.followed.artist.ArtistFragment"
         android:label="ArtistFragment" >
         <argument
             android:name="artist"
             app:argType="com.easify.easify.model.Artist"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/followFragment"
+        android:name="com.easify.easify.ui.profile.follows.tofollow.FollowFragment"
+        android:label="FollowFragment" >
+        <action
+            android:id="@+id/action_followFragment_to_artistFragment"
+            app:destination="@id/artistFragment" />
     </fragment>
 
 </navigation>

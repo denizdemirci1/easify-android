@@ -1,9 +1,9 @@
-package com.easify.easify.ui.profile.follows.data
+package com.easify.easify.ui.profile.follows.followed.data
 
 import androidx.paging.PageKeyedDataSource
 import com.easify.easify.model.Artist
 import com.easify.easify.model.ArtistsResponse
-import com.easify.easify.ui.profile.follows.FollowedArtistsViewModel
+import com.easify.easify.ui.profile.follows.followed.FollowedArtistsViewModel
 import javax.inject.Inject
 
 /**

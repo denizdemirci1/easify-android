@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.follows
+package com.easify.easify.ui.profile.follows.followed
 
 import com.easify.easify.model.Artist
 

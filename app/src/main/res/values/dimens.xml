@@ -8,8 +8,6 @@
     <dimen name="search_padding_end">4dp</dimen>
     <dimen name="search_clear_icon_margin_end">16dp</dimen>
 
-    <!-- Home Fragment -->
-    <dimen name="fragment_home_root_padding">16dp</dimen>
-
+    <dimen name="fragment_root_padding">16dp</dimen>
 
 </resources>

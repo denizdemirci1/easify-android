@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.follows.adapter
+package com.easify.easify.ui.profile.follows.followed.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import com.easify.easify.databinding.ViewHolderFollowedArtistsBinding
 import com.easify.easify.model.Artist
 import com.easify.easify.ui.base.BasePagedListAdapter
 import com.easify.easify.ui.base.BaseViewHolder
-import com.easify.easify.ui.profile.follows.FollowedArtistsViewModel
+import com.easify.easify.ui.profile.follows.followed.FollowedArtistsViewModel
 
 /**
  * @author: deniz.demirci

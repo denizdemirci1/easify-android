@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.SearchRepository
 import com.easify.easify.model.*
-import com.easify.easify.ui.home.HomeViewEvent
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -23,12 +22,12 @@ class SearchViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
   private val tracksToShow = ArrayList<Track>()
-  val artistsToShow = ArrayList<Artist>()
+  private val artistsToShow = ArrayList<Artist>()
 
-  private val _event = MutableLiveData<Event<HomeViewEvent>>()
-  val event: LiveData<Event<HomeViewEvent>> = _event
+  private val _event = MutableLiveData<Event<SearchViewEvent>>()
+  val event: LiveData<Event<SearchViewEvent>> = _event
 
-  fun sendEvent(event: HomeViewEvent) {
+  fun sendEvent(event: SearchViewEvent) {
     _event.value = Event(event)
   }
 
@@ -37,7 +36,9 @@ class SearchViewModel @ViewModelInject constructor(
       searchRepository.search(type, query).let { result ->
         when (result) {
           is Result.Success -> handleSearchResult(type, result.data, query)
-          is Result.Error -> sendEvent(HomeViewEvent.ShowError(parseNetworkError(result.exception)))
+          is Result.Error -> {
+            sendEvent(SearchViewEvent.ShowError(parseNetworkError(result.exception)))
+          }
         }
       }
     }
@@ -46,7 +47,7 @@ class SearchViewModel @ViewModelInject constructor(
   private fun handleSearchResult(type: SearchType, data: SearchResponse, query: String) {
     when (type) {
       SearchType.TRACK -> data.tracks?.items?.let { handleRetrievedTracks(it, query) }
-      SearchType.ARTIST -> data.artists?.items?.let { handleRetrievedArtist(it, query) }
+      SearchType.ARTIST -> data.artists?.items?.let { handleRetrievedArtist(it) }
     }
   }
 
@@ -56,15 +57,17 @@ class SearchViewModel @ViewModelInject constructor(
     tracksToShow.filter { track ->
       track.name.contains(query) || track.artists[0].name.contains(query)
     }
-    sendEvent(HomeViewEvent.NotifyDataChanged(ArrayList(tracksToShow)))
+    sendEvent(SearchViewEvent.NotifyTrackDataChanged(ArrayList(tracksToShow)))
   }
 
-  private fun handleRetrievedArtist(tracks: List<Artist>, query: String) {
-
+  private fun handleRetrievedArtist(tracks: List<Artist>) {
+    artistsToShow.clear()
+    artistsToShow.addAll(tracks)
+    sendEvent(SearchViewEvent.NotifyArtistDataChanged(ArrayList(artistsToShow)))
   }
 
   fun onAddClicked(track: Track) {
-    sendEvent(HomeViewEvent.OnAddIconClicked(track))
+    sendEvent(SearchViewEvent.OnAddIconClicked(track))
   }
 
   fun onTrackClicked(track: Track) {
@@ -72,20 +75,27 @@ class SearchViewModel @ViewModelInject constructor(
   }
 
   fun onArtistClicked(artist: Artist) {
-
+    sendEvent(SearchViewEvent.OnArtistClicked(artist))
   }
 
   fun onListenIconClicked(artist: Artist) {
-
+    viewModelScope.launch {
+      sendEvent(SearchViewEvent.OnListenIconClicked(artist.uri))
+      if (userManager.deviceId.isNullOrEmpty()) {
+        sendEvent(SearchViewEvent.GetDevices)
+      } else {
+        sendEvent(SearchViewEvent.Play)
+      }
+    }
   }
 
   fun onListenIconClicked(track: Track) {
     viewModelScope.launch {
-      sendEvent(HomeViewEvent.OnListenIconClicked(track.uri))
+      sendEvent(SearchViewEvent.OnListenIconClicked(track.uri))
       if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(HomeViewEvent.GetDevices)
+        sendEvent(SearchViewEvent.GetDevices)
       } else {
-        sendEvent(HomeViewEvent.Play)
+        sendEvent(SearchViewEvent.Play)
       }
     }
   }

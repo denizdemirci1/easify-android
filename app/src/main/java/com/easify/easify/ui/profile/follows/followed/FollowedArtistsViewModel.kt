@@ -1,14 +1,12 @@
-package com.easify.easify.ui.profile.follows
+package com.easify.easify.ui.profile.follows.followed
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.FollowRepository
-import com.easify.easify.data.repositories.PlayerRepository
 import com.easify.easify.model.Artist
 import com.easify.easify.model.ArtistsResponse
-import com.easify.easify.model.PlayObject
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.util.Event
