@@ -161,4 +161,13 @@
     <item name="android:textStyle">bold</item>
   </style>
 
+  <style name="Toolbar.Title.Dynamic" parent="Toolbar.Title">
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+
 </resources>

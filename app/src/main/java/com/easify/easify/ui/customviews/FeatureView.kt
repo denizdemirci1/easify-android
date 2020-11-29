@@ -7,6 +7,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.easify.easify.R
+import com.easify.easify.ui.extensions.onProgressChanged
 import com.easify.easify.ui.home.features.data.FeatureType
 
 /**
@@ -46,9 +47,15 @@ class FeatureView @JvmOverloads constructor(
 
   @SuppressLint("ClickableViewAccessibility")
   private fun initView() {
-    if (isEditable.not()) {
+    if (isEditable) {
+      setOnProgressChange()
+    } else {
       seekBar.setOnTouchListener { _, _ -> return@setOnTouchListener true }
     }
+  }
+
+  private fun setOnProgressChange() {
+    seekBar.onProgressChanged { setFeature(it) }
   }
 
   fun setFeature(value: Float) {
@@ -56,4 +63,6 @@ class FeatureView @JvmOverloads constructor(
     label.text = context.getString(labelStringResource, prettyValue)
     seekBar.progress = prettyValue
   }
+
+  fun getProgress() = seekBar.progress.toFloat()
 }
