@@ -67,5 +67,26 @@
             app:argType="com.easify.easify.model.Track"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_discoverFragment_to_recommendationsFragment"
+            app:destination="@id/recommendationsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendationsFragment"
+        android:name="com.easify.easify.ui.home.recommendations.RecommendationsFragment"
+        android:label="RecommendationsFragment" >
+        <argument
+            android:name="features"
+            app:argType="com.easify.easify.model.FeaturesResponse"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_recommendationsFragment_to_addTrackToPlaylistFragment3"
+            app:destination="@id/addTrackToPlaylistFragment3" />
+        <argument
+            android:name="track"
+            app:argType="com.easify.easify.model.Track"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

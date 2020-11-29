@@ -127,4 +127,10 @@ interface SpotifyService {
   suspend fun fetchAudioFeatures(
     @Path("id") id: String
   ): FeaturesResponse
+
+  @GET("recommendations")
+  suspend fun fetchRecommendations(
+    @Query("seed_tracks") seedTrackId: String,
+    @QueryMap queries: Map<String, Float>
+  ): RecommendationsResponse
 }

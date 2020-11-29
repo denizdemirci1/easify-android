@@ -8,7 +8,9 @@
         <variable
             name="track"
             type="com.easify.easify.model.Track" />
-
+        <variable
+            name="features"
+            type="com.easify.easify.model.FeaturesResponse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.danceability}"
                     app:label="@string/fragment_features_danceability"
                     app:layout_constraintTop_toBottomOf="@id/track_info_layout" />
 
@@ -110,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.energy}"
                     app:label="@string/fragment_features_energy"
                     app:layout_constraintTop_toBottomOf="@id/danceability" />
 
@@ -119,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.speechiness}"
                     app:label="@string/fragment_features_speechiness"
                     app:layout_constraintTop_toBottomOf="@id/energy" />
 
@@ -128,6 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.acousticness}"
                     app:label="@string/fragment_features_acousticness"
                     app:layout_constraintTop_toBottomOf="@id/speechiness" />
 
@@ -137,6 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.instrumentalness}"
                     app:label="@string/fragment_features_instrumentalness"
                     app:layout_constraintTop_toBottomOf="@id/acousticness" />
 
@@ -146,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.liveness}"
                     app:label="@string/fragment_features_liveness"
                     app:layout_constraintTop_toBottomOf="@id/instrumentalness" />
 
@@ -155,6 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.valence}"
                     app:label="@string/fragment_features_valence"
                     app:layout_constraintTop_toBottomOf="@id/liveness" />
 
@@ -164,6 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
                     app:editable="false"
+                    app:setProgress="@{features.tempo / 250}"
                     app:label="@string/fragment_features_tempo"
                     app:layout_constraintTop_toBottomOf="@id/valence" />
 

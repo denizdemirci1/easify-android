@@ -11,11 +11,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Artist(
     val external_urls: ExternalUrl,
-    val followers: Follower,
-    val genres: List<String>,
+    val followers: Follower?,
+    val genres: List<String>?,
     val href: String,
     val id: String,
-    val images: List<Image>,
+    val images: List<Image>?,
     val name: String,
     val popularity: Int,
     val type: String,

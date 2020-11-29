@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentDiscoverBinding
@@ -15,8 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
  * @author: deniz.demirci
  * @date: 29.11.2020
  */
-
-private const val TEMPO_DIVISOR = 250
 
 @AndroidEntryPoint
 class DiscoverFragment : BaseFragment(R.layout.fragment_discover) {
@@ -30,26 +29,17 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover) {
     val root = view.findViewById<ConstraintLayout>(R.id.discover_fragment_root)
     DataBindingUtil.bind<FragmentDiscoverBinding>(root)?.apply {
       binding = this
+      binding.features = args.features
       args.track?.let { track -> this.track = track }
-      args.features?.let(::setDefaultFeatures)
     }
     setListeners()
   }
 
-  private fun setDefaultFeatures(features: FeaturesResponse) {
-    binding.danceability.setFeature(features.danceability)
-    binding.energy.setFeature(features.energy)
-    binding.speechiness.setFeature(features.speechiness)
-    binding.acousticness.setFeature(features.acousticness)
-    binding.instrumentalness.setFeature(features.instrumentalness)
-    binding.liveness.setFeature(features.liveness)
-    binding.valence.setFeature(features.valence)
-    binding.tempo.setFeature(features.tempo / TEMPO_DIVISOR)
-  }
-
   private fun setListeners() {
     binding.discover.setOnClickListener {
-      val features = getDesiredFeatures()
+      val action = DiscoverFragmentDirections
+        .actionDiscoverFragmentToRecommendationsFragment(getDesiredFeatures(), args.track)
+      findNavController().navigate(action)
     }
   }
 
@@ -62,6 +52,6 @@ class DiscoverFragment : BaseFragment(R.layout.fragment_discover) {
     binding.liveness.getProgress(),
     binding.valence.getProgress(),
     binding.tempo.getProgress(),
-    args.features?.id.orEmpty()
+    args.track?.id.orEmpty()
   )
 }

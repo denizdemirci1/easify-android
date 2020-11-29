@@ -82,4 +82,12 @@ object RepositoryModule {
   ): TrackRepository {
     return TrackRepositoryImpl(trackDataSource)
   }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideBrowseRepository(
+    browseDataSource: BrowseDataSource
+  ): BrowseRepository {
+    return BrowseRepositoryImpl(browseDataSource)
+  }
 }
