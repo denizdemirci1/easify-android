@@ -4,7 +4,7 @@
     <dimen name="tracks_list_item_corner_radius">5dp</dimen>
 
     <!-- Search View -->
-    <dimen name="search_padding_start">32dp</dimen>
+    <dimen name="search_padding_start">16dp</dimen>
     <dimen name="search_padding_end">4dp</dimen>
     <dimen name="search_clear_icon_margin_end">16dp</dimen>
 
