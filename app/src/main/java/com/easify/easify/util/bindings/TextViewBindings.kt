@@ -3,6 +3,7 @@ package com.easify.easify.util.bindings
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.easify.easify.R
+import com.easify.easify.model.Track
 
 /**
  * @author: deniz.demirci
@@ -35,4 +36,13 @@ fun TextView.setGenres(genres: List<String>) {
 @BindingAdapter("slideText")
 fun TextView.slideText(shouldSlide: Boolean) {
   this.isSelected = shouldSlide
+}
+
+@BindingAdapter("dynamicText")
+fun TextView.dynamicText(track: Track) {
+  this.text = this.context.getString(
+    R.string.fragment_discover_title,
+    track.artists[0].name,
+    track.name
+  )
 }

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
@@ -30,6 +31,8 @@ class FeaturesFragment : BaseFragment(R.layout.fragment_features) {
 
   private val args: FeaturesFragmentArgs by navArgs()
 
+  private var features: FeaturesResponse? = null
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val root = view.findViewById<ConstraintLayout>(R.id.feature_fragment_root)
@@ -45,7 +48,11 @@ class FeaturesFragment : BaseFragment(R.layout.fragment_features) {
 
   private fun setListeners() {
     binding.search.setOnClickListener {
-
+      val action = FeaturesFragmentDirections.actionFeaturesFragmentToDiscoverFragment(
+        features = features,
+        track = args.track
+      )
+      findNavController().navigate(action)
     }
   }
 
@@ -59,6 +66,7 @@ class FeaturesFragment : BaseFragment(R.layout.fragment_features) {
   }
 
   private fun setFeatures(features: FeaturesResponse) {
+    this.features = features
     binding.danceability.setFeature(features.danceability)
     binding.energy.setFeature(features.energy)
     binding.speechiness.setFeature(features.speechiness)

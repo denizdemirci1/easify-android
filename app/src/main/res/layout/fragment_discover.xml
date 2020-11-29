@@ -12,17 +12,32 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/feature_fragment_root"
+        android:id="@+id/discover_fragment_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorSpotifyBlack">
+
+        <TextView
+            android:id="@+id/discover_label"
+            style="@style/Toolbar.Title.Dynamic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fragment_root_padding"
+            android:layout_marginStart="@dimen/fragment_root_padding"
+            android:layout_marginEnd="@dimen/fragment_root_padding"
+            app:dynamicText="@{track}"
+            app:slideText="@{true}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Brooklyn Baby" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/search">
+            app:layout_constraintTop_toBottomOf="@id/discover_label"
+            app:layout_constraintBottom_toTopOf="@+id/discover">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/container_layout"
@@ -30,86 +45,21 @@
                 android:padding="@dimen/fragment_root_padding"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/track_info_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        style="@style/Feature.Album.Label"
-                        android:id="@+id/album_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fragment_features_album"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        style="@style/Feature.Album.Name"
-                        android:id="@+id/album_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{track.album.name}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/album_label"
-                        tools:text="Norman Fucking Rockwell!"/>
-
-                    <ImageView
-                        android:id="@+id/album_image"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
-                        android:layout_marginTop="@dimen/feature_fragment_image_margin_top"
-                        app:artistImageBig="@{track.album.images}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/album_name"
-                        tools:src="@drawable/ic_person"/>
-
-                    <TextView
-                        style="@style/Feature.Song.Name"
-                        android:id="@+id/song_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@{track.name}"
-                        app:slideText="@{true}"
-                        app:layout_constraintEnd_toEndOf="@id/album_image"
-                        app:layout_constraintStart_toStartOf="@id/album_image"
-                        app:layout_constraintTop_toBottomOf="@+id/album_image"
-                        tools:text="California"/>
-
-                    <TextView
-                        style="@style/Feature.Artist.Name"
-                        android:id="@+id/artist_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/feature_fragment_artist_name_margin_top"
-                        android:text="@{track.artists.get(0).name}"
-                        app:layout_constraintEnd_toEndOf="@id/song_name"
-                        app:layout_constraintStart_toStartOf="@id/song_name"
-                        app:layout_constraintTop_toBottomOf="@+id/song_name"
-                        tools:text="Lana Del Rey"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <com.easify.easify.ui.customviews.FeatureView
                     android:id="@+id/danceability"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_danceability"
-                    app:layout_constraintTop_toBottomOf="@id/track_info_layout" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.easify.easify.ui.customviews.FeatureView
                     android:id="@+id/energy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_energy"
                     app:layout_constraintTop_toBottomOf="@id/danceability" />
 
@@ -118,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_speechiness"
                     app:layout_constraintTop_toBottomOf="@id/energy" />
 
@@ -127,7 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_acousticness"
                     app:layout_constraintTop_toBottomOf="@id/speechiness" />
 
@@ -136,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_instrumentalness"
                     app:layout_constraintTop_toBottomOf="@id/acousticness" />
 
@@ -145,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_liveness"
                     app:layout_constraintTop_toBottomOf="@id/instrumentalness" />
 
@@ -154,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_valence"
                     app:layout_constraintTop_toBottomOf="@id/liveness" />
 
@@ -163,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
-                    app:editable="false"
+                    app:editable="true"
                     app:label="@string/fragment_features_tempo"
                     app:layout_constraintTop_toBottomOf="@id/valence" />
 
@@ -172,11 +122,11 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/search"
+            android:id="@+id/discover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/fragment_features_find_similar"
+            android:text="@string/fragment_discover_button"
             android:textColor="@color/colorSpotifyWhite"
             android:textSize="16sp"
             android:background="@drawable/button_green"
