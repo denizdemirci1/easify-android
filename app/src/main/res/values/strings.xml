@@ -87,9 +87,21 @@
   <string name="fragment_artist_snackbar_unfollowed">You don\'t follow %s anymore</string>
 
   <!-- Home Fragment -->
-  <string name="fragment_home_search_hint">Search track</string>
+  <string name="fragment_home_search_hint">Type to search track…</string>
 
   <!-- Follow Fragment -->
-  <string name="fragment_follow_search_hint">Search artist</string>
+  <string name="fragment_follow_search_hint">Type to search artist…</string>
+
+  <!-- Features Fragment -->
+  <string name="fragment_features_album">ALBUM</string>
+  <string name="fragment_features_danceability">Danceability: %d</string>
+  <string name="fragment_features_energy">Energy: %d</string>
+  <string name="fragment_features_speechiness">Speechiness: %d</string>
+  <string name="fragment_features_acousticness">Acousticness: %d</string>
+  <string name="fragment_features_instrumentalness">Instrumentalness: %d</string>
+  <string name="fragment_features_liveness">Liveness: %d</string>
+  <string name="fragment_features_valence">Valence: %d</string>
+  <string name="fragment_features_tempo">Tempo: %d</string>
+  <string name="fragment_features_find_similar">Find Similar</string>
 
 </resources>

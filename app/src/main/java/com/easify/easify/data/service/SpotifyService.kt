@@ -122,4 +122,9 @@ interface SpotifyService {
     @Query("q") q: String,
     @Query("limit") limit: Int = 50
   ): SearchResponse
+
+  @GET("audio-features/{id}")
+  suspend fun fetchAudioFeatures(
+    @Path("id") id: String
+  ): FeaturesResponse
 }

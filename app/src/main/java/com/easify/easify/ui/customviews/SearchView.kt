@@ -2,6 +2,7 @@ package com.easify.easify.ui.customviews
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -41,12 +42,12 @@ class SearchView @JvmOverloads constructor(
     val hintColor = attributes.getColor(R.styleable.SearchView_hintColor, -1)
     search.hint = hint
     search.setHintTextColor(hintColor)
+    clear.visibility = View.GONE
     initView()
     attributes.recycle()
   }
 
   private fun initView() {
-    search.setHintTextColor(ContextCompat.getColor(context, R.color.colorSpotifyWhite))
     addTextWatcher()
     addOnFocusChangeListener()
     setListeners()

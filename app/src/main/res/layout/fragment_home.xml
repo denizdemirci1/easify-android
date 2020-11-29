@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hint="@string/fragment_home_search_hint"
-            app:hintColor="@color/colorSpotifyWhite"
+            app:hintColor="@color/colorHintGray"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView

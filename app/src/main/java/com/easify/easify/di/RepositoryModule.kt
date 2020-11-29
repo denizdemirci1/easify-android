@@ -74,4 +74,12 @@ object RepositoryModule {
   ): SearchRepository {
     return SearchRepositoryImpl(searchDataSource)
   }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideTrackRepository(
+    trackDataSource: TrackDataSource
+  ): TrackRepository {
+    return TrackRepositoryImpl(trackDataSource)
+  }
 }

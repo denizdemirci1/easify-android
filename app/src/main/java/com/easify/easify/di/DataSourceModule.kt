@@ -58,4 +58,10 @@ object DataSourceModule {
   fun provideSearchDataSource(spotifyService: SpotifyService): SearchDataSource {
     return SearchDataSourceImpl(spotifyService)
   }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideTrackDataSource(spotifyService: SpotifyService): TrackDataSource {
+    return TrackDataSourceImpl(spotifyService)
+  }
 }

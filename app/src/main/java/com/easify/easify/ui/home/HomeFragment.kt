@@ -64,6 +64,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       when (event) {
         SearchViewEvent.GetDevices -> getDevices()
         SearchViewEvent.Play -> playTrack()
+        is SearchViewEvent.OnTrackClicked -> onTrackClicked(event.track)
         is SearchViewEvent.OnListenIconClicked -> setClickedTrackUri(event.uri)
         is SearchViewEvent.OnAddIconClicked -> onAddIconClicked(event.track)
         is SearchViewEvent.NotifyTrackDataChanged -> onViewDataChange(event.trackList)
@@ -92,6 +93,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private fun getDevices() {
     playerViewModel.getDevices()
+  }
+
+  private fun onTrackClicked(track: Track) {
+    val action = HomeFragmentDirections.actionHomeFragmentToFeaturesFragment(track)
+    findNavController().navigate(action)
   }
 
   private fun onAddIconClicked(track: Track) {
