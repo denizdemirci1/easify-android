@@ -100,12 +100,20 @@
   <string name="fragment_features_acousticness">Acousticness: %d</string>
   <string name="fragment_features_instrumentalness">Instrumentalness: %d</string>
   <string name="fragment_features_liveness">Liveness: %d</string>
-  <string name="fragment_features_valence">Valence: %d</string>
+  <string name="fragment_features_valence">Happiness: %d</string>
   <string name="fragment_features_tempo">Tempo: %d</string>
   <string name="fragment_features_find_similar">Find Similar</string>
 
   <!-- Discover Fragment -->
   <string name="fragment_discover_button">Discover</string>
   <string name="fragment_discover_title">%1$s - %2$s</string>
+
+  <!-- Recommendations Fragment -->
+  <string name="fragment_recommendations_title">Songs you asked for</string>
+  <string name="fragment_recommendations_new_playlist">Save</string>
+  <string name="fragment_recommendations_create_playlist_name">Similar to %s - by Easify</string>
+  <string name="fragment_recommendations_create_playlist_desc">This playlist is automatically created by Easify just for your taste on %s</string>
+  <string name="fragment_recommendations_create_playlist_succeeded">Your new playlist is created.</string>
+  <string name="fragment_recommendations_create_playlist_failed">Creating playlist failed. Please try again.</string>
 
 </resources>

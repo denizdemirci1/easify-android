@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Track(
     val album: Album,
-    val artists: ArrayList<Artist>,
+    val artists: List<Artist>,
     val duration_ms: Int,
     val external_urls: ExternalUrl,
     val id: String,

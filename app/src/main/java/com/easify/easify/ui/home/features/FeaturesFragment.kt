@@ -20,8 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
  * @date: 28.11.2020
  */
 
-private const val TEMPO_DIVISOR = 250
-
 @AndroidEntryPoint
 class FeaturesFragment : BaseFragment(R.layout.fragment_features) {
 
@@ -67,14 +65,7 @@ class FeaturesFragment : BaseFragment(R.layout.fragment_features) {
 
   private fun setFeatures(features: FeaturesResponse) {
     this.features = features
-    binding.danceability.setFeature(features.danceability)
-    binding.energy.setFeature(features.energy)
-    binding.speechiness.setFeature(features.speechiness)
-    binding.acousticness.setFeature(features.acousticness)
-    binding.instrumentalness.setFeature(features.instrumentalness)
-    binding.liveness.setFeature(features.liveness)
-    binding.valence.setFeature(features.valence)
-    binding.tempo.setFeature(features.tempo / TEMPO_DIVISOR)
+    binding.features = features
   }
 
   private fun showError(message: String) {
