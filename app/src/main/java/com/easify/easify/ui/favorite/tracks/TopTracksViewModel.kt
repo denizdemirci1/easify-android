@@ -25,6 +25,8 @@ class TopTracksViewModel @ViewModelInject constructor(
   private val userManager: UserManager
 ) : ViewModel() {
 
+  val urisOfTracks = ArrayList<String>()
+
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
 
@@ -45,7 +47,10 @@ class TopTracksViewModel @ViewModelInject constructor(
       personalizationRepository.fetchTopTracks(timeRange, offset).let { result ->
         _loading.value = false
         when (result) {
-          is Success -> result.data.let(onSuccess)
+          is Success -> {
+            result.data.let(onSuccess)
+            urisOfTracks.addAll(result.data.items.map { it.uri })
+          }
           is Error -> {
             sendEvent(TopTracksViewEvent.ShowError(parseNetworkError(result.exception)))
           }

@@ -108,7 +108,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
   }
 
   private fun playTrack() {
-    playerViewModel.play(isTrack = true)
+    playerViewModel.play(trackUris = recommendationsViewModel.urisOfTracks, isTrack = true)
   }
 
   private fun getDevices() {
@@ -123,7 +123,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
 
   private fun handleDeviceIdSet(deviceId: String?) {
     deviceId?.let {
-      playerViewModel.play(isTrack = true)
+      playTrack()
     } ?: run { showOpenSpotifyWarning() }
   }
 
@@ -162,5 +162,10 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
       snackbar.view.layoutParams = params
       snackbar.show()
     }
+  }
+
+  override fun onDestroyView() {
+    recommendationsViewModel.urisOfTracks.clear()
+    super.onDestroyView()
   }
 }

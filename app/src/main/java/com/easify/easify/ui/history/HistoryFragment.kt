@@ -96,7 +96,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   }
 
   private fun playTrack() {
-    playerViewModel.play(isTrack = true)
+    playerViewModel.play(trackUris = historyViewModel.urisOfTracks, isTrack = true)
   }
 
   private fun getDevices() {
@@ -105,7 +105,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   private fun handleDeviceIdSet(deviceId: String?) {
     deviceId?.let {
-      playerViewModel.play(isTrack = true)
+      playTrack()
     } ?: run { showOpenSpotifyWarning() }
   }
 
@@ -139,5 +139,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     )
     val adRequest = AdRequest.Builder().build()
     binding.adView.loadAd(adRequest)
+  }
+
+  override fun onDestroyView() {
+    historyViewModel.urisOfTracks.clear()
+    super.onDestroyView()
   }
 }

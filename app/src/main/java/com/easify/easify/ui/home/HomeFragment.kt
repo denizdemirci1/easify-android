@@ -83,7 +83,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private fun handleDeviceIdSet(deviceId: String?) {
     deviceId?.let {
-      playerViewModel.play(isTrack = true)
+      playTrack()
     } ?: run { showOpenSpotifyWarning() }
   }
 
