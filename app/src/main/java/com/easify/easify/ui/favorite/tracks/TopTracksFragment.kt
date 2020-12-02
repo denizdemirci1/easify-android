@@ -94,7 +94,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
   }
 
   private fun playTrack() {
-    playerViewModel.play(isTrack = true)
+    playerViewModel.play(trackUris = topTracksViewModel.urisOfTracks, isTrack = true)
   }
 
   private fun setClickedTrackUri(uri: String) {
@@ -109,7 +109,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
 
   private fun handleDeviceIdSet(deviceId: String?) {
     deviceId?.let {
-      playerViewModel.play(isTrack = true)
+      playTrack()
     } ?: run { showOpenSpotifyWarning() }
   }
 
@@ -127,5 +127,10 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
       message(text = message)
       positiveButton(R.string.dialog_ok)
     }
+  }
+
+  override fun onDestroyView() {
+    topTracksViewModel.urisOfTracks.clear()
+    super.onDestroyView()
   }
 }

@@ -23,6 +23,8 @@ class HistoryViewModel @ViewModelInject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
 
+    val urisOfTracks = ArrayList<String>()
+
     private val _event = MutableLiveData<Event<HistoryViewEvent>>()
     val event: LiveData<Event<HistoryViewEvent>> = _event
 
@@ -40,6 +42,7 @@ class HistoryViewModel @ViewModelInject constructor(
                 when (result) {
                     is Success -> {
                         _loading.value = false
+                        urisOfTracks.addAll(result.data.items.map { it.track.uri })
                         result.data.let(onSuccess)
                     }
                     is Error -> {

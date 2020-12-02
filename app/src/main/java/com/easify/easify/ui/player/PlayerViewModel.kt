@@ -66,11 +66,12 @@ class PlayerViewModel @ViewModelInject constructor(
   /**
    * [playlistUri] : if track to play is clicked from a playlist, this variable is not null
    * and should be used for uri to play. Track uri should be used for offset value
+   * [trackUris] : list of tracks that contain the clicked track
    */
-  fun play(playlistUri: String? = null, isTrack: Boolean = false) {
+  fun play(trackUris: List<String>? = null, playlistUri: String? = null, isTrack: Boolean = false) {
     uriToPlay?.let { uri ->
       viewModelScope.launch {
-        val playObject = getPlayObject(uri, playlistUri, isTrack)
+        val playObject = getPlayObject(trackUris, uri, playlistUri, isTrack)
         playerRepository.play(
           deviceId = userManager.deviceId,
           playObject = playObject
@@ -85,9 +86,11 @@ class PlayerViewModel @ViewModelInject constructor(
    * When playable is track: PlayObject has "uris"
    * When playable is artist or playlist: PlayObject has "context_uri"
    */
-  private fun getPlayObject(uri: String, playlistUri: String?, isTrack: Boolean): PlayObject {
+  private fun getPlayObject(uris: List<String>? = null, uri: String, playlistUri: String?, isTrack: Boolean): PlayObject {
     return if (isTrack) {
-      PlayObject(uris = listOf(uri))
+      uris?.let { trackUris ->
+        PlayObject(uris = trackUris, offset = Offset(uri = uri))
+      } ?: PlayObject(uris = listOf(uri), offset = Offset(uri = uri))
     } else {
       playlistUri?.let { playlist ->
         PlayObject(context_uri = playlist, offset = Offset(uri = uri))

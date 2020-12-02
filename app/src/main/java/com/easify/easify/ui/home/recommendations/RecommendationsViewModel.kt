@@ -25,6 +25,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
 
   private val recommendedTracks = ArrayList<Track>()
 
+  val urisOfTracks = ArrayList<String>()
+
   private var playlistNameToCreate: String? = null
   private var createdPlaylist : Playlist? = null
 
@@ -47,6 +49,7 @@ class RecommendationsViewModel @ViewModelInject constructor(
             _loading.value = false
             recommendedTracks.clear()
             recommendedTracks.addAll(result.data.tracks)
+            urisOfTracks.addAll(result.data.tracks.map { it.uri })
             sendEvent(RecommendationsViewEvent.OnRecommendationsReceived(recommendedTracks))
           }
 
