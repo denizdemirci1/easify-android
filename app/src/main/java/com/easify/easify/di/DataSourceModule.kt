@@ -1,6 +1,7 @@
 package com.easify.easify.di
 
-import com.easify.easify.data.remote.datasource.*
+import com.easify.easify.data.remote.datasource.UserDataSource
+import com.easify.easify.data.remote.datasource.UserDataSourceImpl
 import com.easify.easify.data.service.SpotifyService
 import dagger.Module
 import dagger.Provides
@@ -19,55 +20,8 @@ object DataSourceModule {
 
   @Provides
   @ActivityRetainedScoped
-  fun provideUserDataSource(spotifyService: SpotifyService): UserDataSource {
+  fun provideUserDataSource(spotifyService: SpotifyService) : UserDataSource {
     return UserDataSourceImpl(spotifyService)
   }
 
-  @Provides
-  @ActivityRetainedScoped
-  fun providePlayerDataSource(spotifyService: SpotifyService): PlayerDataSource {
-    return PlayerDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun providePersonalizationDataSource(spotifyService: SpotifyService): PersonalizationDataSource {
-    return PersonalizationDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun providePlaylistDataSource(spotifyService: SpotifyService): PlaylistDataSource {
-    return PlaylistDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun provideFollowDataSource(spotifyService: SpotifyService): FollowDataSource {
-    return FollowDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun provideLibraryDataSource(spotifyService: SpotifyService): LibraryDataSource {
-    return LibraryDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun provideSearchDataSource(spotifyService: SpotifyService): SearchDataSource {
-    return SearchDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun provideTrackDataSource(spotifyService: SpotifyService): TrackDataSource {
-    return TrackDataSourceImpl(spotifyService)
-  }
-
-  @Provides
-  @ActivityRetainedScoped
-  fun provideBrowseDataSource(spotifyService: SpotifyService): BrowseDataSource {
-    return BrowseDataSourceImpl(spotifyService)
-  }
 }
