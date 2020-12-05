@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="playlistDetailViewModel"
+            type="com.easify.easify.ui.profile.playlists.detail.PlaylistDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/playlist_detail_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSpotifyBlack">
+
+        <TextView
+            android:id="@+id/playlist_detail_title"
+            style="@style/Toolbar.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{playlistDetailViewModel.title}"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Your top songs 2020 Your top songs 2020"/>
+
+        <ProgressBar
+            android:id="@+id/playlist_detail_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{playlistDetailViewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/playlist_detail_title"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tracks_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/bg_scrollbar"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/playlist_detail_progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/view_holder_playlist_detail"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/no_tracks_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:visibility="@{playlistDetailViewModel.showNoTracksLayout ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/no_tracks_info"
+                style="@style/Material.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_playlist_detail_empty_playlist"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

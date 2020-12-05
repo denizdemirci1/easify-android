@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/profile_nav_graph"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.easify.easify.ui.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.easify.easify.ui.profile.playlists.main.PlaylistFragment"
+        android:label="PlaylistFragment" >
+        <action
+            android:id="@+id/action_playlistFragment_to_playlistDetailFragment"
+            app:destination="@id/playlistDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/followedArtistsFragment"
+        android:name="com.easify.easify.ui.profile.follows.followed.FollowedArtistsFragment"
+        android:label="FollowedArtistsFragment" >
+        <action
+            android:id="@+id/action_followedArtistsFragment_to_artistFragment"
+            app:destination="@id/artistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistDetailFragment"
+        android:name="com.easify.easify.ui.profile.playlists.detail.PlaylistDetailFragment"
+        android:label="PlaylistDetailFragment" >
+        <argument
+            android:name="playlist"
+            app:argType="com.easify.easify.model.Playlist"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.easify.easify.ui.profile.playlists.create.CreatePlaylistFragment"
+        android:label="CreatePlaylistFragment" />
+    <fragment
+        android:id="@+id/artistFragment"
+        android:name="com.easify.easify.ui.profile.follows.followed.artist.ArtistFragment"
+        android:label="ArtistFragment" >
+        <argument
+            android:name="artist"
+            app:argType="com.easify.easify.model.Artist"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/followFragment"
+        android:name="com.easify.easify.ui.profile.follows.tofollow.FollowFragment"
+        android:label="FollowFragment" >
+        <action
+            android:id="@+id/action_followFragment_to_artistFragment"
+            app:destination="@id/artistFragment" />
+    </fragment>
+
+</navigation>

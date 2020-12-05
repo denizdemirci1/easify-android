@@ -1,3 +1,119 @@
 <resources>
   <string name="app_name">Easify</string>
+  <string name="app_slogan">enrich your spotify experience</string>
+
+  <string name="com_spotify_sdk_redirect_scheme">com.easify.easify</string>
+  <string name="com_spotify_sdk_redirect_host">callback</string>
+  <string name="spotify_uri_callback">com.easify.easify://callback</string>
+
+  <string name="admob_app_id">ca-app-pub-5017818231308624~1013223874</string>
+  <string name="admob_app_id_test">ca-app-pub-3940256099942544/2247696110</string>
+  <string name="admob_test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="banner_ad_unit_id_favorite_fragment">ca-app-pub-5017818231308624/8371456256</string>
+  <string name="banner_ad_unit_id_history_fragment">ca-app-pub-5017818231308624/3007448931</string>
+
+  <!-- Bottom Nav Menu -->
+  <string name="home">Home</string>
+  <string name="history">History</string>
+  <string name="favorites">Favorites</string>
+  <string name="profile">Profile</string>
+
+  <!-- Dialog -->
+  <string name="dialog_error_title">Ups</string>
+  <string name="dialog_positive_button_text">Try Again</string>
+  <string name="dialog_negative_button_text">Exit</string>
+  <string name="dialog_ok">OK</string>
+  <string name="dialog_common_error_text">Something went wrong. Please go back and try again.</string>
+  <string name="dialog_should_open_spotify">Spotify should be open on your device to play songs.</string>
+
+  <!-- History Fragment -->
+  <string name="fragment_history_recently_listened">Recently Listened</string>
+
+  <!-- Favorites Fragment -->
+  <string name="fragment_favorites_title">Best songs &amp; artists in the world</string>
+  <string name="fragment_favorites_show">Show</string>
+  <string name="fragment_favorites_hint_type">Type</string>
+  <string name="fragment_favorites_hint_time_range">Time range</string>
+  <string name="fragment_favorites_hint_limit">Amount</string>
+  <string name="fragment_favorites_type_empty_error">Please select a type. Artists or Tracks?</string>
+  <string name="fragment_favorites_amount_zero_error">Amount must be greater than zero.</string>
+
+  <!-- Top Artists Fragment -->
+  <string name="fragment_top_artists_title">Best artists in the world</string>
+
+  <!-- Top Tracks Fragment -->
+  <string name="fragment_top_tracks_title">Best tracks in the world</string>
+
+  <!-- Profile Fragment -->
+  <string name="fragment_profile_playlists">Playlists</string>
+  <string name="fragment_profile_followed_artists">Followed artists</string>
+  <string name="fragment_profile_rate">Rate us</string>
+
+  <!-- Playlist Fragment -->
+  <string name="fragment_playlist_title">Your playlists</string>
+  <string name="fragment_playlist_create_button_text">New</string>
+
+  <!-- Playlist Detail Fragment -->
+  <string name="fragment_playlist_detail_removed">%1$s is removed from this playlist</string>
+  <string name="fragment_playlist_detail_empty_playlist">This playlist is empty</string>
+
+  <!-- Create Playlist Fragment -->
+  <string name="fragment_create_playlist_title">Create a playlist</string>
+  <string name="fragment_create_playlist_name_hint">Name</string>
+  <string name="fragment_create_playlist_description_hint">Description</string>
+  <string name="fragment_create_playlist_create">Create</string>
+  <string name="fragment_create_playlist_default_playlist_name">Easify</string>
+  <string name="fragment_create_playlist_default_playlist_description">Created via Easify</string>
+  <string name="fragment_create_playlist_user_id_not_found_error">We could not get your user id.\nPlease restart app and try again.</string>
+
+  <!-- Add Tracks to Playlist Fragment -->
+  <string name="fragment_add_track_to_playlist_track_added_to_playlist">%1$s is added to %2$s</string>
+  <string name="fragment_add_track_to_playlist_track_exists_in_playlist">%1$s already exists in %2$s</string>
+  <string name="fragment_add_track_to_playlist_title">Pick a playlist to add track</string>
+  <string name="fragment_add_track_to_playlist_liked_songs">Liked Songs</string>
+
+  <!-- Followed Artists Fragment -->
+  <string name="fragment_followed_artists_title">Artists you follow</string>
+  <string name="fragment_followed_artist_follower_count">Followers: %1$s</string>
+  <string name="fragment_followed_artist_popularity">Popularity: %d\%%</string>
+  <string name="fragment_followed_artist_new_button_text">New</string>
+
+  <!-- Artist Fragment -->
+  <string name="fragment_artist_follower_count">Followers: %d</string>
+  <string name="fragment_artist_genres">Genre(s):</string>
+  <string name="fragment_artist_follow">Follow</string>
+  <string name="fragment_artist_unfollow">Unfollow</string>
+  <string name="fragment_artist_snackbar_followed">You follow %s now!</string>
+  <string name="fragment_artist_snackbar_unfollowed">You don\'t follow %s anymore</string>
+
+  <!-- Home Fragment -->
+  <string name="fragment_home_search_hint">Type to search track…</string>
+
+  <!-- Follow Fragment -->
+  <string name="fragment_follow_search_hint">Type to search artist…</string>
+
+  <!-- Features Fragment -->
+  <string name="fragment_features_album">ALBUM</string>
+  <string name="fragment_features_danceability">Danceability: %d</string>
+  <string name="fragment_features_energy">Energy: %d</string>
+  <string name="fragment_features_speechiness">Speechiness: %d</string>
+  <string name="fragment_features_acousticness">Acousticness: %d</string>
+  <string name="fragment_features_instrumentalness">Instrumentalness: %d</string>
+  <string name="fragment_features_liveness">Liveness: %d</string>
+  <string name="fragment_features_valence">Happiness: %d</string>
+  <string name="fragment_features_tempo">Tempo: %d</string>
+  <string name="fragment_features_find_similar">Find Similar</string>
+
+  <!-- Discover Fragment -->
+  <string name="fragment_discover_button">Discover</string>
+  <string name="fragment_discover_title">%1$s - %2$s</string>
+
+  <!-- Recommendations Fragment -->
+  <string name="fragment_recommendations_title">Songs you asked for</string>
+  <string name="fragment_recommendations_new_playlist">Save</string>
+  <string name="fragment_recommendations_create_playlist_name">Similar to %s - by Easify</string>
+  <string name="fragment_recommendations_create_playlist_desc">This playlist is automatically created by Easify just for your taste on %s</string>
+  <string name="fragment_recommendations_create_playlist_succeeded">Your new playlist is created.</string>
+  <string name="fragment_recommendations_create_playlist_failed">Creating playlist failed. Please try again.</string>
+
 </resources>

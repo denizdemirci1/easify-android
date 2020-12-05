@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/follow_fragment_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSpotifyBlack"
+        android:paddingStart="@dimen/fragment_root_padding"
+        android:paddingEnd="@dimen/fragment_root_padding"
+        android:paddingTop="@dimen/fragment_root_padding">
+
+        <com.easify.easify.ui.customviews.SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/fragment_follow_search_hint"
+            app:hintColor="@color/colorHintGray"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_artists"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/bg_scrollbar"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout="@layout/view_holder_search_artist"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

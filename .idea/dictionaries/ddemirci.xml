@@ -1,8 +1,26 @@
 <component name="ProjectDictionaryState">
   <dictionary name="ddemirci">
     <words>
+      <w>acousticness</w>
+      <w>adcolony</w>
+      <w>admob</w>
+      <w>bottomsheet</w>
+      <w>danceability</w>
+      <w>demirci</w>
+      <w>deniz</w>
       <w>easify</w>
+      <w>gson</w>
+      <w>instrumentalness</w>
+      <w>jetpack</w>
+      <w>ktlint</w>
+      <w>livedata</w>
+      <w>liveness</w>
+      <w>snackbar</w>
+      <w>speechiness</w>
       <w>spotify</w>
+      <w>tracktoplaylist</w>
+      <w>unfollow</w>
+      <w>viewmodel</w>
     </words>
   </dictionary>
 </component>

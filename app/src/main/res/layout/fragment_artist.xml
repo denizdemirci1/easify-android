@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="artist"
+            type="com.easify.easify.model.Artist" />
+        <variable
+            name="artistViewModel"
+            type="com.easify.easify.ui.profile.follows.followed.artist.ArtistViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/artist_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSpotifyBlack">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/follow_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/artist_image"
+                    android:layout_width="320dp"
+                    android:layout_height="320dp"
+                    android:layout_marginTop="32dp"
+                    app:artistImageBig="@{artist.images}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ic_person"/>
+
+                <TextView
+                    style="@style/Material.Headline4"
+                    android:id="@+id/artist_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{artist.name}"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@+id/artist_image"
+                    app:layout_constraintEnd_toEndOf="@id/artist_image"
+                    app:layout_constraintStart_toStartOf="@id/artist_image"
+                    tools:text="Yann Tiersen"/>
+
+                <TextView
+                    style="@style/Material.Headline6"
+                    android:id="@+id/followers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    app:setFollowerCount="@{artist.followers.total}"
+                    app:layout_constraintTop_toBottomOf="@+id/artist_name"
+                    app:layout_constraintEnd_toEndOf="@id/artist_name"
+                    app:layout_constraintStart_toStartOf="@id/artist_name"
+                    tools:text="Followers: 12.341" />
+
+                <TextView
+                    style="@style/Material.Headline6"
+                    android:id="@+id/genres_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/fragment_artist_genres"
+                    android:gravity="center"
+                    android:textColor="@color/colorSpotifyWhite"
+                    app:layout_constraintTop_toBottomOf="@+id/followers"
+                    app:layout_constraintEnd_toEndOf="@id/followers"
+                    app:layout_constraintStart_toStartOf="@id/followers"/>
+
+                <TextView
+                    style="@style/Material.Subtitle2"
+                    android:id="@+id/genres"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:setGenres="@{artist.genres}"
+                    android:textColor="@color/colorTextGray"
+                    app:layout_constraintTop_toBottomOf="@+id/genres_label"
+                    app:layout_constraintEnd_toEndOf="@id/genres_label"
+                    app:layout_constraintStart_toStartOf="@id/genres_label"
+                    tools:text="bow pop,\ncompositional ambient,\nfrench soundtrack" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/follow_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Button.Green"
+                android:id="@+id/follow"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_green"
+                android:text="@string/fragment_artist_follow"
+                android:onClick="@{() -> artistViewModel.followArtist(artist.id)}"
+                android:visibility="@{artistViewModel.showFollowButton ? View.VISIBLE : View.GONE}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Button.Red"
+                android:id="@+id/unfollow"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:text="@string/fragment_artist_unfollow"
+                android:background="@drawable/button_red"
+                android:onClick="@{() -> artistViewModel.unfollowArtist(artist.id)}"
+                android:visibility="@{artistViewModel.showFollowButton ? View.GONE : View.VISIBLE}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
