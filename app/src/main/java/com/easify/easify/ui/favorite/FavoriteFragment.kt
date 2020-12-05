@@ -6,9 +6,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.adcolony.sdk.AdColony
-import com.adcolony.sdk.AdColonyAdSize
-import com.adcolony.sdk.AdColonyAdView
-import com.adcolony.sdk.AdColonyAdViewListener
+import com.adcolony.sdk.AdColonyInterstitial
+import com.adcolony.sdk.AdColonyInterstitialListener
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.easify.easify.BuildConfig
@@ -18,6 +17,7 @@ import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.extensions.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite.*
+
 
 /**
  * @author: deniz.demirci
@@ -33,8 +33,6 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
   private val viewModel by viewModels<FavoriteViewModel>()
 
   private lateinit var binding: FragmentFavoriteBinding
-
-  private var adColonyAdView: AdColonyAdView? = null
 
   private val longTerm = Pair("Several Years", "long_term")
   private val mediumTerm = Pair("Last 6 Months", "medium_term")
@@ -52,14 +50,17 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
   }
 
   private fun requestAds() {
-    val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
-      override fun onRequestFilled(ad: AdColonyAdView) {
-        adColonyAdView = ad
-        binding.favoriteAdContainer.addView(ad)
+    AdColony.configure(
+      requireActivity(),
+      BuildConfig.ADCOLONY_APP_ID,
+      BuildConfig.ADCOLONY_FULL_SCREEN_AD_ZONE_ID
+    )
+    val listener: AdColonyInterstitialListener = object : AdColonyInterstitialListener() {
+      override fun onRequestFilled(ad: AdColonyInterstitial) {
+        ad.show()
       }
     }
-
-    AdColony.requestAdView(BuildConfig.ADCOLONY_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
+    AdColony.requestInterstitial(BuildConfig.ADCOLONY_FULL_SCREEN_AD_ZONE_ID, listener)
   }
 
   private fun setupListeners() {
@@ -119,7 +120,6 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
   }
 
   override fun onDestroyView() {
-    adColonyAdView?.destroy()
     super.onDestroyView()
   }
 }

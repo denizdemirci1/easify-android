@@ -60,6 +60,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   }
 
   private fun requestAds() {
+    AdColony.configure(
+      requireActivity(),
+      BuildConfig.ADCOLONY_APP_ID,
+      BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID
+    )
     val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
       override fun onRequestFilled(ad: AdColonyAdView) {
         adColonyAdView = ad
@@ -67,7 +72,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       }
     }
 
-    AdColony.requestAdView(BuildConfig.ADCOLONY_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
+    AdColony.requestAdView(BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
   }
 
   private fun setupObservers() {
