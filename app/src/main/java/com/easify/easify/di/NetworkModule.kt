@@ -1,19 +1,16 @@
 package com.easify.easify.di
 
-import com.easify.easify.data.remote.util.SpotifyInterceptor
 import com.easify.easify.data.service.SpotifyService
-import com.easify.easify.util.manager.UserManager
-import com.easify.easify.util.storage.Storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 /**
  * @author: deniz.demirci
@@ -30,7 +27,7 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(storage: Storage): OkHttpClient {
+  fun provideOkHttpClient(): OkHttpClient {
     return OkHttpClient.Builder().apply {
       connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
       writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
@@ -39,7 +36,6 @@ object NetworkModule {
       addInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
       })
-      addInterceptor(SpotifyInterceptor(UserManager(storage)))
     }.build()
   }
 
@@ -55,7 +51,8 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun provideSpotifyService(retrofit: Retrofit): SpotifyService {
+  fun provideSpotifyService(retrofit: Retrofit) : SpotifyService {
     return retrofit.create(SpotifyService::class.java)
   }
+
 }

@@ -8,155 +8,100 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-allopen'
 
 allOpen {
-    // allows mocking for classes w/o directly opening them for release builds
-    annotation 'com.deniz.easify.util.OpenClass'
+  // allows mocking for classes w/o directly opening them for release builds
+  annotation 'com.deniz.easify.util.OpenClass'
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+  compileSdkVersion 29
+  buildToolsVersion "29.0.3"
 
-    defaultConfig {
-        applicationId "com.easify.easify"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        multiDexEnabled true
+  defaultConfig {
+    applicationId "com.easify.easify"
+    minSdkVersion 21
+    targetSdkVersion 29
+    versionCode 1
+    versionName "1.0"
+    multiDexEnabled true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
+  }
 
-    buildTypes {
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        def spotify_client_id = properties.getProperty('spotify_client_id')
-        def spotify_client_secret = properties.getProperty('spotify_client_secret')
-        def adcolony_app_id = properties.getProperty('adcolony_app_id')
-        def adcolony_banner_ad_zone_id = properties.getProperty('adcolony_banner_ad_zone_id')
-        def adcolony_full_screen_ad_zone_id = properties.getProperty('adcolony_full_screen_ad_zone_id')
-
-        debug {
-            debuggable true
-            minifyEnabled false
-            buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
-            buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
-            buildConfigField "String", "ADCOLONY_APP_ID", adcolony_app_id
-            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID", adcolony_banner_ad_zone_id
-            buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
-            buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
-            buildConfigField "String", "ADCOLONY_APP_ID", adcolony_app_id
-            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID", adcolony_banner_ad_zone_id
-            buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
-        }
-    }
-
-    buildFeatures {
-        dataBinding true
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 ktlint {
-    version = "0.35.0"
-    debug = true
-    verbose = true
-    android = true
-    outputToConsole = true
-    filter {
-        exclude("**/generated/**")
-        include("**/java/**")
-    }
+  version = "0.35.0"
+  debug = true
+  verbose = true
+  android = true
+  outputToConsole = true
+  filter {
+    exclude("**/generated/**")
+    include("**/java/**")
+  }
 }
 
 kapt {
-    generateStubs = true
-    correctErrorTypes true
+  generateStubs = true
+  correctErrorTypes true
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-
-    // Spotify
-    implementation project(':spotify-app-remote')
-    implementation "com.spotify.android:auth:$spotify_auth_version"
-
-    // Ads
-    implementation "com.adcolony:sdk:$adcolony_version"
-    implementation "com.google.android.gms:play-services-ads-identifier:$ad_version"
-
-    // AndroidX
-    implementation "androidx.multidex:multidex:$multidex_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-
-    // Dagger Hilt
-    implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$dagger_hilt_version"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$androidx_hilt_version"
-    kapt "androidx.hilt:hilt-compiler:$androidx_hilt_version"
-
-    // Data Binding
-    kapt "com.android.databinding:compiler:$data_binding_version"
-
-    // Firebase
-    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
-
-    // Glide
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
-
-    // Google
-    implementation "com.google.code.gson:gson:$gson_version"
-
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-
-    //Material Dialog
-    implementation "com.afollestad.material-dialogs:core:$material_dialog_version"
-
-    // Paging 2
-    implementation "androidx.paging:paging-runtime:$paging_version"
-
-    // Retrofit & OkHttp
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.okhttp3:okhttp:$okHttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
-
-    // Rounded Image
-    implementation "com.makeramen:roundedimageview:$rounded_image_version"
+  implementation fileTree(dir: "libs", include: ["*.jar"])
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 
-    // Unit Test
-    testImplementation "junit:junit:$test_junit_version"
+  // AndroidX
+  implementation "androidx.multidex:multidex:$multidex_version"
+  implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+  implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+  implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+  implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+  implementation "androidx.core:core-ktx:$core_ktx_version"
+  implementation "androidx.appcompat:appcompat:$appCompat_version"
+  implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+  // Coroutine
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
+  // Dagger Hilt
+  implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
+  kapt "com.google.dagger:hilt-android-compiler:$dagger_hilt_version"
+
+  // Data Binding
+  kapt "com.android.databinding:compiler:$data_binding_version"
+
+  // Glide
+  implementation "com.github.bumptech.glide:glide:$glide_version"
+  annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+  // Retrofit & OkHttp
+  implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+  implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+  implementation "com.squareup.okhttp3:okhttp:$okHttp_version"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
 
 
-    // UI Test
-    androidTestImplementation "androidx.test.ext:junit:$test_junit_ext_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+  // Unit Test
+  testImplementation "junit:junit:$test_junit_version"
+
+
+  // UI Test
+  androidTestImplementation "androidx.test.ext:junit:$test_junit_ext_version"
+  androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
 
 }
-
-apply plugin: 'com.google.gms.google-services'

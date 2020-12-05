@@ -1,3 +1,2 @@
-include ':spotify-app-remote'
 include ':app'
 rootProject.name = "Easify"

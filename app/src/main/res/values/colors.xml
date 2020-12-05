@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#40C067</color>
-  <color name="colorPrimaryDark">#216335</color>
-  <color name="colorAccent">#D81B60</color>
-
-  <color name="colorSpotifyBlack">#191414</color>
-  <color name="colorBackgroundLight">#383b40</color>
-  <color name="colorSpotifyGreen">#1DB954</color>
-  <color name="colorSpotifyRed">#b91d1d</color>
-  <color name="colorTextGray">#a6a6a6</color>
-  <color name="colorHintGray">#808080</color>
-  <color name="colorSpotifyWhite">#FFFFFF</color>
-
-  <color name="bg_snackbar_success">#0c752b</color>
-  <color name="bg_snackbar_fail">#750c16</color>
-
-  <color name="brown50">#EFEBE9</color>
-  <color name="brown100">#D7CCC8</color>
-  <color name="brown200">#BCAAA4</color>
-  <color name="brown300">#A1877F</color>
-  <color name="brown400">#8D6E63</color>
-  <color name="brown500">#795548</color>
-  <color name="brown600">#6D4C41</color>
-  <color name="brown700">#5D4037</color>
-  <color name="brown800">#4E342E</color>
-  <color name="brown900">#3E2723</color>
+  <color name="colorPrimary">#6200EE</color>
+  <color name="colorPrimaryDark">#3700B3</color>
+  <color name="colorAccent">#03DAC5</color>
 </resources>
