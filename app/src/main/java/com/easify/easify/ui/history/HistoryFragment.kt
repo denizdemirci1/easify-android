@@ -9,7 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.adcolony.sdk.AdColony
+import com.adcolony.sdk.AdColonyAdSize
+import com.adcolony.sdk.AdColonyAdView
+import com.adcolony.sdk.AdColonyAdViewListener
 import com.afollestad.materialdialogs.MaterialDialog
+import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHistoryBinding
 import com.easify.easify.model.History
@@ -22,6 +27,7 @@ import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_history.*
+
 
 /**
  * @author: deniz.demirci
@@ -46,8 +52,19 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       historyViewModel = this@HistoryFragment.historyViewModel
       binding = this
     }
+    requestAds()
     setupObservers()
     setupHistoryAdapter()
+  }
+
+  private fun requestAds() {
+    val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
+      override fun onRequestFilled(ad: AdColonyAdView) {
+        binding.historyAdContainer.addView(ad)
+      }
+    }
+
+    AdColony.requestAdView(BuildConfig.ADCOLONY_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
   }
 
   private fun setupObservers() {
@@ -61,7 +78,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       }
     })
 
-    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
@@ -84,7 +101,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         override fun create(): DataSource<String, History> {
           return HistoryDataSource(historyViewModel)
         }
-      }, 30).build()
+      }, 30
+    ).build()
   }
 
   private fun setClickedTrackUri(uri: String) {
