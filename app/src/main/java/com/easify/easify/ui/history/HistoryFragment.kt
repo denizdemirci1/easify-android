@@ -15,14 +15,11 @@ import com.easify.easify.databinding.FragmentHistoryBinding
 import com.easify.easify.model.History
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.history.adapter.HistoryAdapter
+import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_history.*
 
@@ -49,7 +46,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       historyViewModel = this@HistoryFragment.historyViewModel
       binding = this
     }
-    initAds()
     setupObservers()
     setupHistoryAdapter()
   }
@@ -128,17 +124,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   private fun onAddClicked(track: Track) {
     val action = HistoryFragmentDirections.actionHistoryFragmentToAddTrackToPlaylistFragment(track)
     findNavController().navigate(action)
-  }
-
-  private fun initAds() {
-    MobileAds.initialize(activity) {}
-    MobileAds.setRequestConfiguration(
-      RequestConfiguration.Builder()
-        .setTestDeviceIds(listOf("0D0FF4FD4C0328983D7FFC930B2555E3"))
-        .build()
-    )
-    val adRequest = AdRequest.Builder().build()
-    binding.adView.loadAd(adRequest)
   }
 
   override fun onDestroyView() {

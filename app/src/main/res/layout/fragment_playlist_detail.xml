@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -30,7 +29,7 @@
             android:ellipsize="marquee"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            ads:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="Your top songs 2020 Your top songs 2020"/>
 
         <ProgressBar
@@ -51,7 +50,7 @@
             android:scrollbarThumbVertical="@drawable/bg_scrollbar"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/playlist_detail_progress"
-            ads:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/view_holder_playlist_detail"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
