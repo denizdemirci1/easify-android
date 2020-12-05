@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -46,21 +45,16 @@
             android:scrollbarThumbVertical="@drawable/bg_scrollbar"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/history_progress"
-            ads:layout_constraintBottom_toTopOf="@+id/ad_view"
+            app:layout_constraintBottom_toTopOf="@id/history_ad_container"
             tools:listitem="@layout/view_holder_history"/>
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/ad_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/history_ad_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/admob_test_ad_unit_id"
-            ads:layout_constraintBottom_toBottomOf="parent"
-            ads:layout_constraintEnd_toEndOf="parent"
-            ads:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

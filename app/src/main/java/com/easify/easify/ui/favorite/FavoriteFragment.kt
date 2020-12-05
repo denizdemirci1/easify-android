@@ -2,21 +2,22 @@ package com.easify.easify.ui.favorite
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.adcolony.sdk.AdColony
+import com.adcolony.sdk.AdColonyInterstitial
+import com.adcolony.sdk.AdColonyInterstitialListener
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
+import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFavoriteBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.extensions.hideKeyboard
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite.*
+
 
 /**
  * @author: deniz.demirci
@@ -44,19 +45,22 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       viewModel = this@FavoriteFragment.viewModel
       binding = this
     }
-    initAds()
+    requestAds()
     setupListeners()
   }
 
-  private fun initAds() {
-    MobileAds.initialize(activity) {}
-    MobileAds.setRequestConfiguration(
-      RequestConfiguration.Builder()
-        .setTestDeviceIds(listOf("0D0FF4FD4C0328983D7FFC930B2555E3"))
-        .build()
+  private fun requestAds() {
+    AdColony.configure(
+      requireActivity(),
+      BuildConfig.ADCOLONY_APP_ID,
+      BuildConfig.ADCOLONY_FULL_SCREEN_AD_ZONE_ID
     )
-    val adRequest = AdRequest.Builder().build()
-    binding.adView.loadAd(adRequest)
+    val listener: AdColonyInterstitialListener = object : AdColonyInterstitialListener() {
+      override fun onRequestFilled(ad: AdColonyInterstitial) {
+        ad.show()
+      }
+    }
+    AdColony.requestInterstitial(BuildConfig.ADCOLONY_FULL_SCREEN_AD_ZONE_ID, listener)
   }
 
   private fun setupListeners() {
@@ -115,18 +119,7 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
     }
   }
 
-  override fun onPause() {
-    binding.adView.pause()
-    super.onPause()
-  }
-
-  override fun onResume() {
-    super.onResume()
-    binding.adView.resume()
-  }
-
   override fun onDestroyView() {
-    binding.adView.destroy()
     super.onDestroyView()
   }
 }

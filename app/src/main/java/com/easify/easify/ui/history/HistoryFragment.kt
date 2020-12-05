@@ -9,22 +9,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.adcolony.sdk.AdColony
+import com.adcolony.sdk.AdColonyAdSize
+import com.adcolony.sdk.AdColonyAdView
+import com.adcolony.sdk.AdColonyAdViewListener
 import com.afollestad.materialdialogs.MaterialDialog
+import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHistoryBinding
 import com.easify.easify.model.History
 import com.easify.easify.model.Track
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.history.adapter.HistoryAdapter
+import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_history.*
+
 
 /**
  * @author: deniz.demirci
@@ -42,6 +45,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   private lateinit var historyAdapter: HistoryAdapter
 
+  private var adColonyAdView: AdColonyAdView? = null
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentHistoryBinding>(historyRoot)?.apply {
@@ -49,9 +54,25 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       historyViewModel = this@HistoryFragment.historyViewModel
       binding = this
     }
-    initAds()
+    requestAds()
     setupObservers()
     setupHistoryAdapter()
+  }
+
+  private fun requestAds() {
+    AdColony.configure(
+      requireActivity(),
+      BuildConfig.ADCOLONY_APP_ID,
+      BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID
+    )
+    val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
+      override fun onRequestFilled(ad: AdColonyAdView) {
+        adColonyAdView = ad
+        binding.historyAdContainer.addView(ad)
+      }
+    }
+
+    AdColony.requestAdView(BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
   }
 
   private fun setupObservers() {
@@ -65,7 +86,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       }
     })
 
-    playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
+    playerViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
@@ -88,7 +109,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         override fun create(): DataSource<String, History> {
           return HistoryDataSource(historyViewModel)
         }
-      }, 30).build()
+      }, 30
+    ).build()
   }
 
   private fun setClickedTrackUri(uri: String) {
@@ -130,19 +152,9 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     findNavController().navigate(action)
   }
 
-  private fun initAds() {
-    MobileAds.initialize(activity) {}
-    MobileAds.setRequestConfiguration(
-      RequestConfiguration.Builder()
-        .setTestDeviceIds(listOf("0D0FF4FD4C0328983D7FFC930B2555E3"))
-        .build()
-    )
-    val adRequest = AdRequest.Builder().build()
-    binding.adView.loadAd(adRequest)
-  }
-
   override fun onDestroyView() {
     historyViewModel.urisOfTracks.clear()
+    adColonyAdView?.destroy()
     super.onDestroyView()
   }
 }
