@@ -45,6 +45,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   private lateinit var historyAdapter: HistoryAdapter
 
+  private var adColonyAdView: AdColonyAdView? = null
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentHistoryBinding>(historyRoot)?.apply {
@@ -60,6 +62,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   private fun requestAds() {
     val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
       override fun onRequestFilled(ad: AdColonyAdView) {
+        adColonyAdView = ad
         binding.historyAdContainer.addView(ad)
       }
     }
@@ -146,6 +149,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   override fun onDestroyView() {
     historyViewModel.urisOfTracks.clear()
+    adColonyAdView?.destroy()
     super.onDestroyView()
   }
 }
