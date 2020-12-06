@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorSpotifyBlack"
-        android:paddingStart="@dimen/fragment_root_padding"
-        android:paddingEnd="@dimen/fragment_root_padding"
         android:paddingTop="@dimen/fragment_root_padding">
 
         <com.easify.easify.ui.customviews.SearchView
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fragment_root_padding"
+            android:layout_marginEnd="@dimen/fragment_root_padding"
             app:hint="@string/fragment_home_search_hint"
             app:hintColor="@color/colorHintGray"
             app:layout_constraintTop_toTopOf="parent"/>

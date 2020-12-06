@@ -56,8 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            android:paddingStart="@dimen/fragment_root_padding"
-            android:paddingEnd="@dimen/fragment_root_padding"
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="@drawable/bg_scrollbar"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

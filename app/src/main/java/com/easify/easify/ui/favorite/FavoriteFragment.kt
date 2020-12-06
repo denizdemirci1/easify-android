@@ -18,14 +18,10 @@ import com.easify.easify.ui.extensions.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
-
 /**
  * @author: deniz.demirci
  * @date: 9/5/2020
  */
-
-private const val KEY_ARTISTS = "artists"
-private const val KEY_TRACKS = "tracks"
 
 @AndroidEntryPoint
 class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
@@ -34,9 +30,11 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
 
   private lateinit var binding: FragmentFavoriteBinding
 
-  private val longTerm = Pair("Several Years", "long_term")
-  private val mediumTerm = Pair("Last 6 Months", "medium_term")
-  private val shortTerm = Pair("Last 4 Weeks", "short_term")
+  private lateinit var longTerm: Pair<String, String>
+  private lateinit var mediumTerm: Pair<String, String>
+  private lateinit var shortTerm: Pair<String, String>
+  private lateinit var artistKey: String
+  private lateinit var trackKey: String
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -45,8 +43,17 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       viewModel = this@FavoriteFragment.viewModel
       binding = this
     }
-    requestAds()
+    initKeys()
+    //requestAds()
     setupListeners()
+  }
+
+  private fun initKeys() {
+    longTerm = Pair(getString(R.string.fragment_favorites_long_term), "long_term")
+    mediumTerm = Pair(getString(R.string.fragment_favorites_medium_term), "medium_term")
+    shortTerm = Pair(getString(R.string.fragment_favorites_short_term), "short_term")
+    artistKey = getString(R.string.fragment_favorites_artists)
+    trackKey = getString(R.string.fragment_favorites_tracks)
   }
 
   private fun requestAds() {
@@ -67,7 +74,7 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
     binding.type.setOnClickListener {
       it.context.let { context ->
         MaterialDialog(context).show {
-          listItems(items = listOf(KEY_ARTISTS, KEY_TRACKS)) { _, _, text ->
+          listItems(items = listOf(artistKey, trackKey)) { _, _, text ->
             binding.type.setText(text)
           }
         }
@@ -94,8 +101,8 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       }
 
       when (binding.type.text.toString()) {
-        KEY_ARTISTS -> openTopArtistsFragment(timeRange)
-        KEY_TRACKS -> openTopTracksFragment(timeRange)
+        artistKey -> openTopArtistsFragment(timeRange)
+        trackKey -> openTopTracksFragment(timeRange)
         else -> showError(resources.getString(R.string.fragment_favorites_type_empty_error))
       }
     }
@@ -117,9 +124,5 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       message(text = message)
       positiveButton(R.string.dialog_ok)
     }
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
   }
 }
