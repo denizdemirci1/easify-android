@@ -2,15 +2,13 @@
   <string name="app_name">Easify</string>
   <string name="app_slogan">enrich your spotify experience</string>
 
-  <string name="com_spotify_sdk_redirect_scheme">com.easify.easify</string>
-  <string name="com_spotify_sdk_redirect_host">callback</string>
-  <string name="spotify_uri_callback">com.easify.easify://callback</string>
+  <string name="com_spotify_sdk_redirect_scheme" translatable="false">com.easify.easify</string>
+  <string name="com_spotify_sdk_redirect_host" translatable="false">callback</string>
+  <string name="spotify_uri_callback" translatable="false">com.easify.easify://callback</string>
 
-  <string name="admob_app_id">ca-app-pub-5017818231308624~1013223874</string>
-  <string name="admob_app_id_test">ca-app-pub-3940256099942544/2247696110</string>
-  <string name="admob_test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-  <string name="banner_ad_unit_id_favorite_fragment">ca-app-pub-5017818231308624/8371456256</string>
-  <string name="banner_ad_unit_id_history_fragment">ca-app-pub-5017818231308624/3007448931</string>
+  <string name="admob_app_id" translatable="false">ca-app-pub-5017818231308624~1013223874</string>
+  <string name="admob_app_id_test" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+  <string name="admob_test_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
   <!-- Bottom Nav Menu -->
   <string name="home">Home</string>
