@@ -17,7 +17,7 @@
         android:label="AddTrackToPlaylistFragment" >
         <argument
             android:name="track"
-            app:argType="com.easify.easify.model.Track"
+            app:argType="com.easify.easify.model.util.EasifyTrack"
             app:nullable="true"
             android:defaultValue="@null" />
     </dialog>

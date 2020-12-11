@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="artist"
-            type="com.easify.easify.model.Artist" />
+            type="com.easify.easify.model.util.EasifyArtist" />
         <variable
             name="artistViewModel"
             type="com.easify.easify.ui.profile.follows.followed.artist.ArtistViewModel" />
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    app:setFollowerCount="@{artist.followers.total}"
+                    app:setFollowerCount="@{artist.follower}"
                     app:layout_constraintTop_toBottomOf="@+id/artist_name"
                     app:layout_constraintEnd_toEndOf="@id/artist_name"
                     app:layout_constraintStart_toStartOf="@id/artist_name"

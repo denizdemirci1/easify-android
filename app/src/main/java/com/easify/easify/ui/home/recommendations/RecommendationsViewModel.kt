@@ -7,6 +7,9 @@ import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.BrowseRepository
 import com.easify.easify.data.repositories.PlaylistRepository
 import com.easify.easify.model.*
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.ui.base.BaseViewModel
+import com.easify.easify.ui.extensions.toEasifyItemList
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -21,7 +24,7 @@ class RecommendationsViewModel @ViewModelInject constructor(
   private val browseRepository: BrowseRepository,
   private val playlistRepository: PlaylistRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel() {
 
   private val recommendedTracks = ArrayList<Track>()
 
@@ -50,7 +53,9 @@ class RecommendationsViewModel @ViewModelInject constructor(
             recommendedTracks.clear()
             recommendedTracks.addAll(result.data.tracks)
             urisOfTracks.addAll(result.data.tracks.map { it.uri })
-            sendEvent(RecommendationsViewEvent.OnRecommendationsReceived(recommendedTracks))
+            sendEvent(RecommendationsViewEvent
+              .OnRecommendationsReceived(recommendedTracks.toEasifyItemList())
+            )
           }
 
           is Result.Error -> {
@@ -121,18 +126,22 @@ class RecommendationsViewModel @ViewModelInject constructor(
     }
   }
 
-  fun onTrackClicked(track: Track) {
-    viewModelScope.launch {
-      sendEvent(RecommendationsViewEvent.TrackClicked(track.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(RecommendationsViewEvent.GetDevices)
-      } else {
-        sendEvent(RecommendationsViewEvent.Play)
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    item.track?.let { track ->
+      viewModelScope.launch {
+        sendEvent(RecommendationsViewEvent.TrackClicked(track.uri))
+        if (userManager.deviceId.isNullOrEmpty()) {
+          sendEvent(RecommendationsViewEvent.GetDevices)
+        } else {
+          sendEvent(RecommendationsViewEvent.Play)
+        }
       }
     }
   }
 
-  fun onAddIconClicked(track: Track) {
-    sendEvent(RecommendationsViewEvent.AddIconClicked(track))
+  override fun onAddIconClick(item: EasifyItem) {
+    item.track?.let { track ->
+      sendEvent(RecommendationsViewEvent.AddIconClicked(track))
+    }
   }
 }

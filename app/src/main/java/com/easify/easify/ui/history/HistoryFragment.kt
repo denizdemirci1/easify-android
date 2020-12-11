@@ -17,10 +17,10 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHistoryBinding
-import com.easify.easify.model.History
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.history.adapter.HistoryAdapter
+import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
@@ -43,7 +43,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   private lateinit var binding: FragmentHistoryBinding
 
-  private lateinit var historyAdapter: HistoryAdapter
+  private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   private var adColonyAdView: AdColonyAdView? = null
 
@@ -94,19 +94,19 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      historyAdapter.submitList(list)
+      easifyItemPagedListAdapter.submitList(list)
     })
   }
 
   private fun setupHistoryAdapter() {
-    historyAdapter = HistoryAdapter(historyViewModel)
-    binding.tracksRecyclerView.adapter = historyAdapter
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(historyViewModel)
+    binding.tracksRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
-  private fun buildPagedListLiveData(): LiveData<PagedList<History>> {
+  private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
-      object : DataSource.Factory<String, History>() {
-        override fun create(): DataSource<String, History> {
+      object : DataSource.Factory<String, EasifyItem>() {
+        override fun create(): DataSource<String, EasifyItem> {
           return HistoryDataSource(historyViewModel)
         }
       }, 30
@@ -147,7 +147,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     }
   }
 
-  private fun onAddClicked(track: Track) {
+  private fun onAddClicked(track: EasifyTrack) {
     val action = HistoryFragmentDirections.actionHistoryFragmentToAddTrackToPlaylistFragment(track)
     findNavController().navigate(action)
   }

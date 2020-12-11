@@ -1,8 +1,9 @@
 package com.easify.easify.ui.history.data
 
 import androidx.paging.PageKeyedDataSource
-import com.easify.easify.model.History
 import com.easify.easify.model.HistoryResponse
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.ui.extensions.toEasifyItemList
 import com.easify.easify.ui.history.HistoryViewModel
 import javax.inject.Inject
 
@@ -13,20 +14,22 @@ import javax.inject.Inject
 
 class HistoryDataSource @Inject constructor(
   private val viewModel: HistoryViewModel
-) : PageKeyedDataSource<String, History>() {
+) : PageKeyedDataSource<String, EasifyItem>() {
 
   private var before: String? = null
   private var uniqueItemsCount = 0
-  private val historyToShow = ArrayList<History>()
+  private val historyToShow = ArrayList<EasifyItem>()
 
   override fun loadInitial(
     params: LoadInitialParams<String>,
-    callback: LoadInitialCallback<String, History>
+    callback: LoadInitialCallback<String, EasifyItem>
   ) {
     viewModel.fetchRecentlyPlayedSongs(null) { data: HistoryResponse ->
       if (data.items.isNotEmpty()) {
         before = data.cursors?.before
-        historyToShow.addAll(data.items.distinctBy { it.track.id })
+        historyToShow.addAll(
+          data.items.distinctBy { it.track.id }.map { it.track }.toEasifyItemList()
+        )
         uniqueItemsCount = historyToShow.size
         callback.onResult(
           historyToShow,
@@ -37,14 +40,15 @@ class HistoryDataSource @Inject constructor(
     }
   }
 
-  override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, History>) {}
+  override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, EasifyItem>) {}
 
-  override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, History>) {
+  override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, EasifyItem>) {
     viewModel.fetchRecentlyPlayedSongs(before) { data: HistoryResponse ->
       before = data.cursors?.before
-      val currentUniqueItemList = data.items.distinctBy { it.track.id }
+      val currentUniqueItemList =
+        data.items.distinctBy { it.track.id }.map { it.track }.toEasifyItemList()
       historyToShow.addAll(currentUniqueItemList)
-      val uniqueItemsList = historyToShow.distinctBy { it.track.id }
+      val uniqueItemsList = historyToShow.distinctBy { it.track?.id }
       callback.onResult(
         if (uniqueItemsCount < uniqueItemsList.size)
           uniqueItemsList.subList(uniqueItemsCount, uniqueItemsList.size) else

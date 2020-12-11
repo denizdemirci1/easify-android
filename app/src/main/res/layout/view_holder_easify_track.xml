@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
+        <variable
+            name="isRemovable"
+            type="Boolean" />
         <variable
             name="position"
             type="Integer" />
@@ -20,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorSpotifyBlack"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/view_holder_easify_margin_16"
         android:onClick="@{() -> viewModel.onItemClick(easifyItem, position)}">
 
         <ImageView
@@ -29,8 +33,8 @@
             android:layout_height="64dp"
             android:scaleType="fitCenter"
             app:trackImage="@{easifyItem.track.images}"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+            android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,16 +47,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/track_image"
-            app:layout_constraintEnd_toStartOf="@id/listen_track">
+            app:layout_constraintEnd_toStartOf="@id/operations_layout">
 
             <TextView
                 android:id="@+id/track_title"
                 style="@style/Material.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="@dimen/view_holder_easify_margin_16"
+                android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+                android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
                 android:text="@{easifyItem.track.name}"
                 android:singleLine="true"
                 android:ellipsize="marquee"
@@ -66,9 +70,9 @@
                 style="@style/Item.Info.Subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="@dimen/view_holder_easify_margin_4"
+                android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+                android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
                 android:text="@{easifyItem.track.artistName}"
                 android:singleLine="true"
                 android:ellipsize="marquee"
@@ -79,27 +83,60 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/listen_track"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/operations_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_listen"
-            android:layout_marginEnd="8dp"
-            android:onClick="@{() -> viewModel.onListenIconClick(easifyItem)}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/add_track"/>
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/add_track"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_add"
-            android:onClick="@{() -> viewModel.onAddIconClick(easifyItem)}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/non_playlist_track_operations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{isRemovable ? View.GONE : View.VISIBLE}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/listen_track"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_listen"
+                    android:layout_marginEnd="@dimen/view_holder_easify_margin_8"
+                    android:visibility="@{viewModel.isListenIconNeededForTrack ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{() -> viewModel.onListenIconClick(easifyItem)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/add_track"/>
+
+                <ImageView
+                    android:id="@+id/add_track"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+                    android:src="@drawable/ic_add"
+                    android:onClick="@{() -> viewModel.onAddIconClick(easifyItem)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/remove_track"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+                android:src="@drawable/ic_remove"
+                android:visibility="@{isRemovable ? View.VISIBLE : View.GONE}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

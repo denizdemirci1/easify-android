@@ -1,6 +1,6 @@
 package com.easify.easify.ui.history
 
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyTrack
 
 /**
  * @author: deniz.demirci
@@ -15,7 +15,7 @@ sealed class HistoryViewEvent {
 
   data class TrackClicked(val uri: String): HistoryViewEvent()
 
-  data class AddIconClicked(val track: Track) : HistoryViewEvent()
+  data class AddIconClicked(val track: EasifyTrack) : HistoryViewEvent()
 
   data class ShowError(val message: String) : HistoryViewEvent()
 }

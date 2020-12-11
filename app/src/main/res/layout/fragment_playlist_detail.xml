@@ -51,7 +51,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/playlist_detail_progress"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/view_holder_playlist_detail"/>
+            tools:listitem="@layout/view_holder_easify_track"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/no_tracks_layout"

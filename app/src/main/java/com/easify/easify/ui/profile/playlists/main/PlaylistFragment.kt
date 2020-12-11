@@ -15,7 +15,7 @@ import com.easify.easify.databinding.FragmentPlaylistBinding
 import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.model.util.EasifyPlaylist
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.common.adapter.EasifyItemAdapter
+import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
@@ -37,7 +37,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
 
   private lateinit var binding: FragmentPlaylistBinding
 
-  private lateinit var easifyItemAdapter: EasifyItemAdapter
+  private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -76,7 +76,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      easifyItemAdapter.submitList(list)
+      easifyItemPagedListAdapter.submitList(list)
     })
   }
 
@@ -87,8 +87,8 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
   }
 
   private fun setupPlaylistAdapter() {
-    easifyItemAdapter = EasifyItemAdapter(playlistViewModel)
-    binding.playlistsRecyclerView.adapter = easifyItemAdapter
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(playlistViewModel)
+    binding.playlistsRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
   private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {

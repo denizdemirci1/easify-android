@@ -10,6 +10,8 @@ import com.easify.easify.model.util.EasifyItem
 
 open class BaseViewModel : ViewModel() {
 
+  var isListenIconNeededForTrack = false
+
   open fun onItemClick(item: EasifyItem, position: Int) = Unit
 
   open fun onAddIconClick(item: EasifyItem) = Unit

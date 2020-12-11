@@ -8,8 +8,8 @@ import com.easify.easify.data.repositories.PersonalizationRepository
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.TopTrackResponse
-import com.easify.easify.model.Track
-import com.easify.easify.ui.history.HistoryViewEvent
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ class TopTracksViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val personalizationRepository: PersonalizationRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel() {
 
   val urisOfTracks = ArrayList<String>()
 
@@ -59,18 +59,22 @@ class TopTracksViewModel @ViewModelInject constructor(
     }
   }
 
-  fun onTrackClicked(track: Track) {
-    viewModelScope.launch {
-      sendEvent(TopTracksViewEvent.TrackClicked(track.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(TopTracksViewEvent.GetDevices)
-      } else {
-        sendEvent(TopTracksViewEvent.Play)
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    item.track?.let { track ->
+      viewModelScope.launch {
+        sendEvent(TopTracksViewEvent.TrackClicked(track.uri))
+        if (userManager.deviceId.isNullOrEmpty()) {
+          sendEvent(TopTracksViewEvent.GetDevices)
+        } else {
+          sendEvent(TopTracksViewEvent.Play)
+        }
       }
     }
   }
 
-  fun onAddIconClicked(track: Track) {
-    sendEvent(TopTracksViewEvent.AddIconClicked(track))
+  override fun onAddIconClick(item: EasifyItem) {
+    item.track?.let { track ->
+      sendEvent(TopTracksViewEvent.AddIconClicked(track))
+    }
   }
 }

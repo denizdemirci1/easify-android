@@ -10,12 +10,13 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHomeBinding
 import com.easify.easify.model.SearchType
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.common.adapter.EasifyItemListAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.ui.search.SearchViewEvent
-import com.easify.easify.ui.search.adapter.SearchAdapter
 import com.easify.easify.ui.search.SearchViewModel
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +35,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private lateinit var binding: FragmentHomeBinding
 
-  private lateinit var searchAdapter: SearchAdapter<Track>
+  private lateinit var easifyItemAdapter: EasifyItemListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -55,8 +56,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
   }
 
   private fun setAdapters() {
-    searchAdapter = SearchAdapter(searchViewModel, SearchType.TRACK)
-    binding.searchTracks.adapter = searchAdapter
+    easifyItemAdapter = EasifyItemListAdapter(searchViewModel)
+    binding.searchTracks.adapter = easifyItemAdapter
   }
 
   private fun setupObservers() {
@@ -95,18 +96,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     playerViewModel.getDevices()
   }
 
-  private fun onTrackClicked(track: Track) {
+  private fun onTrackClicked(track: EasifyTrack) {
     val action = HomeFragmentDirections.actionHomeFragmentToFeaturesFragment(track)
     findNavController().navigate(action)
   }
 
-  private fun onAddIconClicked(track: Track) {
+  private fun onAddIconClicked(track: EasifyTrack) {
     val action = HomeFragmentDirections.actionHomeFragmentToAddTrackToPlaylistFragment3(track)
     findNavController().navigate(action)
   }
 
-  private fun onViewDataChange(tracks: ArrayList<Track>) {
-    searchAdapter.submitList(tracks)
+  private fun onViewDataChange(items: ArrayList<EasifyItem>) {
+    easifyItemAdapter.submitList(items)
   }
 
   private fun setClickedTrackUri(uri: String) {

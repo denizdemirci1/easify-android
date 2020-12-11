@@ -1,7 +1,6 @@
 package com.easify.easify.ui.profile.playlists.main.data
 
 import androidx.paging.PageKeyedDataSource
-import com.easify.easify.model.Playlist
 import com.easify.easify.model.PlaylistResponse
 import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.extensions.toEasifyItemList

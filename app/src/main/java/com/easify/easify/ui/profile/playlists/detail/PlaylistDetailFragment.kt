@@ -11,13 +11,13 @@ import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistDetailBinding
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.common.adapter.EasifyItemListAdapter
 import com.easify.easify.ui.extensions.dpToPx
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.ui.profile.playlists.detail.adapter.PlaylistDetailAdapter
-import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
+import com.easify.easify.util.EventObserver
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist_detail.*
@@ -40,7 +40,7 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
 
   private lateinit var binding: FragmentPlaylistDetailBinding
 
-  private lateinit var playlistDetailAdapter: PlaylistDetailAdapter
+  private lateinit var easifyItemListAdapter: EasifyItemListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -65,7 +65,7 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
         is PlaylistDetailViewEvent.ListenIconClicked -> setClickedTrackUri(event.uri)
         is PlaylistDetailViewEvent.ShowError -> showError(event.message)
         is PlaylistDetailViewEvent.NotifyDataChanged -> {
-          playlistDetailAdapter.submitList(event.tracks)
+          easifyItemListAdapter.submitList(event.tracks)
         }
         is PlaylistDetailViewEvent.ShowSnackbar -> {
           showSnackbar(getString(R.string.fragment_playlist_detail_removed, event.trackName))
@@ -82,12 +82,14 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
   }
 
   private fun setupPlaylistDetailAdapter() {
-    playlistDetailAdapter = PlaylistDetailAdapter(playlistDetailViewModel, ::removeClicked)
-    binding.tracksRecyclerView.adapter = playlistDetailAdapter
+    easifyItemListAdapter = EasifyItemListAdapter(playlistDetailViewModel, ::removeClicked)
+    binding.tracksRecyclerView.adapter = easifyItemListAdapter
   }
 
-  private fun removeClicked(track: Track) {
-    playlistDetailViewModel.removeTrack(track)
+  private fun removeClicked(item: EasifyItem) {
+    item.track?.let { track ->
+      playlistDetailViewModel.removeTrack(track)
+    }
   }
 
   private fun handleDeviceIdSet(deviceId: String?) {

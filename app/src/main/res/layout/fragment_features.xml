@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="track"
-            type="com.easify.easify.model.Track" />
+            type="com.easify.easify.model.util.EasifyTrack" />
         <variable
             name="features"
             type="com.easify.easify.model.FeaturesResponse" />
@@ -53,7 +53,7 @@
                         android:id="@+id/album_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{track.album.name}"
+                        android:text="@{track.albumName}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/album_label"
@@ -64,7 +64,7 @@
                         android:layout_width="300dp"
                         android:layout_height="300dp"
                         android:layout_marginTop="@dimen/feature_fragment_image_margin_top"
-                        app:artistImageBig="@{track.album.images}"
+                        app:artistImageBig="@{track.images}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/album_name"
@@ -89,7 +89,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/feature_fragment_artist_name_margin_top"
-                        android:text="@{track.artists.get(0).name}"
+                        android:text="@{track.artistName}"
                         app:layout_constraintEnd_toEndOf="@id/song_name"
                         app:layout_constraintStart_toStartOf="@id/song_name"
                         app:layout_constraintTop_toBottomOf="@+id/song_name"

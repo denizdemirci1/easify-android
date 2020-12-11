@@ -5,10 +5,11 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.FollowRepository
-import com.easify.easify.model.Artist
 import com.easify.easify.model.ArtistsResponse
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -22,7 +23,7 @@ class FollowedArtistsViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val followRepository: FollowRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel() {
 
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
@@ -49,17 +50,21 @@ class FollowedArtistsViewModel @ViewModelInject constructor(
     }
   }
 
-  fun onArtistClicked(artist: Artist) {
-    sendEvent(FollowedArtistsViewEvent.OpenArtistFragment(artist))
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    item.artist?.let { artist ->
+      sendEvent(FollowedArtistsViewEvent.OpenArtistFragment(artist))
+    }
   }
 
-  fun onListenIconClicked(artist: Artist) {
-    viewModelScope.launch {
-      sendEvent(FollowedArtistsViewEvent.ListenIconClicked(artist.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(FollowedArtistsViewEvent.GetDevices)
-      } else {
-        sendEvent(FollowedArtistsViewEvent.Play)
+  override fun onListenIconClick(item: EasifyItem) {
+    item.artist?.let { artist ->
+      viewModelScope.launch {
+        sendEvent(FollowedArtistsViewEvent.ListenIconClicked(artist.uri))
+        if (userManager.deviceId.isNullOrEmpty()) {
+          sendEvent(FollowedArtistsViewEvent.GetDevices)
+        } else {
+          sendEvent(FollowedArtistsViewEvent.Play)
+        }
       }
     }
   }

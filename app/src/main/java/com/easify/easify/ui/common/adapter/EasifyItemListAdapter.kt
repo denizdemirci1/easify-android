@@ -5,25 +5,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.model.util.EasifyItemType
-import com.easify.easify.ui.base.BasePagedListAdapter
+import com.easify.easify.ui.base.BaseListAdapter
 import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.ui.common.adapter.viewholder.ArtistViewHolder
 import com.easify.easify.ui.common.adapter.viewholder.EmptyViewHolder
 import com.easify.easify.ui.common.adapter.viewholder.PlaylistViewHolder
 import com.easify.easify.ui.common.adapter.viewholder.TrackViewHolder
 
-private const val TRACK = 0
-private const val ARTIST = 1
-private const val PLAYLIST = 2
-
 /**
  * @author: deniz.demirci
- * @date: 11.12.2020
+ * @date: 12.12.2020
  */
 
-class EasifyItemAdapter(
-  private val viewModel: BaseViewModel
-) : BasePagedListAdapter<EasifyItem>(
+class EasifyItemListAdapter(
+  private val viewModel: BaseViewModel,
+  private var removeListener: ((EasifyItem) -> Unit)? = null
+) : BaseListAdapter<EasifyItem>(
   itemsSame = { old, new -> old == new },
   contentsSame = { old, new -> old == new }
 ) {
@@ -34,9 +31,9 @@ class EasifyItemAdapter(
     viewType: Int
   ): RecyclerView.ViewHolder {
     return when (viewType) {
-      TRACK -> TrackViewHolder(parent, inflater)
-      ARTIST -> ArtistViewHolder(parent, inflater)
-      PLAYLIST -> PlaylistViewHolder(parent, inflater)
+      EasifyItemType.TRACK.value -> TrackViewHolder(parent, inflater)
+      EasifyItemType.ARTIST.value -> ArtistViewHolder(parent, inflater)
+      EasifyItemType.PLAYLIST.value -> PlaylistViewHolder(parent, inflater)
       else -> EmptyViewHolder(parent, inflater)
     }
   }
@@ -44,6 +41,8 @@ class EasifyItemAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     getItem(position)?.let { easifyItem ->
       when (holder) {
+        is TrackViewHolder -> holder.bind(easifyItem, position, viewModel, removeListener)
+        is ArtistViewHolder -> holder.bind(easifyItem, position, viewModel)
         is PlaylistViewHolder -> holder.bind(easifyItem, position, viewModel)
         is EmptyViewHolder -> holder.bind()
       }
@@ -51,11 +50,6 @@ class EasifyItemAdapter(
   }
 
   override fun getItemViewType(position: Int): Int {
-    return when (getItem(position)?.type) {
-      EasifyItemType.TRACK -> TRACK
-      EasifyItemType.ARTIST -> ARTIST
-      EasifyItemType.PLAYLIST -> PLAYLIST
-      else -> -1
-    }
+    return getItem(position)?.type?.value ?: -1
   }
 }

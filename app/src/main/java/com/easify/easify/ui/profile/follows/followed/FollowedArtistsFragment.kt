@@ -12,10 +12,11 @@ import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFollowedArtistsBinding
-import com.easify.easify.model.Artist
+import com.easify.easify.model.util.EasifyArtist
+import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.ui.profile.follows.followed.adapter.FollowedArtistsAdapter
 import com.easify.easify.ui.profile.follows.followed.data.FollowedArtistsDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
@@ -36,7 +37,7 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
 
   private lateinit var binding: FragmentFollowedArtistsBinding
 
-  private lateinit var followedArtistsAdapter: FollowedArtistsAdapter
+  private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -76,7 +77,7 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      followedArtistsAdapter.submitList(list)
+      easifyItemPagedListAdapter.submitList(list)
     })
   }
 
@@ -95,14 +96,14 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
   }
 
   private fun setupFollowedArtistsAdapter() {
-    followedArtistsAdapter = FollowedArtistsAdapter(followedArtistsViewModel)
-    binding.followedArtistsRecyclerView.adapter = followedArtistsAdapter
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(followedArtistsViewModel)
+    binding.followedArtistsRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
-  private fun buildPagedListLiveData(): LiveData<PagedList<Artist>> {
+  private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
-      object : DataSource.Factory<String, Artist>() {
-        override fun create(): DataSource<String, Artist> {
+      object : DataSource.Factory<String, EasifyItem>() {
+        override fun create(): DataSource<String, EasifyItem> {
           return FollowedArtistsDataSource(followedArtistsViewModel)
         }
       }, 30).build()
@@ -112,7 +113,7 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
     playerViewModel.getDevices()
   }
 
-  private fun openArtistFragment(artist: Artist) {
+  private fun openArtistFragment(artist: EasifyArtist) {
     val action =
       FollowedArtistsFragmentDirections.actionFollowedArtistsFragmentToArtistFragment(artist)
     findNavController().navigate(action)

@@ -9,6 +9,7 @@ import com.easify.easify.data.repositories.PlayerRepository
 import com.easify.easify.model.Artist
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
+import com.easify.easify.model.util.EasifyArtist
 import com.easify.easify.util.Event
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,7 @@ class ArtistViewModel @ViewModelInject constructor(
     FOLLOW, UNFOLLOW
   }
 
-  private var artist: Artist? = null
+  private var artist: EasifyArtist? = null
 
   private val _artists = MutableLiveData<List<Artist>>()
   val artists: LiveData<List<Artist>> = _artists
@@ -42,7 +43,7 @@ class ArtistViewModel @ViewModelInject constructor(
     _event.value = Event(event)
   }
 
-  fun setArtist(artist: Artist?) {
+  fun setArtist(artist: EasifyArtist?) {
     this.artist = artist
   }
 
@@ -79,7 +80,9 @@ class ArtistViewModel @ViewModelInject constructor(
   }
 
   private fun setButtonVisibilities(artists: List<Artist>) {
-    val isArtistFollowed = artists.contains(this.artist)
-    _showFollowButton.value = !isArtistFollowed
+    artist?.let { easifyArtist ->
+      val isArtistFollowed = artists.map { it.id }.contains(easifyArtist.id)
+      _showFollowButton.value = !isArtistFollowed
+    }
   }
 }

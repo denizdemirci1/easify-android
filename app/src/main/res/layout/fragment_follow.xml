@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorSpotifyBlack"
-        android:paddingStart="@dimen/fragment_root_padding"
-        android:paddingEnd="@dimen/fragment_root_padding"
         android:paddingTop="@dimen/fragment_root_padding">
 
         <com.easify.easify.ui.customviews.SearchView
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fragment_root_padding"
+            android:layout_marginEnd="@dimen/fragment_root_padding"
             app:hint="@string/fragment_follow_search_hint"
             app:hintColor="@color/colorHintGray"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -24,13 +24,13 @@
             android:id="@+id/search_artists"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/fragment_root_padding"
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="@drawable/bg_scrollbar"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/search"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout="@layout/view_holder_search_artist"/>
+            tools:layout="@layout/view_holder_easify_artist"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

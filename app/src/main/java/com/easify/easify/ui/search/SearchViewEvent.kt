@@ -1,7 +1,8 @@
 package com.easify.easify.ui.search
 
-import com.easify.easify.model.Artist
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyArtist
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyTrack
 
 /**
  * @author: deniz.demirci
@@ -14,17 +15,17 @@ sealed class SearchViewEvent {
 
   object Play: SearchViewEvent()
 
-  data class OnTrackClicked(val track: Track): SearchViewEvent()
+  data class OnTrackClicked(val track: EasifyTrack): SearchViewEvent()
 
-  data class OnArtistClicked(val artist: Artist): SearchViewEvent()
+  data class OnArtistClicked(val artist: EasifyArtist): SearchViewEvent()
 
-  data class OnAddIconClicked(val track: Track): SearchViewEvent()
+  data class OnAddIconClicked(val track: EasifyTrack): SearchViewEvent()
 
   data class OnListenIconClicked(val uri: String): SearchViewEvent()
 
-  data class NotifyTrackDataChanged(val trackList: ArrayList<Track>) : SearchViewEvent()
+  data class NotifyTrackDataChanged(val trackList: ArrayList<EasifyItem>) : SearchViewEvent()
 
-  data class NotifyArtistDataChanged(val artistList: ArrayList<Artist>) : SearchViewEvent()
+  data class NotifyArtistDataChanged(val artistList: ArrayList<EasifyItem>) : SearchViewEvent()
 
   data class ShowError(val message: String) : SearchViewEvent()
 }

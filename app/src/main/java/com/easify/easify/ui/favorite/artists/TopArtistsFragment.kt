@@ -12,9 +12,10 @@ import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentTopArtistsBinding
-import com.easify.easify.model.Artist
+import com.easify.easify.model.util.EasifyArtist
+import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.favorite.artists.adapter.TopArtistsAdapter
+import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.favorite.artists.data.TopArtistsDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
@@ -38,7 +39,7 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
 
   private val args: TopArtistsFragmentArgs by navArgs()
 
-  private lateinit var topArtistsAdapter: TopArtistsAdapter
+  private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -70,19 +71,19 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      topArtistsAdapter.submitList(list)
+      easifyItemPagedListAdapter.submitList(list)
     })
   }
 
   private fun setupTopArtistsAdapter() {
-    topArtistsAdapter = TopArtistsAdapter(topArtistsViewModel)
-    binding.topArtistsRecyclerView.adapter = topArtistsAdapter
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(topArtistsViewModel)
+    binding.topArtistsRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
-  private fun buildPagedListLiveData(): LiveData<PagedList<Artist>> {
+  private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
-      object : DataSource.Factory<String, Artist>() {
-        override fun create(): DataSource<String, Artist> {
+      object : DataSource.Factory<String, EasifyItem>() {
+        override fun create(): DataSource<String, EasifyItem> {
           return TopArtistsDataSource(args.timeRange, topArtistsViewModel)
         }
       }, 20).build()
@@ -106,7 +107,7 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     playerViewModel.getDevices()
   }
 
-  private fun openArtistFragment(artist: Artist) {
+  private fun openArtistFragment(artist: EasifyArtist) {
     // TODO: open
   }
 
