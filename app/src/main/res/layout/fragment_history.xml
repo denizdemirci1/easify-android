@@ -6,49 +6,55 @@
     <data>
         <import type="android.view.View" />
         <variable
-            name="topTracksViewModel"
-            type="com.easify.easify.ui.favorite.tracks.TopTracksViewModel" />
+            name="historyViewModel"
+            type="com.easify.easify.ui.history.HistoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topTracksRoot"
+        android:id="@+id/historyRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorSpotifyBlack" >
+        android:background="@color/colorSpotifyBlack">
 
         <TextView
-            android:id="@+id/top_tracks_label"
+            android:id="@+id/history_label"
             style="@style/Toolbar.Title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/fragment_top_tracks_title"
+            android:text="@string/fragment_history_recently_listened"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <ProgressBar
-            android:id="@+id/top_tracks_progress"
+            android:id="@+id/history_progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{topTracksViewModel.loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@id/top_tracks_label"/>
+            android:visibility="@{historyViewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/history_label"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/top_tracks_recycler_view"
+            android:id="@+id/tracks_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="@drawable/bg_scrollbar"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/top_tracks_progress"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/history_progress"
+            app:layout_constraintBottom_toTopOf="@id/history_ad_container"
             tools:listitem="@layout/view_holder_easify_track"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/history_ad_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

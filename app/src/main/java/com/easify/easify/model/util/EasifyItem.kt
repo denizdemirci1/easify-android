@@ -32,6 +32,7 @@ data class EasifyTrack(
   val id: String,
   val name: String,
   val artistName: String,
+  val albumName: String,
   val images: List<Image>?,
   val uri: String
 ): Parcelable
@@ -40,9 +41,10 @@ data class EasifyTrack(
 data class EasifyArtist(
   val id: String,
   val name: String,
-  val follower: Int,
+  val follower: Int?,
   val popularity: Int,
   val images: List<Image>?,
+  val genres: List<String>?,
   val uri: String
 ): Parcelable
 
@@ -67,6 +69,6 @@ data class Icon(
   val foreground: Int
 ): Parcelable
 
-enum class EasifyItemType {
-  TRACK, ARTIST, PLAYLIST
+enum class EasifyItemType(val value: Int) {
+  TRACK(0), ARTIST(1), PLAYLIST(2)
 }

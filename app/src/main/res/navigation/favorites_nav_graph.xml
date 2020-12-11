@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/favorites_nav_graph"
+    app:startDestination="@id/favoriteFragment">
+
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.easify.easify.ui.favorite.FavoriteFragment"
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_topArtistsFragment"
+            app:destination="@id/topArtistsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_favoriteFragment_to_topTracksFragment"
+            app:destination="@id/topTracksFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/topArtistsFragment"
+        android:name="com.easify.easify.ui.favorite.artists.TopArtistsFragment"
+        android:label="TopArtistsFragment" >
+        <argument
+            android:name="timeRange"
+            app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/topTracksFragment"
+        android:name="com.easify.easify.ui.favorite.tracks.TopTracksFragment"
+        android:label="TopTracksFragment" >
+        <argument
+            android:name="timeRange"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_topTracksFragment_to_addTrackToPlaylistFragment2"
+            app:destination="@id/addTrackToPlaylistFragment2" />
+    </fragment>
+    <dialog
+        android:id="@+id/addTrackToPlaylistFragment2"
+        android:name="com.easify.easify.ui.tracktoplaylist.AddTrackToPlaylistFragment"
+        android:label="AddTrackToPlaylistFragment" >
+        <argument
+            android:name="track"
+            app:argType="com.easify.easify.model.util.EasifyTrack"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
+</navigation>

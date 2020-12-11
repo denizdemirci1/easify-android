@@ -9,6 +9,7 @@ import com.easify.easify.data.repositories.PlaylistRepository
 import com.easify.easify.model.*
 import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.model.util.EasifyPlaylist
+import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
@@ -28,7 +29,7 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
   private val userManager: UserManager
 ): BaseViewModel() {
 
-  private lateinit var track: Track
+  private lateinit var track: EasifyTrack
 
   /**
    * [requestCount]: To determine offset value for getPlaylistTracks request
@@ -53,7 +54,7 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
     _event.value = Event(event)
   }
 
-  fun setTrackToAdd(track: Track) {
+  fun setTrackToAdd(track: EasifyTrack) {
     this.track = track
   }
 

@@ -1,19 +1,20 @@
-package com.easify.easify.ui.profile.playlists.main.data
+package com.easify.easify.ui.favorite.artists.data
 
 import androidx.paging.PageKeyedDataSource
-import com.easify.easify.model.PlaylistResponse
+import com.easify.easify.model.TopArtistResponse
 import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.extensions.toEasifyItemList
-import com.easify.easify.ui.profile.playlists.main.PlaylistViewModel
+import com.easify.easify.ui.favorite.artists.TopArtistsViewModel
 import javax.inject.Inject
 
 /**
  * @author: deniz.demirci
- * @date: 9/30/2020
+ * @date: 9/26/2020
  */
 
-class PlaylistDataSource @Inject constructor(
-  private val viewModel: PlaylistViewModel
+class TopArtistsDataSource @Inject constructor(
+  private val timeRange: String,
+  private val viewModel: TopArtistsViewModel
 ) : PageKeyedDataSource<String, EasifyItem>() {
 
   private var callCount = 0
@@ -22,7 +23,7 @@ class PlaylistDataSource @Inject constructor(
     params: LoadInitialParams<String>,
     callback: LoadInitialCallback<String, EasifyItem>
   ) {
-    viewModel.getPlaylists(0) { data: PlaylistResponse ->
+    viewModel.getTopArtists(timeRange, 0) { data: TopArtistResponse ->
       callback.onResult(data.items.toEasifyItemList(), null, data.next)
       callCount++
     }
@@ -31,7 +32,7 @@ class PlaylistDataSource @Inject constructor(
   override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, EasifyItem>) {}
 
   override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, EasifyItem>) {
-    viewModel.getPlaylists(20 * callCount) { data: PlaylistResponse ->
+    viewModel.getTopArtists(timeRange, 20 * callCount) { data: TopArtistResponse ->
       callCount++
       callback.onResult(data.items.toEasifyItemList(), data.next)
     }

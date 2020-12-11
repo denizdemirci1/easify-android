@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.playlists.main
+package com.easify.easify.ui.favorite.tracks
 
 import android.os.Bundle
 import android.view.View
@@ -6,65 +6,61 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
-import com.easify.easify.databinding.FragmentPlaylistBinding
+import com.easify.easify.databinding.FragmentTopTracksBinding
 import com.easify.easify.model.util.EasifyItem
-import com.easify.easify.model.util.EasifyPlaylist
+import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
+import com.easify.easify.ui.favorite.tracks.data.TopTracksDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
-import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
+import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_playlist.*
+import kotlinx.android.synthetic.main.fragment_top_tracks.*
 
 /**
  * @author: deniz.demirci
- * @date: 9/29/2020
+ * @date: 9/25/2020
  */
 
 @AndroidEntryPoint
-class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
+class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
 
-  private val playlistViewModel by viewModels<PlaylistViewModel>()
+  private val topTracksViewModel by viewModels<TopTracksViewModel>()
 
   private val playerViewModel by viewModels<PlayerViewModel>()
 
-  private lateinit var binding: FragmentPlaylistBinding
+  private lateinit var binding: FragmentTopTracksBinding
+
+  private val args: TopTracksFragmentArgs by navArgs()
 
   private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    DataBindingUtil.bind<FragmentPlaylistBinding>(playlists_root)?.apply {
-      lifecycleOwner = this@PlaylistFragment.viewLifecycleOwner
-      playlistViewModel = this@PlaylistFragment.playlistViewModel
+    DataBindingUtil.bind<FragmentTopTracksBinding>(topTracksRoot)?.apply {
+      lifecycleOwner = this@TopTracksFragment.viewLifecycleOwner
+      topTracksViewModel = this@TopTracksFragment.topTracksViewModel
       binding = this
     }
-    setupListeners()
     setupObservers()
-    setupPlaylistAdapter()
-  }
-
-  private fun setupListeners() {
-    binding.createPlaylist.setOnClickListener {
-      findNavController().navigate(R.id.createPlaylistFragment)
-    }
+    setupTopArtistsAdapter()
   }
 
   private fun setupObservers() {
-    playlistViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+    topTracksViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
-        PlaylistViewEvent.GetDevices -> getDevices()
-        PlaylistViewEvent.Play -> playPlaylist()
-        is PlaylistViewEvent.ListenIconClicked -> setClickedPlaylistUri(event.uri)
-        is PlaylistViewEvent.OpenPlaylistDetail -> openPlaylistDetailFragment(event.playlist)
-        is PlaylistViewEvent.ShowError -> showError(event.message)
+        TopTracksViewEvent.GetDevices -> getDevices()
+        TopTracksViewEvent.Play -> playTrack()
+        is TopTracksViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
+        is TopTracksViewEvent.AddIconClicked -> onAddClicked(event.track)
+        is TopTracksViewEvent.ShowError -> showError(event.message)
       }
     })
 
@@ -80,22 +76,16 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     })
   }
 
-  private fun handleDeviceIdSet(deviceId: String?) {
-    deviceId?.let {
-      playerViewModel.play()
-    } ?: run { showOpenSpotifyWarning() }
-  }
-
-  private fun setupPlaylistAdapter() {
-    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(playlistViewModel)
-    binding.playlistsRecyclerView.adapter = easifyItemPagedListAdapter
+  private fun setupTopArtistsAdapter() {
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(topTracksViewModel)
+    binding.topTracksRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
   private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, EasifyItem>() {
         override fun create(): DataSource<String, EasifyItem> {
-          return PlaylistDataSource(playlistViewModel)
+          return TopTracksDataSource(args.timeRange, topTracksViewModel)
         }
       }, 20).build()
   }
@@ -104,17 +94,24 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     playerViewModel.getDevices()
   }
 
-  private fun setClickedPlaylistUri(uri: String) {
+  private fun playTrack() {
+    playerViewModel.play(trackUris = topTracksViewModel.urisOfTracks, isTrack = true)
+  }
+
+  private fun setClickedTrackUri(uri: String) {
     playerViewModel.setUriToPlay(uri)
   }
 
-  private fun playPlaylist() {
-    playerViewModel.play()
+  private fun onAddClicked(track: EasifyTrack) {
+    val action = TopTracksFragmentDirections
+      .actionTopTracksFragmentToAddTrackToPlaylistFragment2(track)
+    findNavController().navigate(action)
   }
 
-  private fun openPlaylistDetailFragment(playlist: EasifyPlaylist) {
-    val action = PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment(playlist)
-    findNavController().navigate(action)
+  private fun handleDeviceIdSet(deviceId: String?) {
+    deviceId?.let {
+      playTrack()
+    } ?: run { showOpenSpotifyWarning() }
   }
 
   private fun showOpenSpotifyWarning() {
@@ -131,5 +128,10 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
       message(text = message)
       positiveButton(R.string.dialog_ok)
     }
+  }
+
+  override fun onDestroyView() {
+    topTracksViewModel.urisOfTracks.clear()
+    super.onDestroyView()
   }
 }

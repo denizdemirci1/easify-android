@@ -19,7 +19,7 @@ import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.model.util.EasifyItemType
 import com.easify.easify.model.util.EasifyPlaylist
 import com.easify.easify.model.util.Icon
-import com.easify.easify.ui.common.adapter.EasifyItemAdapter
+import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.tracktoplaylist.data.AddTrackToPlaylistDataSource
 import com.easify.easify.util.EventObserver
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -41,7 +41,7 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
 
   private val args: AddTrackToPlaylistFragmentArgs by navArgs()
 
-  private lateinit var easifyItemAdapter: EasifyItemAdapter
+  private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -88,7 +88,7 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      easifyItemAdapter.submitList(list)
+      easifyItemPagedListAdapter.submitList(list)
     })
   }
 
@@ -119,8 +119,8 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
   }
 
   private fun setupAdapter() {
-    easifyItemAdapter = EasifyItemAdapter(addTrackToPlaylistViewModel)
-    binding.playlistsRecyclerView.adapter = easifyItemAdapter
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(addTrackToPlaylistViewModel)
+    binding.playlistsRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
   private fun showSnackBar(

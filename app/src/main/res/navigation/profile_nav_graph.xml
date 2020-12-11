@@ -45,7 +45,7 @@
         android:label="ArtistFragment" >
         <argument
             android:name="artist"
-            app:argType="com.easify.easify.model.Artist"
+            app:argType="com.easify.easify.model.util.EasifyArtist"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>

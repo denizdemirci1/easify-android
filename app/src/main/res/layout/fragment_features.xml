@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="track"
+            type="com.easify.easify.model.util.EasifyTrack" />
+        <variable
+            name="features"
+            type="com.easify.easify.model.FeaturesResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/feature_fragment_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSpotifyBlack">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/search">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_layout"
+                android:layout_width="match_parent"
+                android:padding="@dimen/fragment_root_padding"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/track_info_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        style="@style/Feature.Album.Label"
+                        android:id="@+id/album_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fragment_features_album"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/Feature.Album.Name"
+                        android:id="@+id/album_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{track.albumName}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/album_label"
+                        tools:text="Norman Fucking Rockwell!"/>
+
+                    <ImageView
+                        android:id="@+id/album_image"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="@dimen/feature_fragment_image_margin_top"
+                        app:artistImageBig="@{track.images}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/album_name"
+                        tools:src="@drawable/ic_person"/>
+
+                    <TextView
+                        style="@style/Feature.Song.Name"
+                        android:id="@+id/song_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@{track.name}"
+                        app:slideText="@{true}"
+                        app:layout_constraintEnd_toEndOf="@id/album_image"
+                        app:layout_constraintStart_toStartOf="@id/album_image"
+                        app:layout_constraintTop_toBottomOf="@+id/album_image"
+                        tools:text="California"/>
+
+                    <TextView
+                        style="@style/Feature.Artist.Name"
+                        android:id="@+id/artist_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/feature_fragment_artist_name_margin_top"
+                        android:text="@{track.artistName}"
+                        app:layout_constraintEnd_toEndOf="@id/song_name"
+                        app:layout_constraintStart_toStartOf="@id/song_name"
+                        app:layout_constraintTop_toBottomOf="@+id/song_name"
+                        tools:text="Lana Del Rey"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/danceability"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.danceability}"
+                    app:label="@string/fragment_features_danceability"
+                    app:layout_constraintTop_toBottomOf="@id/track_info_layout" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/energy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.energy}"
+                    app:label="@string/fragment_features_energy"
+                    app:layout_constraintTop_toBottomOf="@id/danceability" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/speechiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.speechiness}"
+                    app:label="@string/fragment_features_speechiness"
+                    app:layout_constraintTop_toBottomOf="@id/energy" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/acousticness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.acousticness}"
+                    app:label="@string/fragment_features_acousticness"
+                    app:layout_constraintTop_toBottomOf="@id/speechiness" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/instrumentalness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.instrumentalness}"
+                    app:label="@string/fragment_features_instrumentalness"
+                    app:layout_constraintTop_toBottomOf="@id/acousticness" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/liveness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.liveness}"
+                    app:label="@string/fragment_features_liveness"
+                    app:layout_constraintTop_toBottomOf="@id/instrumentalness" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/valence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.valence}"
+                    app:label="@string/fragment_features_valence"
+                    app:layout_constraintTop_toBottomOf="@id/liveness" />
+
+                <com.easify.easify.ui.customviews.FeatureView
+                    android:id="@+id/tempo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feature_fragment_feature_margin_top"
+                    app:editable="false"
+                    app:setProgress="@{features.tempo / 250}"
+                    app:label="@string/fragment_features_tempo"
+                    app:layout_constraintTop_toBottomOf="@id/valence" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/fragment_features_find_similar"
+            android:textColor="@color/colorSpotifyWhite"
+            android:textSize="16sp"
+            android:background="@drawable/button_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

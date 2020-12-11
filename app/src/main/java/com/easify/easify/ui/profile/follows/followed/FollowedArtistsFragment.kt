@@ -1,4 +1,4 @@
-package com.easify.easify.ui.profile.playlists.main
+package com.easify.easify.ui.profile.follows.followed
 
 import android.os.Bundle
 import android.view.View
@@ -11,17 +11,17 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
-import com.easify.easify.databinding.FragmentPlaylistBinding
+import com.easify.easify.databinding.FragmentFollowedArtistsBinding
+import com.easify.easify.model.util.EasifyArtist
 import com.easify.easify.model.util.EasifyItem
-import com.easify.easify.model.util.EasifyPlaylist
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
+import com.easify.easify.ui.profile.follows.followed.data.FollowedArtistsDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_playlist.*
+import kotlinx.android.synthetic.main.fragment_followed_artists.*
 
 /**
  * @author: deniz.demirci
@@ -29,42 +29,43 @@ import kotlinx.android.synthetic.main.fragment_playlist.*
  */
 
 @AndroidEntryPoint
-class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
+class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists) {
 
-  private val playlistViewModel by viewModels<PlaylistViewModel>()
+  private val followedArtistsViewModel by viewModels<FollowedArtistsViewModel>()
 
   private val playerViewModel by viewModels<PlayerViewModel>()
 
-  private lateinit var binding: FragmentPlaylistBinding
+  private lateinit var binding: FragmentFollowedArtistsBinding
 
   private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    DataBindingUtil.bind<FragmentPlaylistBinding>(playlists_root)?.apply {
-      lifecycleOwner = this@PlaylistFragment.viewLifecycleOwner
-      playlistViewModel = this@PlaylistFragment.playlistViewModel
+    showBottomNavigation(false)
+    DataBindingUtil.bind<FragmentFollowedArtistsBinding>(followed_artists_root)?.apply {
+      lifecycleOwner = this@FollowedArtistsFragment.viewLifecycleOwner
+      viewModel = this@FollowedArtistsFragment.followedArtistsViewModel
       binding = this
     }
-    setupListeners()
     setupObservers()
-    setupPlaylistAdapter()
+    setupFollowedArtistsAdapter()
+    setupListeners()
   }
 
   private fun setupListeners() {
-    binding.createPlaylist.setOnClickListener {
-      findNavController().navigate(R.id.createPlaylistFragment)
+    binding.followNew.setOnClickListener {
+      findNavController().navigate(R.id.followFragment)
     }
   }
 
   private fun setupObservers() {
-    playlistViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+    followedArtistsViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
-        PlaylistViewEvent.GetDevices -> getDevices()
-        PlaylistViewEvent.Play -> playPlaylist()
-        is PlaylistViewEvent.ListenIconClicked -> setClickedPlaylistUri(event.uri)
-        is PlaylistViewEvent.OpenPlaylistDetail -> openPlaylistDetailFragment(event.playlist)
-        is PlaylistViewEvent.ShowError -> showError(event.message)
+        FollowedArtistsViewEvent.GetDevices -> getDevices()
+        FollowedArtistsViewEvent.Play -> playArtist()
+        is FollowedArtistsViewEvent.ListenIconClicked -> setClickedArtistUri(event.uri)
+        is FollowedArtistsViewEvent.ShowError -> showError(event.message)
+        is FollowedArtistsViewEvent.OpenArtistFragment -> openArtistFragment(event.artist)
       }
     })
 
@@ -86,34 +87,35 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     } ?: run { showOpenSpotifyWarning() }
   }
 
-  private fun setupPlaylistAdapter() {
-    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(playlistViewModel)
-    binding.playlistsRecyclerView.adapter = easifyItemPagedListAdapter
+  private fun setClickedArtistUri(uri: String) {
+    playerViewModel.setUriToPlay(uri)
+  }
+
+  private fun playArtist() {
+    playerViewModel.play()
+  }
+
+  private fun setupFollowedArtistsAdapter() {
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(followedArtistsViewModel)
+    binding.followedArtistsRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
   private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
       object : DataSource.Factory<String, EasifyItem>() {
         override fun create(): DataSource<String, EasifyItem> {
-          return PlaylistDataSource(playlistViewModel)
+          return FollowedArtistsDataSource(followedArtistsViewModel)
         }
-      }, 20).build()
+      }, 30).build()
   }
 
   private fun getDevices() {
     playerViewModel.getDevices()
   }
 
-  private fun setClickedPlaylistUri(uri: String) {
-    playerViewModel.setUriToPlay(uri)
-  }
-
-  private fun playPlaylist() {
-    playerViewModel.play()
-  }
-
-  private fun openPlaylistDetailFragment(playlist: EasifyPlaylist) {
-    val action = PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment(playlist)
+  private fun openArtistFragment(artist: EasifyArtist) {
+    val action =
+      FollowedArtistsFragmentDirections.actionFollowedArtistsFragmentToArtistFragment(artist)
     findNavController().navigate(action)
   }
 
@@ -132,4 +134,10 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
       positiveButton(R.string.dialog_ok)
     }
   }
+
+  override fun onDestroy() {
+    showBottomNavigation(true)
+    super.onDestroy()
+  }
+
 }
