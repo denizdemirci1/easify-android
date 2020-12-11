@@ -15,8 +15,11 @@ import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentAddTrackToPlaylistBinding
-import com.easify.easify.model.Playlist
-import com.easify.easify.ui.tracktoplaylist.adapter.AddTrackToPlaylistAdapter
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyItemType
+import com.easify.easify.model.util.EasifyPlaylist
+import com.easify.easify.model.util.Icon
+import com.easify.easify.ui.common.adapter.EasifyItemAdapter
 import com.easify.easify.ui.tracktoplaylist.data.AddTrackToPlaylistDataSource
 import com.easify.easify.util.EventObserver
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -38,7 +41,7 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
 
   private val args: AddTrackToPlaylistFragmentArgs by navArgs()
 
-  private lateinit var addTrackToPlaylistAdapter: AddTrackToPlaylistAdapter
+  private lateinit var easifyItemAdapter: EasifyItemAdapter
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -85,22 +88,39 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      addTrackToPlaylistAdapter.submitList(list)
+      easifyItemAdapter.submitList(list)
     })
   }
 
-  private fun buildPagedListLiveData(): LiveData<PagedList<Playlist>> {
+  private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
-      object : DataSource.Factory<String, Playlist>() {
-        override fun create(): DataSource<String, Playlist> {
-          return AddTrackToPlaylistDataSource(addTrackToPlaylistViewModel)
+      object : DataSource.Factory<String, EasifyItem>() {
+        override fun create(): DataSource<String, EasifyItem> {
+          return AddTrackToPlaylistDataSource(addTrackToPlaylistViewModel, getInitialPlaylists())
         }
       }, 30).build()
   }
 
+  private fun getInitialPlaylists(): ArrayList<EasifyItem> {
+    return arrayListOf(
+      EasifyItem(
+        type = EasifyItemType.PLAYLIST,
+        playlist = EasifyPlaylist(
+          id = "",
+          name = getString(R.string.fragment_add_track_to_playlist_liked_songs),
+          images = null,
+          icon = Icon(background = R.drawable.bg_liked_songs, R.drawable.ic_favorite_fill),
+          isListenable = false,
+          ownerId = "",
+          uri = ""
+        )
+      )
+    )
+  }
+
   private fun setupAdapter() {
-    addTrackToPlaylistAdapter = AddTrackToPlaylistAdapter(addTrackToPlaylistViewModel)
-    binding.playlistsRecyclerView.adapter = addTrackToPlaylistAdapter
+    easifyItemAdapter = EasifyItemAdapter(addTrackToPlaylistViewModel)
+    binding.playlistsRecyclerView.adapter = easifyItemAdapter
   }
 
   private fun showSnackBar(

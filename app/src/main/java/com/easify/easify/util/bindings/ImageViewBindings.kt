@@ -1,10 +1,13 @@
 package com.easify.easify.util.bindings
 
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.easify.easify.R
+import com.easify.easify.model.Context
 import com.easify.easify.model.Image
+import com.easify.easify.model.util.EasifyPlaylist
 import com.easify.easify.ui.extensions.loadWithPlaceHolder
 
 /**
@@ -46,12 +49,17 @@ fun loadBigArtistImage(view: ImageView, images: List<Image>?) {
 }
 
 @BindingAdapter("playlistImage")
-fun loadPlaylistImage(view: ImageView, images: List<Image>?) {
-  if (images.isNullOrEmpty()) {
-    view.setImageResource(R.drawable.ic_playlist)
+fun loadPlaylistImage(view: ImageView, playlist: EasifyPlaylist) {
+  if (playlist.images.isNullOrEmpty()) {
+    if (playlist.icon != null) {
+      view.setImageResource(playlist.icon.foreground)
+      view.background = ContextCompat.getDrawable(view.context, playlist.icon.background)
+    } else {
+      view.setImageResource(R.drawable.ic_playlist)
+    }
   } else {
     Glide.with(view.context)
-      .load(images[images.size - 1].url)
+      .load(playlist.images[playlist.images.size - 1].url)
       .placeholder(R.drawable.ic_playlist)
       .into(view)
   }

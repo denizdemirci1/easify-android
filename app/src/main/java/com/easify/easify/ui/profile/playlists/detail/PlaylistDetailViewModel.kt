@@ -11,6 +11,7 @@ import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
+import com.easify.easify.model.util.EasifyPlaylist
 import kotlinx.coroutines.launch
 
 /**
@@ -31,7 +32,7 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
   // region variables
-  private lateinit var playlist: Playlist
+  private lateinit var playlist: EasifyPlaylist
 
   private val playlistsTracksToShow = ArrayList<PlaylistTrack>()
   private var requestCount = 0
@@ -57,10 +58,10 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
   }
   // endregion
 
-  fun initialize(playlist: Playlist) {
+  fun initialize(playlist: EasifyPlaylist) {
     this.playlist = playlist
     _title.value = playlist.name
-    _isEditable.value = playlist.owner.id == userManager.user?.id
+    _isEditable.value = playlist.ownerId == userManager.user?.id
     getPlaylistTracks(playlist.id)
   }
 

@@ -31,7 +31,7 @@
         android:label="PlaylistDetailFragment" >
         <argument
             android:name="playlist"
-            app:argType="com.easify.easify.model.Playlist"
+            app:argType="com.easify.easify.model.util.EasifyPlaylist"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>

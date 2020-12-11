@@ -12,10 +12,11 @@ import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistBinding
-import com.easify.easify.model.Playlist
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyPlaylist
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.common.adapter.EasifyItemAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
-import com.easify.easify.ui.profile.playlists.main.adapter.PlaylistAdapter
 import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
@@ -36,7 +37,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
 
   private lateinit var binding: FragmentPlaylistBinding
 
-  private lateinit var playlistAdapter: PlaylistAdapter
+  private lateinit var easifyItemAdapter: EasifyItemAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -75,7 +76,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      playlistAdapter.submitList(list)
+      easifyItemAdapter.submitList(list)
     })
   }
 
@@ -86,14 +87,14 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
   }
 
   private fun setupPlaylistAdapter() {
-    playlistAdapter = PlaylistAdapter(playlistViewModel)
-    binding.playlistsRecyclerView.adapter = playlistAdapter
+    easifyItemAdapter = EasifyItemAdapter(playlistViewModel)
+    binding.playlistsRecyclerView.adapter = easifyItemAdapter
   }
 
-  private fun buildPagedListLiveData(): LiveData<PagedList<Playlist>> {
+  private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
-      object : DataSource.Factory<String, Playlist>() {
-        override fun create(): DataSource<String, Playlist> {
+      object : DataSource.Factory<String, EasifyItem>() {
+        override fun create(): DataSource<String, EasifyItem> {
           return PlaylistDataSource(playlistViewModel)
         }
       }, 20).build()
@@ -111,7 +112,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     playerViewModel.play()
   }
 
-  private fun openPlaylistDetailFragment(playlist: Playlist) {
+  private fun openPlaylistDetailFragment(playlist: EasifyPlaylist) {
     val action = PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment(playlist)
     findNavController().navigate(action)
   }

@@ -6,12 +6,14 @@
     <data>
         <import type="android.view.View" />
         <variable
-            name="playlist"
-            type="com.easify.easify.model.Playlist" />
+            name="position"
+            type="Integer" />
+        <variable
+            name="easifyItem"
+            type="com.easify.easify.model.util.EasifyItem" />
         <variable
             name="viewModel"
-            type="com.easify.easify.ui.profile.playlists.main.PlaylistViewModel" />
-
+            type="com.easify.easify.ui.base.BaseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,8 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorSpotifyBlack"
-
-        android:onClick="@{() -> viewModel.playlistClicked(playlist)}">
+        android:onClick="@{() -> viewModel.onItemClick(easifyItem, position)}">
 
         <ImageView
             android:id="@+id/playlist_image"
@@ -28,7 +29,7 @@
             android:layout_height="64dp"
             android:layout_margin="16dp"
             android:scaleType="fitCenter"
-            app:playlistImage="@{playlist.images}"
+            app:playlistImage="@{easifyItem.playlist}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,12 +42,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@{playlist.name}"
+            android:text="@{easifyItem.playlist.name}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/playlist_image"
             app:layout_constraintEnd_toStartOf="@id/listen_playlist"
-            tools:text="Best songs for me most listened in 2019"/>
+            tools:text="Best songs for me most listened in 2020"/>
 
         <ImageView
             android:id="@+id/listen_playlist"
@@ -54,8 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_listen"
-            android:visibility="@{viewModel.isListenable ? View.VISIBLE : View.GONE}"
-            android:onClick="@{() -> viewModel.playIconClicked(playlist)}"
+            android:onClick="@{() -> viewModel.onListenIconClick(easifyItem)}"
+            android:visibility="@{easifyItem.playlist.listenable ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

@@ -7,9 +7,14 @@ import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.LibraryRepository
 import com.easify.easify.data.repositories.PlaylistRepository
 import com.easify.easify.model.*
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyPlaylist
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
+
+private const val PLAYLIST_LIKED_SONGS_POSITION = 0
 
 /**
  * @author: deniz.demirci
@@ -21,7 +26,7 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
   private val playlistRepository: PlaylistRepository,
   private val libraryRepository: LibraryRepository,
   private val userManager: UserManager
-): ViewModel() {
+): BaseViewModel() {
 
   private lateinit var track: Track
 
@@ -72,7 +77,7 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
    * if it is -> returns
    * if it is not -> adds track to the playlist
    */
-  private fun addTrackToPlaylist(playlist: Playlist) {
+  private fun addTrackToPlaylist(playlist: EasifyPlaylist) {
     viewModelScope.launch {
       // if track already exist in the playlist, return
       for (playlistTrack in playlistsTracks) {
@@ -98,7 +103,7 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun getPlaylistTracks(playlist: Playlist) {
+  private fun getPlaylistTracks(playlist: EasifyPlaylist) {
     if (clickedPlaylistIds.contains(playlist.id)) {
       sendEvent(AddTrackToPlaylistViewEvent.AlreadyExists(track.name, playlist.name))
       return
@@ -124,12 +129,18 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
     }
   }
 
-  fun playlistClicked(playlist: Playlist) {
-    requestCount = 0
-    getPlaylistTracks(playlist)
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    if (position == PLAYLIST_LIKED_SONGS_POSITION) {
+      likedSongsClicked()
+    } else {
+      item.playlist?.let { playlist ->
+        requestCount = 0
+        getPlaylistTracks(playlist)
+      }
+    }
   }
 
-  fun likedSongsClicked() {
+  private fun likedSongsClicked() {
     viewModelScope.launch {
       libraryRepository.checkSavedTracks(track.id).let { result ->
         when (result) {
@@ -156,5 +167,4 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
   }
 
   fun getUserId(): String? = userManager.user?.id
-
 }
