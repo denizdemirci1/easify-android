@@ -35,7 +35,7 @@
         android:label="AddTrackToPlaylistFragment" >
         <argument
             android:name="track"
-            app:argType="com.easify.easify.model.Track"
+            app:argType="com.easify.easify.model.util.EasifyTrack"
             app:nullable="true"
             android:defaultValue="@null" />
     </dialog>
@@ -46,7 +46,7 @@
         android:label="FeaturesFragment" >
         <argument
             android:name="track"
-            app:argType="com.easify.easify.model.Track"
+            app:argType="com.easify.easify.model.util.EasifyTrack"
             app:nullable="true"
             android:defaultValue="@null" />
         <action
@@ -64,7 +64,7 @@
             android:defaultValue="@null" />
         <argument
             android:name="track"
-            app:argType="com.easify.easify.model.Track"
+            app:argType="com.easify.easify.model.util.EasifyTrack"
             app:nullable="true"
             android:defaultValue="@null" />
         <action
@@ -85,7 +85,7 @@
             app:destination="@id/addTrackToPlaylistFragment3" />
         <argument
             android:name="track"
-            app:argType="com.easify.easify.model.Track"
+            app:argType="com.easify.easify.model.util.EasifyTrack"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>

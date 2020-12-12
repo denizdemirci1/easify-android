@@ -6,6 +6,10 @@ import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.SearchRepository
 import com.easify.easify.model.*
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyItemType
+import com.easify.easify.ui.base.BaseViewModel
+import com.easify.easify.ui.extensions.toEasifyItemList
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -19,7 +23,11 @@ class SearchViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val searchRepository: SearchRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel() {
+
+  init {
+    isListenIconNeededForTrack = true
+  }
 
   private val tracksToShow = ArrayList<Track>()
   private val artistsToShow = ArrayList<Artist>()
@@ -57,45 +65,50 @@ class SearchViewModel @ViewModelInject constructor(
     tracksToShow.filter { track ->
       track.name.contains(query) || track.artists[0].name.contains(query)
     }
-    sendEvent(SearchViewEvent.NotifyTrackDataChanged(ArrayList(tracksToShow)))
+    sendEvent(SearchViewEvent.NotifyTrackDataChanged(ArrayList(tracksToShow.toEasifyItemList())))
   }
 
   private fun handleRetrievedArtist(tracks: List<Artist>) {
     artistsToShow.clear()
     artistsToShow.addAll(tracks)
-    sendEvent(SearchViewEvent.NotifyArtistDataChanged(ArrayList(artistsToShow)))
+    sendEvent(SearchViewEvent.NotifyArtistDataChanged(ArrayList(artistsToShow.toEasifyItemList())))
   }
 
-  fun onAddClicked(track: Track) {
-    sendEvent(SearchViewEvent.OnAddIconClicked(track))
-  }
-
-  fun onTrackClicked(track: Track) {
-    sendEvent(SearchViewEvent.OnTrackClicked(track))
-  }
-
-  fun onArtistClicked(artist: Artist) {
-    sendEvent(SearchViewEvent.OnArtistClicked(artist))
-  }
-
-  fun onListenIconClicked(artist: Artist) {
-    viewModelScope.launch {
-      sendEvent(SearchViewEvent.OnListenIconClicked(artist.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(SearchViewEvent.GetDevices)
-      } else {
-        sendEvent(SearchViewEvent.Play)
+  override fun onAddIconClick(item: EasifyItem) {
+    when (item.type) {
+      EasifyItemType.TRACK -> item.track?.let { track ->
+        sendEvent(SearchViewEvent.OnAddIconClicked(track))
       }
+      else -> Unit
     }
   }
 
-  fun onListenIconClicked(track: Track) {
-    viewModelScope.launch {
-      sendEvent(SearchViewEvent.OnListenIconClicked(track.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(SearchViewEvent.GetDevices)
-      } else {
-        sendEvent(SearchViewEvent.Play)
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    when (item.type) {
+      EasifyItemType.TRACK -> item.track?.let { track ->
+        sendEvent(SearchViewEvent.OnTrackClicked(track))
+      }
+      EasifyItemType.ARTIST -> item.artist?.let { artist ->
+        sendEvent(SearchViewEvent.OnArtistClicked(artist))
+      }
+      else -> Unit
+    }
+  }
+
+  override fun onListenIconClick(item: EasifyItem) {
+    val uri = when (item.type) {
+      EasifyItemType.TRACK -> item.track?.uri
+      EasifyItemType.ARTIST -> item.artist?.uri
+      else -> null
+    }
+    uri?.let { safeUri ->
+      viewModelScope.launch {
+        sendEvent(SearchViewEvent.OnListenIconClicked(safeUri))
+        if (userManager.deviceId.isNullOrEmpty()) {
+          sendEvent(SearchViewEvent.GetDevices)
+        } else {
+          sendEvent(SearchViewEvent.Play)
+        }
       }
     }
   }

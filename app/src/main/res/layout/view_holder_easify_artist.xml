@@ -5,28 +5,32 @@
 
     <data>
         <variable
-            name="artist"
-            type="com.easify.easify.model.Artist" />
+            name="position"
+            type="Integer" />
         <variable
-            name="searchViewModel"
-            type="com.easify.easify.ui.search.SearchViewModel" />
+            name="easifyItem"
+            type="com.easify.easify.model.util.EasifyItem" />
+        <variable
+            name="viewModel"
+            type="com.easify.easify.ui.base.BaseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_artists_root"
+        android:id="@+id/artists_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorSpotifyBlack"
-        android:layout_marginBottom="16dp"
-        android:onClick="@{() -> searchViewModel.onArtistClicked(artist)}">
+        android:layout_marginBottom="@dimen/view_holder_easify_margin_16"
+        android:onClick="@{() -> viewModel.onItemClick(easifyItem, position)}">
 
         <ImageView
-            android:id="@+id/top_artist_image"
+            android:id="@+id/artist_image"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+            android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
             android:scaleType="fitCenter"
-            app:artistImage="@{artist.images}"
+            app:artistImage="@{easifyItem.artist.images}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +42,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/top_artist_image"
+            app:layout_constraintStart_toEndOf="@id/artist_image"
             app:layout_constraintEnd_toStartOf="@id/listen_artist">
 
             <TextView
@@ -46,10 +50,10 @@
                 style="@style/Material.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@{artist.name}"
+                android:layout_marginTop="@dimen/view_holder_easify_margin_16"
+                android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+                android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+                android:text="@{easifyItem.artist.name}"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 app:layout_constraintBottom_toTopOf="@id/artist_sub_info_layout"
@@ -61,8 +65,8 @@
                 android:id="@+id/artist_sub_info_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginTop="@dimen/view_holder_easify_margin_4"
+                android:layout_marginStart="@dimen/view_holder_easify_margin_16"
                 app:layout_constraintTop_toBottomOf="@id/artist_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -72,7 +76,7 @@
                     style="@style/Item.Info.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:setFollowerCount="@{artist.followers.total}"
+                    app:setFollowerCount="@{easifyItem.artist.follower}"
                     android:singleLine="true"
                     android:ellipsize="marquee"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +88,7 @@
                     style="@style/Item.Info.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:setPopularity="@{artist.popularity}"
+                    app:setPopularity="@{easifyItem.artist.popularity}"
                     android:singleLine="true"
                     android:ellipsize="marquee"
                     app:layout_constraintTop_toBottomOf="@id/artist_follower_count"
@@ -101,7 +105,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_listen"
-            android:onClick="@{() -> searchViewModel.onListenIconClicked(artist)}"
+            android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+            android:onClick="@{() -> viewModel.onListenIconClick(easifyItem)}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

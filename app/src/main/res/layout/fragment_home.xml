@@ -34,7 +34,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/search"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout="@layout/view_holder_search_track"/>
+            tools:layout="@layout/view_holder_easify_track"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

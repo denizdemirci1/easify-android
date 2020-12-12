@@ -1,6 +1,6 @@
 package com.easify.easify.ui.favorite.artists
 
-import com.easify.easify.model.Artist
+import com.easify.easify.model.util.EasifyArtist
 
 /**
  * @author: deniz.demirci
@@ -15,7 +15,7 @@ sealed class TopArtistsViewEvent {
 
   data class ListenIconClicked(val uri: String): TopArtistsViewEvent()
 
-  data class OpenArtistFragment(val artist: Artist) : TopArtistsViewEvent()
+  data class OpenArtistFragment(val artist: EasifyArtist) : TopArtistsViewEvent()
 
   data class ShowError(val message: String) : TopArtistsViewEvent()
 }

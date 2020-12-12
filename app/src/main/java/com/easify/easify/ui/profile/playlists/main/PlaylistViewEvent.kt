@@ -1,6 +1,6 @@
 package com.easify.easify.ui.profile.playlists.main
 
-import com.easify.easify.model.Playlist
+import com.easify.easify.model.util.EasifyPlaylist
 
 /**
  * @author: deniz.demirci
@@ -15,7 +15,7 @@ sealed class PlaylistViewEvent {
 
   data class ListenIconClicked(val uri: String): PlaylistViewEvent()
 
-  data class OpenPlaylistDetail(val playlist: Playlist) : PlaylistViewEvent()
+  data class OpenPlaylistDetail(val playlist: EasifyPlaylist) : PlaylistViewEvent()
 
   data class ShowError(val message: String) : PlaylistViewEvent()
 }

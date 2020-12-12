@@ -19,7 +19,7 @@
             android:id="@+id/bottom_sheet_content"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:background="@color/colorBackgroundLight"
+            android:background="@color/colorSpotifyBlack"
             app:behavior_hideable="true"
             app:behavior_skipCollapsed="true"
             android:layout_gravity="bottom">
@@ -45,52 +45,6 @@
                 app:layout_constraintTop_toBottomOf="@id/slider"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/liked_songs_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorBackgroundLight"
-                android:visibility="@{addTrackToPlaylistViewModel.loading ? View.GONE : View.VISIBLE}"
-                android:onClick="@{() -> addTrackToPlaylistViewModel.likedSongsClicked()}"
-                app:layout_constraintTop_toBottomOf="@id/title">
-
-                <ImageView
-                    android:id="@+id/liked_songs_image"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_margin="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/bg_liked_songs"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <ImageView
-                    android:id="@+id/liked_songs_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_favorite_fill"
-                    app:layout_constraintStart_toStartOf="@id/liked_songs_image"
-                    app:layout_constraintEnd_toEndOf="@id/liked_songs_image"
-                    app:layout_constraintTop_toTopOf="@id/liked_songs_image"
-                    app:layout_constraintBottom_toBottomOf="@id/liked_songs_image"/>
-
-                <TextView
-                    android:id="@+id/liked_songs_name"
-                    style="@style/Material.Subtitle1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/fragment_add_track_to_playlist_liked_songs"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/liked_songs_image"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <ProgressBar
                 android:id="@+id/playlist_detail_progress"
                 style="@style/Widget.AppCompat.ProgressBar"
@@ -109,9 +63,9 @@
                 android:scrollbars="vertical"
                 android:scrollbarThumbVertical="@drawable/bg_scrollbar"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/liked_songs_layout"
+                app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:listitem="@layout/view_holder_playlist_to_add"/>
+                tools:listitem="@layout/view_holder_easify_playlist"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

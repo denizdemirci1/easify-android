@@ -51,7 +51,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/top_artists_progress"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/view_holder_top_artists"/>
+            tools:listitem="@layout/view_holder_easify_artist"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

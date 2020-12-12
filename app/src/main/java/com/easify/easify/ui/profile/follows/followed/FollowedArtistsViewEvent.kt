@@ -1,6 +1,6 @@
 package com.easify.easify.ui.profile.follows.followed
 
-import com.easify.easify.model.Artist
+import com.easify.easify.model.util.EasifyArtist
 
 /**
  * @author: deniz.demirci
@@ -15,7 +15,7 @@ sealed class FollowedArtistsViewEvent {
 
   data class ListenIconClicked(val uri: String): FollowedArtistsViewEvent()
 
-  data class OpenArtistFragment(val artist: Artist) : FollowedArtistsViewEvent()
+  data class OpenArtistFragment(val artist: EasifyArtist) : FollowedArtistsViewEvent()
 
   data class ShowError(val message: String) : FollowedArtistsViewEvent()
 }

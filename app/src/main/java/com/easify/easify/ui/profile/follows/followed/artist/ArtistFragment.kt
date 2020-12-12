@@ -12,7 +12,6 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentArtistBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.util.EventObserver
-import com.easify.easify.ui.player.PlayerViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_artist.*
@@ -26,8 +25,6 @@ import kotlinx.android.synthetic.main.fragment_artist.*
 class ArtistFragment : BaseFragment(R.layout.fragment_artist) {
 
   private val artistViewModel by viewModels<ArtistViewModel>()
-
-  private val playerViewModel by viewModels<PlayerViewModel>()
 
   private lateinit var binding: FragmentArtistBinding
 

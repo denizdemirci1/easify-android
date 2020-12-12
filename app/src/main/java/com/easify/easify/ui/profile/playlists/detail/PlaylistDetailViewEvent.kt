@@ -1,6 +1,6 @@
 package com.easify.easify.ui.profile.playlists.detail
 
-import com.easify.easify.model.PlaylistTrack
+import com.easify.easify.model.util.EasifyItem
 
 /**
  * @author: deniz.demirci
@@ -15,7 +15,7 @@ sealed class PlaylistDetailViewEvent {
 
   data class ListenIconClicked(val uri: String): PlaylistDetailViewEvent()
 
-  data class NotifyDataChanged(val tracks: ArrayList<PlaylistTrack>) : PlaylistDetailViewEvent()
+  data class NotifyDataChanged(val tracks: ArrayList<EasifyItem>) : PlaylistDetailViewEvent()
 
   data class ShowSnackbar(val trackName: String) : PlaylistDetailViewEvent()
 

@@ -9,14 +9,15 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFollowBinding
-import com.easify.easify.model.Artist
 import com.easify.easify.model.SearchType
+import com.easify.easify.model.util.EasifyArtist
+import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.base.BaseFragment
+import com.easify.easify.ui.common.adapter.EasifyItemListAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.ui.search.SearchViewEvent
 import com.easify.easify.ui.search.SearchViewModel
-import com.easify.easify.ui.search.adapter.SearchAdapter
 import com.easify.easify.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +35,7 @@ class FollowFragment : BaseFragment(R.layout.fragment_follow) {
 
   private lateinit var binding: FragmentFollowBinding
 
-  private lateinit var searchAdapter: SearchAdapter<Artist>
+  private lateinit var easifyItemPagedListAdapter: EasifyItemListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -54,8 +55,8 @@ class FollowFragment : BaseFragment(R.layout.fragment_follow) {
   }
 
   private fun setAdapters() {
-    searchAdapter = SearchAdapter(searchViewModel, SearchType.ARTIST)
-    binding.searchArtists.adapter = searchAdapter
+    easifyItemPagedListAdapter = EasifyItemListAdapter(searchViewModel)
+    binding.searchArtists.adapter = easifyItemPagedListAdapter
   }
 
   private fun setupObservers() {
@@ -93,13 +94,13 @@ class FollowFragment : BaseFragment(R.layout.fragment_follow) {
     playerViewModel.getDevices()
   }
 
-  private fun onArtistClicked(artist: Artist) {
+  private fun onArtistClicked(artist: EasifyArtist) {
     val action = FollowFragmentDirections.actionFollowFragmentToArtistFragment(artist)
     findNavController().navigate(action)
   }
 
-  private fun onViewDataChange(artists: ArrayList<Artist>) {
-    searchAdapter.submitList(artists)
+  private fun onViewDataChange(items: ArrayList<EasifyItem>) {
+    easifyItemPagedListAdapter.submitList(items)
   }
 
   private fun setClickedArtistUri(uri: String) {

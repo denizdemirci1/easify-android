@@ -35,7 +35,9 @@ interface SpotifyService {
   suspend fun getDevices(): DevicesResponse
 
   @GET("me/player")
-  suspend fun getCurrentPlayback(): CurrentPlaybackResponse?
+  suspend fun getCurrentPlayback(
+    @Query("market") market: String? = "US"
+  ): CurrentPlaybackResponse?
 
   @GET("me/top/artists")
   suspend fun fetchTopArtists(

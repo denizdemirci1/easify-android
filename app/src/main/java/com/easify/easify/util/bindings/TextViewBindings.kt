@@ -4,6 +4,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.easify.easify.R
 import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyTrack
 
 /**
  * @author: deniz.demirci
@@ -39,10 +40,10 @@ fun TextView.slideText(shouldSlide: Boolean) {
 }
 
 @BindingAdapter("dynamicText")
-fun TextView.dynamicText(track: Track) {
+fun TextView.dynamicText(track: EasifyTrack) {
   this.text = this.context.getString(
     R.string.fragment_discover_title,
-    track.artists[0].name,
+    track.artistName,
     track.name
   )
 }

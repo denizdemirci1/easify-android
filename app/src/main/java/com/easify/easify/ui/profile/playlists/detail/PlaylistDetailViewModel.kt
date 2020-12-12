@@ -2,15 +2,24 @@ package com.easify.easify.ui.profile.playlists.detail
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.easify.easify.data.remote.util.parseNetworkError
-import com.easify.easify.data.repositories.PlayerRepository
 import com.easify.easify.data.repositories.PlaylistRepository
-import com.easify.easify.model.*
+import com.easify.easify.model.PlaylistTrack
+import com.easify.easify.model.RemoveTrackObject
+import com.easify.easify.model.Result.Error
+import com.easify.easify.model.Result.Success
+import com.easify.easify.model.TracksToDelete
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyPlaylist
+import com.easify.easify.model.util.EasifyTrack
+import com.easify.easify.ui.base.BaseViewModel
+import com.easify.easify.ui.extensions.toEasifyItemList
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
-import com.easify.easify.model.Result.Success
-import com.easify.easify.model.Result.Error
 import kotlinx.coroutines.launch
 
 /**
@@ -28,10 +37,10 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel() {
 
   // region variables
-  private lateinit var playlist: Playlist
+  private lateinit var playlist: EasifyPlaylist
 
   private val playlistsTracksToShow = ArrayList<PlaylistTrack>()
   private var requestCount = 0
@@ -57,10 +66,10 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
   }
   // endregion
 
-  fun initialize(playlist: Playlist) {
+  fun initialize(playlist: EasifyPlaylist) {
     this.playlist = playlist
     _title.value = playlist.name
-    _isEditable.value = playlist.owner.id == userManager.user?.id
+    _isEditable.value = playlist.ownerId == userManager.user?.id
     getPlaylistTracks(playlist.id)
   }
 
@@ -79,7 +88,9 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
             if (playlistsTracksToShow.size < result.data.total) {
               getPlaylistTracks(playlistId)
             } else {
-              sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(ArrayList(playlistsTracksToShow)))
+              sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(
+                ArrayList(playlistsTracksToShow).map { it.track }.toEasifyItemList())
+              )
               if (playlistsTracksToShow.isEmpty()) {
                 _showNoTracksLayout.value = true
               }
@@ -93,28 +104,32 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
     }
   }
 
-  fun onTrackClicked(track: Track) {
-    viewModelScope.launch {
-      sendEvent(PlaylistDetailViewEvent.ListenIconClicked(track.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(PlaylistDetailViewEvent.GetDevices)
-      } else {
-        sendEvent(PlaylistDetailViewEvent.Play)
-      }
-    }
-  }
-
-  fun removeTrack(track: Track) {
+  fun removeTrack(track: EasifyTrack) {
     playlistsTracksToShow.removeAll { it.track.id == track.id }
     removeTrackFromPlaylist(track)
   }
 
-  private fun removeTrackFromPlaylist(track: Track) {
+  private fun removeTrackFromPlaylist(track: EasifyTrack) {
     viewModelScope.launch {
       val tracksToDelete = listOf(TracksToDelete(uri = track.uri))
       playlistRepository.removeTracksFromPlaylist(playlist.id, RemoveTrackObject(tracksToDelete))
       sendEvent(PlaylistDetailViewEvent.ShowSnackbar(track.name))
-      sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(ArrayList(playlistsTracksToShow)))
+      sendEvent(PlaylistDetailViewEvent.NotifyDataChanged(
+        ArrayList(playlistsTracksToShow).map { it.track }.toEasifyItemList())
+      )
+    }
+  }
+
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    item.track?.let { track ->
+      viewModelScope.launch {
+        sendEvent(PlaylistDetailViewEvent.ListenIconClicked(track.uri))
+        if (userManager.deviceId.isNullOrEmpty()) {
+          sendEvent(PlaylistDetailViewEvent.GetDevices)
+        } else {
+          sendEvent(PlaylistDetailViewEvent.Play)
+        }
+      }
     }
   }
 }

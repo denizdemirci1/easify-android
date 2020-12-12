@@ -13,9 +13,10 @@ import androidx.paging.PagedList
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentTopTracksBinding
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.favorite.tracks.adapter.TopTracksAdapter
+import com.easify.easify.ui.common.adapter.EasifyItemPagedListAdapter
 import com.easify.easify.ui.favorite.tracks.data.TopTracksDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
@@ -39,7 +40,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
 
   private val args: TopTracksFragmentArgs by navArgs()
 
-  private lateinit var topTracksAdapter: TopTracksAdapter
+  private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -71,19 +72,19 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
-      topTracksAdapter.submitList(list)
+      easifyItemPagedListAdapter.submitList(list)
     })
   }
 
   private fun setupTopArtistsAdapter() {
-    topTracksAdapter = TopTracksAdapter(topTracksViewModel)
-    binding.topTracksRecyclerView.adapter = topTracksAdapter
+    easifyItemPagedListAdapter = EasifyItemPagedListAdapter(topTracksViewModel)
+    binding.topTracksRecyclerView.adapter = easifyItemPagedListAdapter
   }
 
-  private fun buildPagedListLiveData(): LiveData<PagedList<Track>> {
+  private fun buildPagedListLiveData(): LiveData<PagedList<EasifyItem>> {
     return LivePagedListBuilder(
-      object : DataSource.Factory<String, Track>() {
-        override fun create(): DataSource<String, Track> {
+      object : DataSource.Factory<String, EasifyItem>() {
+        override fun create(): DataSource<String, EasifyItem> {
           return TopTracksDataSource(args.timeRange, topTracksViewModel)
         }
       }, 20).build()
@@ -101,7 +102,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
     playerViewModel.setUriToPlay(uri)
   }
 
-  private fun onAddClicked(track: Track) {
+  private fun onAddClicked(track: EasifyTrack) {
     val action = TopTracksFragmentDirections
       .actionTopTracksFragmentToAddTrackToPlaylistFragment2(track)
     findNavController().navigate(action)

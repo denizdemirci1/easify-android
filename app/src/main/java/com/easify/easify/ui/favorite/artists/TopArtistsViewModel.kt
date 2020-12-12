@@ -5,10 +5,11 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.PersonalizationRepository
-import com.easify.easify.model.Artist
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.TopArtistResponse
+import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -22,7 +23,7 @@ class TopArtistsViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val personalizationRepository: PersonalizationRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel() {
 
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
@@ -53,18 +54,22 @@ class TopArtistsViewModel @ViewModelInject constructor(
     }
   }
 
-  fun onArtistClicked(artist: Artist) {
-    sendEvent(TopArtistsViewEvent.OpenArtistFragment(artist))
+  override fun onListenIconClick(item: EasifyItem) {
+    item.artist?.let { artist ->
+      viewModelScope.launch {
+        sendEvent(TopArtistsViewEvent.ListenIconClicked(artist.uri))
+        if (userManager.deviceId.isNullOrEmpty()) {
+          sendEvent(TopArtistsViewEvent.GetDevices)
+        } else {
+          sendEvent(TopArtistsViewEvent.Play)
+        }
+      }
+    }
   }
 
-  fun onListenIconClicked(artist: Artist) {
-    viewModelScope.launch {
-      sendEvent(TopArtistsViewEvent.ListenIconClicked(artist.uri))
-      if (userManager.deviceId.isNullOrEmpty()) {
-        sendEvent(TopArtistsViewEvent.GetDevices)
-      } else {
-        sendEvent(TopArtistsViewEvent.Play)
-      }
+  override fun onItemClick(item: EasifyItem, position: Int) {
+    item.artist?.let { artist ->
+      sendEvent(TopArtistsViewEvent.OpenArtistFragment(artist))
     }
   }
 }

@@ -12,9 +12,9 @@ import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentRecommendationsBinding
-import com.easify.easify.model.Track
+import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
-import com.easify.easify.ui.home.recommendations.data.RecommendedTracksAdapter
+import com.easify.easify.ui.common.adapter.EasifyItemListAdapter
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.DateTimeHelper
@@ -38,7 +38,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
 
   private val args: RecommendationsFragmentArgs by navArgs()
 
-  private lateinit var recommendedTracksAdapter: RecommendedTracksAdapter
+  private lateinit var easifyItemListAdapter: EasifyItemListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -53,8 +53,8 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
   }
 
   private fun setAdapter() {
-    recommendedTracksAdapter = RecommendedTracksAdapter(recommendationsViewModel)
-    binding.recommendedTracks.adapter = recommendedTracksAdapter
+    easifyItemListAdapter = EasifyItemListAdapter(recommendationsViewModel)
+    binding.recommendedTracks.adapter = easifyItemListAdapter
   }
 
   private fun setListeners() {
@@ -85,7 +85,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
         is RecommendationsViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
         is RecommendationsViewEvent.AddIconClicked -> onAddClicked(event.track)
         is RecommendationsViewEvent.OnRecommendationsReceived -> {
-          recommendedTracksAdapter.submitList(event.tracks)
+          easifyItemListAdapter.submitList(event.tracks)
         }
         RecommendationsViewEvent.ShowUserIdNotFoundError -> {
           showError(getString(R.string.fragment_create_playlist_user_id_not_found_error))
@@ -115,7 +115,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
     playerViewModel.getDevices()
   }
 
-  private fun onAddClicked(track: Track) {
+  private fun onAddClicked(track: EasifyTrack) {
     val action = RecommendationsFragmentDirections
       .actionRecommendationsFragmentToAddTrackToPlaylistFragment3(track)
     findNavController().navigate(action)
