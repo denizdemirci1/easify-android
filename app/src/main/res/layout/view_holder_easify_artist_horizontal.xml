@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="position"
+            type="Integer" />
+        <variable
+            name="easifyItem"
+            type="com.easify.easify.model.util.EasifyItem" />
+        <variable
+            name="viewModel"
+            type="com.easify.easify.ui.base.BaseViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/artist_root"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSpotifyBlack"
+        android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+        android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+        android:onClick="@{() -> viewModel.onItemClick(easifyItem, position)}">
+
+        <ImageView
+            android:id="@+id/artist_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="fitCenter"
+            app:trackImage="@{easifyItem.artist.images}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_person"/>
+
+        <TextView
+            android:id="@+id/artist_name"
+            style="@style/Horizontal.List.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_holder_easify_margin_8"
+            android:text="@{easifyItem.artist.name}"
+            app:layout_constraintTop_toBottomOf="@id/artist_image"
+            app:layout_constraintStart_toStartOf="@id/artist_image"
+            tools:text="Florence + The Machine"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

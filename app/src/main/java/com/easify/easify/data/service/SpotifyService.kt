@@ -1,6 +1,7 @@
 package com.easify.easify.data.service
 
 import com.easify.easify.model.*
+import com.easify.easify.model.response.ArtistsResponse
 import com.easify.easify.model.response.TracksResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -89,7 +90,7 @@ interface SpotifyService {
     @Query("type") type: String = "artist",
     @Query("limit") limit: Int? = 30,
     @Query("after") next: String? = null
-  ): ArtistsResponse
+  ): FollowedArtistsResponse
 
   @PUT("me/following")
   suspend fun followArtist(
@@ -135,6 +136,11 @@ interface SpotifyService {
   suspend fun fetchTracks(
     @Query("ids") ids: String
   ): TracksResponse
+
+  @GET("artists")
+  suspend fun fetchArtists(
+    @Query("ids") ids: String
+  ): ArtistsResponse
 
   @GET("recommendations")
   suspend fun fetchRecommendations(

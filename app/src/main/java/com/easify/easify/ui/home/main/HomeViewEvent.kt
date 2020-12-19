@@ -13,5 +13,7 @@ sealed class HomeViewEvent {
 
   data class OnFeaturedTracksReceived(val tracks: ArrayList<EasifyItem>): HomeViewEvent()
 
+  data class OnFeaturedArtistsReceived(val artists: ArrayList<EasifyItem>): HomeViewEvent()
+
   data class ShowError(val message: String) : HomeViewEvent()
 }

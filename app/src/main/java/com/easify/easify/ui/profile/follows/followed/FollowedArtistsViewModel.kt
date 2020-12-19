@@ -5,7 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.FollowRepository
-import com.easify.easify.model.ArtistsResponse
+import com.easify.easify.model.FollowedArtistsResponse
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.util.EasifyItem
@@ -35,7 +35,7 @@ class FollowedArtistsViewModel @ViewModelInject constructor(
     _event.value = Event(event)
   }
 
-  fun getFollowedArtists(next: String?, onSuccess: (data: ArtistsResponse) -> Unit) {
+  fun getFollowedArtists(next: String?, onSuccess: (data: FollowedArtistsResponse) -> Unit) {
     viewModelScope.launch {
       _loading.value = true
       followRepository.getFollowedArtists(limit = null, next = next).let { result ->

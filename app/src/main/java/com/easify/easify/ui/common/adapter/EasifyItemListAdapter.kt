@@ -36,7 +36,13 @@ class EasifyItemListAdapter(
           TrackViewHolder(parent, inflater)
         }
       }
-      EasifyItemType.ARTIST.value -> ArtistViewHolder(parent, inflater)
+      EasifyItemType.ARTIST.value -> {
+        if (horizontal) {
+          ArtistHorizontalViewHolder(parent, inflater)
+        } else {
+          ArtistViewHolder(parent, inflater)
+        }
+      }
       EasifyItemType.PLAYLIST.value -> PlaylistViewHolder(parent, inflater)
       else -> EmptyViewHolder(parent, inflater)
     }
@@ -48,6 +54,7 @@ class EasifyItemListAdapter(
         is TrackViewHolder -> holder.bind(easifyItem, position, viewModel, removeListener)
         is TrackHorizontalViewHolder -> holder.bind(easifyItem, position, viewModel)
         is ArtistViewHolder -> holder.bind(easifyItem, position, viewModel)
+        is ArtistHorizontalViewHolder -> holder.bind(easifyItem, position, viewModel)
         is PlaylistViewHolder -> holder.bind(easifyItem, position, viewModel)
         is EmptyViewHolder -> holder.bind()
       }

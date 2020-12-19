@@ -39,6 +39,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private lateinit var searchedEasifyItemAdapter: EasifyItemListAdapter
   private lateinit var featuredEasifyTracksAdapter: EasifyItemListAdapter
+  private lateinit var featuredEasifyArtistsAdapter: EasifyItemListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -47,12 +48,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       binding = this
       searchedTracksVisibility = false
       featuredTracksVisibility = false
+      featuredArtistsVisibility = false
     }
     showBottomNavigation(true)
     setAdapters()
     setupObservers()
     setListeners()
-    homeViewModel.getFeaturedTracksUris()
+    homeViewModel.getFeaturedItems()
   }
 
   private fun setListeners() {
@@ -71,6 +73,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     featuredEasifyTracksAdapter = EasifyItemListAdapter(homeViewModel, horizontal = true)
     binding.featuredTracks.adapter = featuredEasifyTracksAdapter
+
+    featuredEasifyArtistsAdapter = EasifyItemListAdapter(homeViewModel, horizontal = true)
+    binding.featuredArtists.adapter = featuredEasifyArtistsAdapter
   }
 
   private fun setupObservers() {
@@ -95,6 +100,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         is HomeViewEvent.OnFeaturedTracksReceived -> {
           binding.featuredTracksVisibility = true
           onAdapterDataChanged(featuredEasifyTracksAdapter, event.tracks)
+        }
+        is HomeViewEvent.OnFeaturedArtistsReceived -> {
+          binding.featuredArtistsVisibility = true
+          onAdapterDataChanged(featuredEasifyArtistsAdapter, event.artists)
         }
         is HomeViewEvent.ShowError -> showError(event.message)
       }
