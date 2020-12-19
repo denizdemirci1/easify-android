@@ -3,6 +3,9 @@ package com.easify.easify.di
 import com.easify.easify.data.remote.datasource.*
 import com.easify.easify.data.repositories.*
 import com.easify.easify.util.manager.UserManager
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -85,9 +88,24 @@ object RepositoryModule {
 
   @Provides
   @ActivityRetainedScoped
+  fun provideArtistRepository(
+    artistsDataSource: ArtistsDataSource
+  ): ArtistRepository {
+    return ArtistRepositoryImpl(artistsDataSource)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
   fun provideBrowseRepository(
     browseDataSource: BrowseDataSource
   ): BrowseRepository {
     return BrowseRepositoryImpl(browseDataSource)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
+  fun provideFirebaseRepository(): FirebaseRepository {
+    val database = Firebase.database
+    return FirebaseRepositoryImpl(database)
   }
 }

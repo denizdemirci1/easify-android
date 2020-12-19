@@ -1,7 +1,7 @@
 package com.easify.easify.data.repositories
 
 import com.easify.easify.data.remote.datasource.FollowDataSource
-import com.easify.easify.model.ArtistsResponse
+import com.easify.easify.model.FollowedArtistsResponse
 import com.easify.easify.model.Result
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 interface FollowRepository {
 
-  suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse>
+  suspend fun getFollowedArtists(limit: Int?, next: String?): Result<FollowedArtistsResponse>
 
   suspend fun followArtist(id: String)
 
@@ -23,7 +23,7 @@ class FollowRepositoryImpl @Inject constructor(
   private val followDataSource: FollowDataSource
 ) : FollowRepository {
 
-  override suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse> {
+  override suspend fun getFollowedArtists(limit: Int?, next: String?): Result<FollowedArtistsResponse> {
     return followDataSource.getFollowedArtists(limit = limit, next = next)
   }
 

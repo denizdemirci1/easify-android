@@ -30,6 +30,7 @@ class SearchView @JvmOverloads constructor(
   private var hint: String? = null
 
   var onSearch: ((text: String) -> Unit)? = null
+  var onSearchCleared: (() -> Unit)? = null
 
   init {
     inflate(context, R.layout.layout_search_view, this)
@@ -81,6 +82,8 @@ class SearchView @JvmOverloads constructor(
       search.hint = if (input.isEmpty()) hint else ""
       if (input.length >= MIN_CHAR_LENGTH_TO_SEARCH) {
         onSearch?.invoke(input)
+      } else {
+        onSearchCleared?.invoke()
       }
     }
   }

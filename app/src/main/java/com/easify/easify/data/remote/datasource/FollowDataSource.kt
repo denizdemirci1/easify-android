@@ -1,7 +1,7 @@
 package com.easify.easify.data.remote.datasource
 
 import com.easify.easify.data.service.SpotifyService
-import com.easify.easify.model.ArtistsResponse
+import com.easify.easify.model.FollowedArtistsResponse
 import com.easify.easify.model.Result
 import javax.inject.Inject
 
@@ -11,7 +11,7 @@ import javax.inject.Inject
  */
 
 interface FollowDataSource {
-  suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse>
+  suspend fun getFollowedArtists(limit: Int?, next: String?): Result<FollowedArtistsResponse>
 
   suspend fun followArtist(id: String)
 
@@ -22,7 +22,7 @@ class FollowDataSourceImpl @Inject constructor(
   private val spotifyService: SpotifyService
 ): FollowDataSource {
 
-  override suspend fun getFollowedArtists(limit: Int?, next: String?): Result<ArtistsResponse> {
+  override suspend fun getFollowedArtists(limit: Int?, next: String?): Result<FollowedArtistsResponse> {
     return try {
       val artistsResponse = spotifyService.fetchFollowedArtists(limit = limit, next = next)
       Result.Success(artistsResponse)

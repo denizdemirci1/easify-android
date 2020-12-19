@@ -3,6 +3,8 @@ package com.easify.easify.data.remote.datasource
 import com.easify.easify.data.service.SpotifyService
 import com.easify.easify.model.FeaturesResponse
 import com.easify.easify.model.Result
+import com.easify.easify.model.Track
+import com.easify.easify.model.response.TracksResponse
 
 /**
  * @author: deniz.demirci
@@ -12,6 +14,8 @@ import com.easify.easify.model.Result
 interface TrackDataSource {
 
   suspend fun fetchAudioFeatures(trackId: String): Result<FeaturesResponse>
+
+  suspend fun getTracks(ids: String): Result<TracksResponse>
 }
 
 class TrackDataSourceImpl(
@@ -22,6 +26,15 @@ class TrackDataSourceImpl(
     return try {
       val features = service.fetchAudioFeatures(trackId)
       Result.Success(features)
+    } catch (e: Exception) {
+      Result.Error(e)
+    }
+  }
+
+  override suspend fun getTracks(ids: String): Result<TracksResponse> {
+    return try {
+      val tracks = service.fetchTracks(ids)
+      Result.Success(tracks)
     } catch (e: Exception) {
       Result.Error(e)
     }

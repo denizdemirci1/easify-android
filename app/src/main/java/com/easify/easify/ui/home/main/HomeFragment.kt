@@ -1,4 +1,4 @@
-package com.easify.easify.ui.home
+package com.easify.easify.ui.home.main
 
 import android.os.Bundle
 import android.view.View
@@ -33,31 +33,49 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private val playerViewModel by viewModels<PlayerViewModel>()
 
+  private val homeViewModel by viewModels<HomeViewModel>()
+
   private lateinit var binding: FragmentHomeBinding
 
-  private lateinit var easifyItemAdapter: EasifyItemListAdapter
+  private lateinit var searchedEasifyItemAdapter: EasifyItemListAdapter
+  private lateinit var featuredEasifyTracksAdapter: EasifyItemListAdapter
+  private lateinit var featuredEasifyArtistsAdapter: EasifyItemListAdapter
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val root = view.findViewById<ConstraintLayout>(R.id.home_fragment_root)
     DataBindingUtil.bind<FragmentHomeBinding>(root)?.apply {
       binding = this
+      searchedTracksVisibility = false
+      featuredTracksVisibility = false
+      featuredArtistsVisibility = false
     }
     showBottomNavigation(true)
     setAdapters()
     setupObservers()
     setListeners()
+    homeViewModel.getFeaturedItems()
   }
 
   private fun setListeners() {
     binding.search.onSearch = { input ->
+      binding.searchedTracksVisibility = true
       searchViewModel.search(SearchType.TRACK, input)
+    }
+    binding.search.onSearchCleared = {
+      binding.searchedTracksVisibility = false
     }
   }
 
   private fun setAdapters() {
-    easifyItemAdapter = EasifyItemListAdapter(searchViewModel)
-    binding.searchTracks.adapter = easifyItemAdapter
+    searchedEasifyItemAdapter = EasifyItemListAdapter(searchViewModel)
+    binding.searchedTracks.adapter = searchedEasifyItemAdapter
+
+    featuredEasifyTracksAdapter = EasifyItemListAdapter(homeViewModel, horizontal = true)
+    binding.featuredTracks.adapter = featuredEasifyTracksAdapter
+
+    featuredEasifyArtistsAdapter = EasifyItemListAdapter(homeViewModel, horizontal = true)
+    binding.featuredArtists.adapter = featuredEasifyArtistsAdapter
   }
 
   private fun setupObservers() {
@@ -68,9 +86,26 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         is SearchViewEvent.OnTrackClicked -> onTrackClicked(event.track)
         is SearchViewEvent.OnListenIconClicked -> setClickedTrackUri(event.uri)
         is SearchViewEvent.OnAddIconClicked -> onAddIconClicked(event.track)
-        is SearchViewEvent.NotifyTrackDataChanged -> onViewDataChange(event.trackList)
+        is SearchViewEvent.NotifyTrackDataChanged -> {
+          onAdapterDataChanged(searchedEasifyItemAdapter, event.trackList)
+        }
         is SearchViewEvent.ShowError -> showError(event.message)
         else -> Unit
+      }
+    })
+
+    homeViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
+      when (event) {
+        is HomeViewEvent.OnItemClicked -> searchViewModel.onListenIconClick(event.item)
+        is HomeViewEvent.OnFeaturedTracksReceived -> {
+          binding.featuredTracksVisibility = true
+          onAdapterDataChanged(featuredEasifyTracksAdapter, event.tracks)
+        }
+        is HomeViewEvent.OnFeaturedArtistsReceived -> {
+          binding.featuredArtistsVisibility = true
+          onAdapterDataChanged(featuredEasifyArtistsAdapter, event.artists)
+        }
+        is HomeViewEvent.ShowError -> showError(event.message)
       }
     })
 
@@ -106,8 +141,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     findNavController().navigate(action)
   }
 
-  private fun onViewDataChange(items: ArrayList<EasifyItem>) {
-    easifyItemAdapter.submitList(items)
+  private fun onAdapterDataChanged(adapter: EasifyItemListAdapter, items: ArrayList<EasifyItem>) {
+    adapter.submitList(items)
   }
 
   private fun setClickedTrackUri(uri: String) {
