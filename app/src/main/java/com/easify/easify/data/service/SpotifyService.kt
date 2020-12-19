@@ -1,6 +1,7 @@
 package com.easify.easify.data.service
 
 import com.easify.easify.model.*
+import com.easify.easify.model.response.TracksResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -129,6 +130,11 @@ interface SpotifyService {
   suspend fun fetchAudioFeatures(
     @Path("id") id: String
   ): FeaturesResponse
+
+  @GET("tracks")
+  suspend fun fetchTracks(
+    @Query("ids") ids: String
+  ): TracksResponse
 
   @GET("recommendations")
   suspend fun fetchRecommendations(

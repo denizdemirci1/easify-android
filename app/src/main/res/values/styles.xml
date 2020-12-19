@@ -1,10 +1,180 @@
 <resources>
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+  <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
     <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorSpotifyBlack</item>
+    <item name="colorPrimaryDark">@color/colorSpotifyBlack</item>
+    <item name="colorAccent">@color/colorSpotifyGreen</item>
   </style>
+
+  <!-- Material Design Typography -->
+  <style name="Material.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">96sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">60sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">48sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+    <item name="android:textSize">34sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+    <item name="android:textSize">20sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Body1" parent="TextAppearance.MaterialComponents.Body1">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Body2" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Button" parent="TextAppearance.MaterialComponents.Button">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Caption" parent="TextAppearance.MaterialComponents.Caption">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+  <style name="Material.Overline" parent="TextAppearance.MaterialComponents.Overline">
+    <item name="android:textSize">10sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+
+  <style name="Item.Info.Subtitle" parent="Material.Subtitle2">
+    <item name="android:textColor">@color/colorTextGray</item>
+  </style>
+
+  <style name="Item.Info.Caption" parent="Material.Caption">
+    <item name="android:textColor">@color/colorTextGray</item>
+  </style>
+
+  <style name="Button.Green" parent="Material.Button">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:background">@color/colorSpotifyGreen</item>
+    <item name="android:paddingStart">16dp</item>
+    <item name="android:paddingEnd">16dp</item>
+  </style>
+
+  <style name="Button.Red" parent="Material.Button">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:background">@color/colorSpotifyRed</item>
+    <item name="android:paddingStart">16dp</item>
+    <item name="android:paddingEnd">16dp</item>
+  </style>
+
+  <style name="Input.Layout" parent="Material.Body1">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:textColorHint">@color/colorSpotifyWhite</item>
+    <item name="android:background">@drawable/bg_input_layout</item>
+    <item name="android:paddingStart">8dp</item>
+  </style>
+
+  <style name="Toolbar.Title" parent="Material.Headline6">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+  </style>
+
+  <style name="Search" parent="Material.Headline6">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:background">@drawable/bg_search</item>
+    <item name="android:inputType">text</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:paddingStart">@dimen/search_padding_start</item>
+    <item name="android:paddingEnd">@dimen/search_padding_end</item>
+  </style>
+
+  <style name="Feature.Album.Label" parent="Material.Caption">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:typeface">monospace</item>
+    <item name="android:textColor">@color/colorTextGray</item>
+  </style>
+
+  <style name="Feature.Album.Name" parent="Material.Subtitle2">
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+  </style>
+
+  <style name="Feature.Song.Name" parent="Material.Headline6">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textColor">@color/colorSpotifyWhite</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="Feature.Artist.Name" parent="Material.Subtitle2">
+    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/roboto</item>
+    <item name="android:textColor">@color/colorTextGray</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="Toolbar.Title.Dynamic" parent="Toolbar.Title">
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Horizontal.List.Title" parent="Material.Body1">
+    <item name="android:textSize">14sp</item>
+  </style>
+
+  <style name="Horizontal.List.Subtitle" parent="Material.Subtitle1">
+    <item name="android:textSize">12sp</item>
+    <item name="android:textColor">@color/colorTextGray</item>
+  </style>
+
 
 </resources>
