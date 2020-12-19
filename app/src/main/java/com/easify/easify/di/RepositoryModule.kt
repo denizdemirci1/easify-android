@@ -88,6 +88,14 @@ object RepositoryModule {
 
   @Provides
   @ActivityRetainedScoped
+  fun provideArtistRepository(
+    artistsDataSource: ArtistsDataSource
+  ): ArtistRepository {
+    return ArtistRepositoryImpl(artistsDataSource)
+  }
+
+  @Provides
+  @ActivityRetainedScoped
   fun provideBrowseRepository(
     browseDataSource: BrowseDataSource
   ): BrowseRepository {

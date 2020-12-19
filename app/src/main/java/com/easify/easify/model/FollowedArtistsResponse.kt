@@ -5,7 +5,7 @@ package com.easify.easify.model
  * @date: 10/4/2020
  */
 
-data class ArtistsResponse(
+data class FollowedArtistsResponse(
   val artists: Artists
 )
 

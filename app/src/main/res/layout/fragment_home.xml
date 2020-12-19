@@ -11,6 +11,9 @@
         <variable
             name="featuredTracksVisibility"
             type="Boolean" />
+        <variable
+            name="featuredArtistsVisibility"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,36 +47,77 @@
             tools:layout="@layout/view_holder_easify_track"
             tools:visibility="gone"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/home_container"
+        <ScrollView
+            android:id="@+id/home_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/fragment_root_padding"
-            android:visibility="@{featuredTracksVisibility ? View.VISIBLE : View.GONE}"
+            android:visibility="@{searchedTracksVisibility ? View.GONE : View.VISIBLE}"
             app:layout_constraintTop_toBottomOf="@id/search"
-            tools:visibility="visible">
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:id="@+id/featured_tracks_label"
-                style="@style/Toolbar.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/fragment_home_default_margin_start"
-                android:text="@string/fragment_home_featured_tracks_label"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/featured_tracks"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/scroll_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fragment_root_padding"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/featured_tracks_label"
-                tools:layout="@layout/view_holder_easify_track_horizontal"/>
+                android:layout_height="wrap_content">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/home_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/featured_tracks_label"
+                        style="@style/Toolbar.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fragment_home_default_margin_start"
+                        android:text="@string/fragment_home_featured_tracks_label"
+                        android:visibility="@{featuredTracksVisibility ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/featured_tracks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fragment_root_padding"
+                        android:orientation="horizontal"
+                        android:visibility="@{featuredTracksVisibility ? View.VISIBLE : View.GONE}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/featured_tracks_label"
+                        tools:layout="@layout/view_holder_easify_track_horizontal"/>
+
+                    <TextView
+                        android:id="@+id/featured_artists_label"
+                        style="@style/Toolbar.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fragment_root_padding"
+                        android:layout_marginStart="@dimen/fragment_home_default_margin_start"
+                        android:text="@string/fragment_home_featured_artists_label"
+                        android:visibility="@{featuredArtistsVisibility ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintTop_toBottomOf="@id/featured_tracks"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/featured_artists"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fragment_root_padding"
+                        android:orientation="horizontal"
+                        android:visibility="@{featuredArtistsVisibility ? View.VISIBLE : View.GONE}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/featured_artists_label"
+                        tools:layout="@layout/view_holder_easify_artist_horizontal"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

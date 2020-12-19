@@ -1,7 +1,7 @@
 package com.easify.easify.ui.profile.follows.followed.data
 
 import androidx.paging.PageKeyedDataSource
-import com.easify.easify.model.ArtistsResponse
+import com.easify.easify.model.FollowedArtistsResponse
 import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.extensions.toEasifyItemList
 import com.easify.easify.ui.profile.follows.followed.FollowedArtistsViewModel
@@ -20,7 +20,7 @@ class FollowedArtistsDataSource @Inject constructor(
     params: LoadInitialParams<String>,
     callback: LoadInitialCallback<String, EasifyItem>
   ) {
-    followedArtistsViewModel.getFollowedArtists(null) { data: ArtistsResponse ->
+    followedArtistsViewModel.getFollowedArtists(null) { data: FollowedArtistsResponse ->
       callback.onResult(
         data.artists.items.toEasifyItemList(),
         null,
@@ -32,7 +32,7 @@ class FollowedArtistsDataSource @Inject constructor(
   override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, EasifyItem>) {}
 
   override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, EasifyItem>) {
-    followedArtistsViewModel.getFollowedArtists(params.key) { data: ArtistsResponse ->
+    followedArtistsViewModel.getFollowedArtists(params.key) { data: FollowedArtistsResponse ->
       callback.onResult(data.artists.items.toEasifyItemList(), data.artists.cursor?.after)
     }
   }

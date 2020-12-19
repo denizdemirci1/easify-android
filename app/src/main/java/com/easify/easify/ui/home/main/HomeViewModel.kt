@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.easify.easify.data.remote.util.parseNetworkError
+import com.easify.easify.data.repositories.ArtistRepository
 import com.easify.easify.data.repositories.FirebaseRepository
 import com.easify.easify.data.repositories.TrackRepository
 import com.easify.easify.model.Result
@@ -24,7 +25,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val firebaseRepository: FirebaseRepository,
-  private val trackRepository: TrackRepository
+  private val trackRepository: TrackRepository,
+  private val artistRepository: ArtistRepository
 ) : BaseViewModel() {
 
   private val _event = MutableLiveData<Event<HomeViewEvent>>()
@@ -35,19 +37,23 @@ class HomeViewModel @ViewModelInject constructor(
   }
 
   init {
-    setFeaturedTracksIdsRetrievedListener()
+    setListeners()
   }
 
   /**
    * Get uri list from firebase realtime database
    */
-  fun getFeaturedTracksUris() {
+  fun getFeaturedItems() {
     firebaseRepository.getFeaturedTracksIds()
+    firebaseRepository.getFeaturedArtistsIds()
   }
 
-  private fun setFeaturedTracksIdsRetrievedListener() {
-    firebaseRepository.onTrackIdListReceived = { trackIds ->
+  private fun setListeners() {
+    firebaseRepository.onTrackIdsReceived = { trackIds ->
       getTracks(trackIds)
+    }
+    firebaseRepository.onArtistIdsReceived = { artistIds ->
+      getArtists(artistIds)
     }
   }
 
@@ -66,7 +72,28 @@ class HomeViewModel @ViewModelInject constructor(
     }
   }
 
+  private fun getArtists(artistIds: String) {
+    viewModelScope.launch {
+      artistRepository.getArtists(artistIds).let { result ->
+        when (result) {
+          is Result.Success -> {
+            sendEvent(HomeViewEvent.OnFeaturedArtistsReceived(result.data.artists.toEasifyItemList()))
+          }
+          is Result.Error -> {
+            sendEvent(HomeViewEvent.ShowError(parseNetworkError(result.exception)))
+          }
+        }
+      }
+    }
+  }
+
   override fun onItemClick(item: EasifyItem, position: Int) {
     sendEvent(HomeViewEvent.OnItemClicked(item))
+  }
+
+  override fun onCleared() {
+    firebaseRepository.removeFeaturedTracksListener()
+    firebaseRepository.removeFeaturedArtistsListener()
+    super.onCleared()
   }
 }
