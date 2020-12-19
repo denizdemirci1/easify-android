@@ -3,6 +3,8 @@ package com.easify.easify.data.repositories
 import com.easify.easify.data.remote.datasource.TrackDataSource
 import com.easify.easify.model.FeaturesResponse
 import com.easify.easify.model.Result
+import com.easify.easify.model.Track
+import com.easify.easify.model.response.TracksResponse
 
 /**
  * @author: deniz.demirci
@@ -12,6 +14,8 @@ import com.easify.easify.model.Result
 interface TrackRepository {
 
   suspend fun fetchAudioFeatures(trackId: String): Result<FeaturesResponse>
+
+  suspend fun getTracks(ids: String): Result<TracksResponse>
 }
 
 class TrackRepositoryImpl(
@@ -20,5 +24,9 @@ class TrackRepositoryImpl(
 
   override suspend fun fetchAudioFeatures(trackId: String): Result<FeaturesResponse> {
     return trackDataSource.fetchAudioFeatures(trackId)
+  }
+
+  override suspend fun getTracks(ids: String): Result<TracksResponse> {
+    return trackDataSource.getTracks(ids)
   }
 }

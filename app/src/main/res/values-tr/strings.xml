@@ -81,6 +81,7 @@
 
     <!-- Home Fragment -->
     <string name="fragment_home_search_hint">Şarkı ara…</string>
+    <string name="fragment_home_featured_tracks_label">Öne çıkarılan şarkılar</string>
 
     <!-- Follow Fragment -->
     <string name="fragment_follow_search_hint">Sanatçı ara…</string>

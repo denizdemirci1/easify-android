@@ -23,4 +23,8 @@
     <dimen name="view_holder_easify_margin_8">8dp</dimen>
     <dimen name="view_holder_easify_margin_4">4dp</dimen>
 
+    <!-- Home Fragment -->
+    <dimen name="fragment_home_default_margin_start">16dp</dimen>
+    <dimen name="fragment_home_default_margin_top">16dp</dimen>
+    <dimen name="fragment_home_default_margin_end">16dp</dimen>
 </resources>

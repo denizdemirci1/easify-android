@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.easify.easify.ui.home.HomeFragment"
+        android:name="com.easify.easify.ui.home.main.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_addTrackToPlaylistFragment3"
