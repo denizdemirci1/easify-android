@@ -11,6 +11,7 @@ import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHomeBinding
 import com.easify.easify.model.SearchType
 import com.easify.easify.model.util.EasifyItem
+import com.easify.easify.model.util.EasifyItemType
 import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.common.adapter.EasifyItemListAdapter
@@ -40,6 +41,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
   private lateinit var searchedEasifyItemAdapter: EasifyItemListAdapter
   private lateinit var featuredEasifyTracksAdapter: EasifyItemListAdapter
   private lateinit var featuredEasifyArtistsAdapter: EasifyItemListAdapter
+
+  private var clickedItemType = EasifyItemType.TRACK
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -96,7 +99,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     homeViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
-        is HomeViewEvent.OnItemClicked -> searchViewModel.onListenIconClick(event.item)
+        is HomeViewEvent.OnItemClicked -> {
+          clickedItemType = event.item.type
+          searchViewModel.onListenIconClick(event.item)
+        }
         is HomeViewEvent.OnFeaturedTracksReceived -> {
           binding.featuredTracksVisibility = true
           onAdapterDataChanged(featuredEasifyTracksAdapter, event.tracks)
@@ -124,7 +130,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
   }
 
   private fun playTrack() {
-    playerViewModel.play(isTrack = true)
+    when (clickedItemType) {
+      EasifyItemType.TRACK -> playerViewModel.play(isTrack = true)
+      else -> playerViewModel.play()
+    }
   }
 
   private fun getDevices() {
