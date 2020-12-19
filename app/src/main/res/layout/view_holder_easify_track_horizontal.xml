@@ -36,28 +36,28 @@
             tools:src="@drawable/ic_music_note"/>
 
         <TextView
-            android:id="@+id/track_owner"
+            android:id="@+id/track_title"
             style="@style/Horizontal.List.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_holder_easify_margin_8"
-            android:text="@{easifyItem.track.artistName}"
+            android:text="@{easifyItem.track.name}"
+            android:maxLines="2"
             app:layout_constraintTop_toBottomOf="@id/track_image"
             app:layout_constraintStart_toStartOf="@id/track_image"
-            tools:text="Florence + The Machine"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="What Kind Of Man"/>
 
         <TextView
-            android:id="@+id/track_title"
+            android:id="@+id/track_owner"
             style="@style/Horizontal.List.Subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_holder_easify_margin_4"
-            android:text="@{easifyItem.track.name}"
-            android:maxLines="2"
-            app:layout_constraintTop_toBottomOf="@id/track_owner"
+            android:text="@{easifyItem.track.artistName}"
+            app:layout_constraintTop_toBottomOf="@id/track_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="What Kind Of Man"/>
+            tools:text="Florence + The Machine"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
