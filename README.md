@@ -1,23 +1,29 @@
 # Easify-v2
 
-A self-study app to practise on Advanced Android Development. This project aims to improve
-Easify-v1 technically and logically.
+A self-study app to practise on Advanced Android Development.
 
-In this project I aim to use new tools and techniques I learned since the time of
-Easify-v1. Here is a list of what this project will contain:
+### Contents
+- [Installing Configuration](#installing-configuration)
+- [APIs and Libraries](#apis-and-libraries)
 
-- Jetpack: Coroutines, LiveData, DataBinding, Navigation, Paging3...
+## Installing Configuration
+You will need to create a client id and client secret from Spotify Developer Console and
+insert them into your **(local.properties)** in your android project as follows:
+>- spotify_client_id="your_key_here"
+>- spotify_client_secret="your_secret_here"
 
-- Continuous Integration using Jenkins
+## APIs and Libraries
+Here is a list of what this project contains. (Or will contain)
 
-- Ktlint for pretty coding
+>-  Jetpack Libraries: Navigation, Coroutines, ViewModel, DataBinding, Paging...
+>-  Continuous Integration using Jenkins
+>-  Dagger Hilt for dependency injection
+>-  Material Design - Animations & Transitions
+>-  Ktlint for pretty coding
+>-  Push notifications with Firebase
+>-  Analytics events with Firebase
+>-  Realtime database with Firebase
+>-  An example use of Navigation Component with Multiple Back Stack support
+>-  Unit tests and UI tests with MockK and Espresso
 
-- Unit Tests and UI Tests: MockK, Espresso
-
-- Dagger Hilt Dependency Injection
-
-- Material Design
-
-- Animations & Transitions
-
-and many more to find along the way. The sky still remains being the limit.
+and many more to find along the way.
