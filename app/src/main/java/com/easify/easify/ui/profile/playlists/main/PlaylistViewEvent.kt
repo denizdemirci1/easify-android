@@ -9,6 +9,8 @@ import com.easify.easify.model.util.EasifyPlaylist
 
 sealed class PlaylistViewEvent {
 
+  object Authenticate : PlaylistViewEvent()
+
   object GetDevices: PlaylistViewEvent()
 
   object Play: PlaylistViewEvent()
@@ -17,5 +19,5 @@ sealed class PlaylistViewEvent {
 
   data class OpenPlaylistDetail(val playlist: EasifyPlaylist) : PlaylistViewEvent()
 
-  data class ShowError(val message: String) : PlaylistViewEvent()
+  data class ShowError(val message: String?) : PlaylistViewEvent()
 }

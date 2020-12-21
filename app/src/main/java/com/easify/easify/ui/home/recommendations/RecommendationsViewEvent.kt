@@ -10,6 +10,8 @@ import com.easify.easify.model.util.EasifyTrack
 
 sealed class RecommendationsViewEvent {
 
+  object Authenticate : RecommendationsViewEvent()
+
   object GetDevices: RecommendationsViewEvent()
 
   object Play: RecommendationsViewEvent()
@@ -26,5 +28,5 @@ sealed class RecommendationsViewEvent {
 
   object ShowUserIdNotFoundError: RecommendationsViewEvent()
 
-  data class ShowError(val message: String) : RecommendationsViewEvent()
+  data class ShowError(val message: String?) : RecommendationsViewEvent()
 }

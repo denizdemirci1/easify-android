@@ -23,7 +23,7 @@ class FollowedArtistsViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val followRepository: FollowRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
@@ -43,11 +43,16 @@ class FollowedArtistsViewModel @ViewModelInject constructor(
         when (result) {
           is Success -> result.data.let(onSuccess)
           is Error -> {
-            sendEvent(FollowedArtistsViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(FollowedArtistsViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(FollowedArtistsViewEvent.Authenticate)
   }
 
   override fun onItemClick(item: EasifyItem, position: Int) {

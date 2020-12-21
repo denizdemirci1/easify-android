@@ -15,6 +15,7 @@ import com.easify.easify.model.util.EasifyItem
 import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.ui.extensions.toEasifyItemList
 import com.easify.easify.util.Event
+import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
 
 /**
@@ -26,8 +27,9 @@ class HomeViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val firebaseRepository: FirebaseRepository,
   private val trackRepository: TrackRepository,
-  private val artistRepository: ArtistRepository
-) : BaseViewModel() {
+  private val artistRepository: ArtistRepository,
+  userManager: UserManager
+) : BaseViewModel(userManager) {
 
   private val _event = MutableLiveData<Event<HomeViewEvent>>()
   val event: LiveData<Event<HomeViewEvent>> = _event
@@ -65,6 +67,7 @@ class HomeViewModel @ViewModelInject constructor(
             sendEvent(HomeViewEvent.OnFeaturedTracksReceived(result.data.tracks.toEasifyItemList()))
           }
           is Result.Error -> {
+            parseNetworkError(result.exception, ::onAuthError)
             sendEvent(HomeViewEvent.ShowError(parseNetworkError(result.exception)))
           }
         }
@@ -80,11 +83,16 @@ class HomeViewModel @ViewModelInject constructor(
             sendEvent(HomeViewEvent.OnFeaturedArtistsReceived(result.data.artists.toEasifyItemList()))
           }
           is Result.Error -> {
-            sendEvent(HomeViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(HomeViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(HomeViewEvent.Authenticate)
   }
 
   override fun onItemClick(item: EasifyItem, position: Int) {

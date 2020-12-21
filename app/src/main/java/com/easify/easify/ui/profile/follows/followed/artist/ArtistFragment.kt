@@ -7,12 +7,12 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentArtistBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.util.EventObserver
 import com.google.android.material.snackbar.Snackbar
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_artist.*
 
@@ -46,17 +46,21 @@ class ArtistFragment : BaseFragment(R.layout.fragment_artist) {
   private fun setupObservers() {
     artistViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
       when (event) {
+        ArtistViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         is ArtistViewEvent.ShowSnackbar -> showSnackbar(event.followStatus)
         is ArtistViewEvent.ShowError -> showError(event.message)
       }
     })
   }
 
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> artistViewModel.saveToken(response)
+      AuthenticationResponse.Type.ERROR -> artistViewModel.clearToken()
+      else -> Unit
     }
   }
 

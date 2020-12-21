@@ -23,7 +23,7 @@ class HistoryViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playerRepository: PlayerRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   val urisOfTracks = ArrayList<String>()
 
@@ -49,11 +49,16 @@ class HistoryViewModel @ViewModelInject constructor(
           }
           is Error -> {
             _loading.value = false
-            sendEvent(HistoryViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(HistoryViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(HistoryViewEvent.Authenticate)
   }
 
   override fun onItemClick(item: EasifyItem, position: Int) {

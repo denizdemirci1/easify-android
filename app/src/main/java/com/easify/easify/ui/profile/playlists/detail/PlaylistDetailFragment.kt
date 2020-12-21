@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistDetailBinding
 import com.easify.easify.model.util.EasifyItem
@@ -19,6 +18,7 @@ import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.EventObserver
 import com.google.android.material.snackbar.Snackbar
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist_detail.*
 
@@ -60,6 +60,7 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
   private fun setupObservers() {
     playlistDetailViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        PlaylistDetailViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         PlaylistDetailViewEvent.GetDevices -> getDevices()
         PlaylistDetailViewEvent.Play -> playPlaylist()
         is PlaylistDetailViewEvent.ListenIconClicked -> setClickedTrackUri(event.uri)
@@ -77,8 +78,20 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
+  }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> playlistDetailViewModel.saveToken(response)
+      AuthenticationResponse.Type.ERROR -> playlistDetailViewModel.clearToken()
+      else -> Unit
+    }
   }
 
   private fun setupPlaylistDetailAdapter() {
@@ -108,22 +121,6 @@ class PlaylistDetailFragment : BaseFragment(R.layout.fragment_playlist_detail) {
 
   private fun playPlaylist() {
     playerViewModel.play(playlistUri = args.playlist?.uri)
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 
   private fun showSnackbar(message: String) {

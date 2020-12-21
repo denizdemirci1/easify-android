@@ -24,7 +24,7 @@ class RecommendationsViewModel @ViewModelInject constructor(
   private val browseRepository: BrowseRepository,
   private val playlistRepository: PlaylistRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   private val recommendedTracks = ArrayList<Track>()
 
@@ -60,7 +60,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
 
           is Result.Error -> {
             _loading.value = false
-            sendEvent(RecommendationsViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(RecommendationsViewEvent.ShowError(message)) }
           }
         }
       }
@@ -80,7 +81,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
             }
             is Result.Error -> {
               _loading.value = false
-              sendEvent(RecommendationsViewEvent.ShowError(parseNetworkError(result.exception)))
+              val message = parseNetworkError(result.exception, ::onAuthError)
+              message?.let { sendEvent(RecommendationsViewEvent.ShowError(message)) }
             }
           }
         }
@@ -98,7 +100,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
           }
           is Result.Error -> {
             _loading.value = false
-            sendEvent(RecommendationsViewEvent.OnCreatePlaylistResponse(false))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(RecommendationsViewEvent.ShowError(message)) }
           }
         }
       }
@@ -118,12 +121,17 @@ class RecommendationsViewModel @ViewModelInject constructor(
             }
             is Result.Error -> {
               _loading.value = false
-              sendEvent(RecommendationsViewEvent.OnCreatePlaylistResponse(false))
+              val message = parseNetworkError(result.exception, ::onAuthError)
+              message?.let { sendEvent(RecommendationsViewEvent.ShowError(message)) }
             }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(RecommendationsViewEvent.Authenticate)
   }
 
   override fun onItemClick(item: EasifyItem, position: Int) {

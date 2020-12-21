@@ -37,7 +37,7 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   // region variables
   private lateinit var playlist: EasifyPlaylist
@@ -97,11 +97,16 @@ class PlaylistDetailViewModel @ViewModelInject constructor(
             }
           }
           is Error -> {
-            sendEvent(PlaylistDetailViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(PlaylistDetailViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(PlaylistDetailViewEvent.Authenticate)
   }
 
   fun removeTrack(track: EasifyTrack) {

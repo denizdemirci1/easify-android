@@ -11,6 +11,8 @@ import com.easify.easify.model.util.EasifyTrack
 
 sealed class SearchViewEvent {
 
+  object Authenticate : SearchViewEvent()
+
   object GetDevices: SearchViewEvent()
 
   object Play: SearchViewEvent()
@@ -27,5 +29,5 @@ sealed class SearchViewEvent {
 
   data class NotifyArtistDataChanged(val artistList: ArrayList<EasifyItem>) : SearchViewEvent()
 
-  data class ShowError(val message: String) : SearchViewEvent()
+  data class ShowError(val message: String?) : SearchViewEvent()
 }

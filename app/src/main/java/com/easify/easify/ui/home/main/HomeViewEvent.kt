@@ -9,11 +9,13 @@ import com.easify.easify.model.util.EasifyItem
 
 sealed class HomeViewEvent {
 
+  object Authenticate : HomeViewEvent()
+
   data class OnItemClicked(val item: EasifyItem): HomeViewEvent()
 
   data class OnFeaturedTracksReceived(val tracks: ArrayList<EasifyItem>): HomeViewEvent()
 
   data class OnFeaturedArtistsReceived(val artists: ArrayList<EasifyItem>): HomeViewEvent()
 
-  data class ShowError(val message: String) : HomeViewEvent()
+  data class ShowError(val message: String?) : HomeViewEvent()
 }

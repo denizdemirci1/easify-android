@@ -23,7 +23,7 @@ class SearchViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val searchRepository: SearchRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   init {
     isListenIconNeededForTrack = true
@@ -45,11 +45,16 @@ class SearchViewModel @ViewModelInject constructor(
         when (result) {
           is Result.Success -> handleSearchResult(type, result.data, query)
           is Result.Error -> {
-            sendEvent(SearchViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(SearchViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(SearchViewEvent.Authenticate)
   }
 
   private fun handleSearchResult(type: SearchType, data: SearchResponse, query: String) {

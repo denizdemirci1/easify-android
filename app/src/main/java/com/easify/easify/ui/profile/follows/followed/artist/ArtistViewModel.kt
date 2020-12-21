@@ -10,7 +10,9 @@ import com.easify.easify.model.Artist
 import com.easify.easify.model.Result.Success
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.util.EasifyArtist
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
+import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
 
 /**
@@ -21,8 +23,9 @@ import kotlinx.coroutines.launch
 class ArtistViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val followRepository: FollowRepository,
-  private val playerRepository: PlayerRepository
-) : ViewModel() {
+  private val playerRepository: PlayerRepository,
+  private val userManager: UserManager
+) : BaseViewModel(userManager) {
 
   enum class FollowStatus {
     FOLLOW, UNFOLLOW
@@ -56,11 +59,16 @@ class ArtistViewModel @ViewModelInject constructor(
             setButtonVisibilities(result.data.artists.items)
           }
           is Error -> {
-            sendEvent(ArtistViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(ArtistViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(ArtistViewEvent.Authenticate)
   }
 
   fun followArtist(id: String) {
