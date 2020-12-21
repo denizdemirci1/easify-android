@@ -9,7 +9,9 @@ import com.easify.easify.model.FeaturesResponse
 
 sealed class FeaturesViewEvent {
 
+  object Authenticate : FeaturesViewEvent()
+
   data class OnFeaturesReceived(val features: FeaturesResponse): FeaturesViewEvent()
 
-  data class ShowError(val message: String) : FeaturesViewEvent()
+  data class ShowError(val message: String?) : FeaturesViewEvent()
 }

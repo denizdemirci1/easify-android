@@ -7,6 +7,7 @@ import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.PlaylistRepository
 import com.easify.easify.model.CreatePlaylistBody
 import com.easify.easify.model.Result
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -20,7 +21,7 @@ class CreatePlaylistViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel(userManager) {
 
   private val _event = MutableLiveData<Event<CreatePlaylistViewEvent>>()
   val event: LiveData<Event<CreatePlaylistViewEvent>> = _event
@@ -39,11 +40,16 @@ class CreatePlaylistViewModel @ViewModelInject constructor(
           when (result) {
             is Result.Success -> sendEvent(CreatePlaylistViewEvent.Navigate)
             is Result.Error -> {
-              sendEvent(CreatePlaylistViewEvent.ShowError(parseNetworkError(result.exception)))
+              val message = parseNetworkError(result.exception, ::onAuthError)
+              message?.let { sendEvent(CreatePlaylistViewEvent.ShowError(message)) }
             }
           }
         }
       }
     } ?: sendEvent(CreatePlaylistViewEvent.ShowUserIdNotFoundError)
+  }
+
+  private fun onAuthError() {
+    sendEvent(CreatePlaylistViewEvent.Authenticate)
   }
 }

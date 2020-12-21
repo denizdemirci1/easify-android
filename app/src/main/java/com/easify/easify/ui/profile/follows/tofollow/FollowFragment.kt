@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFollowBinding
 import com.easify.easify.model.SearchType
@@ -105,21 +104,5 @@ class FollowFragment : BaseFragment(R.layout.fragment_follow) {
 
   private fun setClickedArtistUri(uri: String) {
     playerViewModel.setUriToPlay(uri)
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 }

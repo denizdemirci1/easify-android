@@ -11,5 +11,5 @@ sealed class SplashViewEvent {
 
   object OpenHomePage : SplashViewEvent()
 
-  data class ShowError(val message: String) : SplashViewEvent()
+  data class ShowError(val message: String?) : SplashViewEvent()
 }

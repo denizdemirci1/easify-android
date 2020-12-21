@@ -158,10 +158,10 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
     playlistName
   )
 
-  private fun showError(message: String) {
+  private fun showError(message: String?) {
     MaterialDialog(requireContext()).show {
       title(R.string.dialog_error_title)
-      message(text = message)
+      message(text = message ?: getString(R.string.dialog_common_error_text))
       positiveButton(R.string.dialog_ok)
     }
   }

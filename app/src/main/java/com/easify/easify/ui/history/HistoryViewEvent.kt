@@ -9,6 +9,8 @@ import com.easify.easify.model.util.EasifyTrack
 
 sealed class HistoryViewEvent {
 
+  object Authenticate : HistoryViewEvent()
+
   object GetDevices: HistoryViewEvent()
 
   object Play: HistoryViewEvent()
@@ -17,5 +19,5 @@ sealed class HistoryViewEvent {
 
   data class AddIconClicked(val track: EasifyTrack) : HistoryViewEvent()
 
-  data class ShowError(val message: String) : HistoryViewEvent()
+  data class ShowError(val message: String?) : HistoryViewEvent()
 }

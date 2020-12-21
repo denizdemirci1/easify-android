@@ -23,7 +23,7 @@ class TopTracksViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val personalizationRepository: PersonalizationRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   val urisOfTracks = ArrayList<String>()
 
@@ -52,11 +52,16 @@ class TopTracksViewModel @ViewModelInject constructor(
             urisOfTracks.addAll(result.data.items.map { it.uri })
           }
           is Error -> {
-            sendEvent(TopTracksViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(TopTracksViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(TopTracksViewEvent.Authenticate)
   }
 
   override fun onItemClick(item: EasifyItem, position: Int) {

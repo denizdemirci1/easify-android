@@ -13,7 +13,6 @@ import com.adcolony.sdk.AdColony
 import com.adcolony.sdk.AdColonyAdSize
 import com.adcolony.sdk.AdColonyAdView
 import com.adcolony.sdk.AdColonyAdViewListener
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHistoryBinding
@@ -25,6 +24,7 @@ import com.easify.easify.ui.history.data.HistoryDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.EventObserver
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_history.*
 
@@ -56,6 +56,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     }
     requestAds()
     setupObservers()
+    setUpPaging()
     setupHistoryAdapter()
   }
 
@@ -78,6 +79,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
   private fun setupObservers() {
     historyViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        HistoryViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         HistoryViewEvent.GetDevices -> getDevices()
         HistoryViewEvent.Play -> playTrack()
         is HistoryViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
@@ -90,9 +92,26 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
+  }
 
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> {
+        historyViewModel.saveToken(response)
+        setUpPaging()
+      }
+      AuthenticationResponse.Type.ERROR -> historyViewModel.clearToken()
+      else -> Unit
+    }
+  }
+
+  private fun setUpPaging() {
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
       easifyItemPagedListAdapter.submitList(list)
     })
@@ -129,22 +148,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     deviceId?.let {
       playTrack()
     } ?: run { showOpenSpotifyWarning() }
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 
   private fun onAddClicked(track: EasifyTrack) {

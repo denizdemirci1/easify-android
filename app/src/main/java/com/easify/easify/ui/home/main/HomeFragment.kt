@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHomeBinding
 import com.easify.easify.model.SearchType
@@ -20,6 +19,7 @@ import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.ui.search.SearchViewEvent
 import com.easify.easify.ui.search.SearchViewModel
 import com.easify.easify.util.EventObserver
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -84,6 +84,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
   private fun setupObservers() {
     searchViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        SearchViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         SearchViewEvent.GetDevices -> getDevices()
         SearchViewEvent.Play -> playTrack()
         is SearchViewEvent.OnTrackClicked -> onTrackClicked(event.track)
@@ -99,6 +100,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     homeViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        HomeViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         is HomeViewEvent.OnItemClicked -> {
           clickedItemType = event.item.type
           searchViewModel.onListenIconClick(event.item)
@@ -119,9 +121,25 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
   }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> {
+        homeViewModel.saveToken(response)
+        homeViewModel.getFeaturedItems()
+      }
+      AuthenticationResponse.Type.ERROR -> homeViewModel.clearToken()
+      else -> Unit
+    }
+  }
+
 
   private fun handleDeviceIdSet(deviceId: String?) {
     deviceId?.let {
@@ -156,21 +174,5 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
   private fun setClickedTrackUri(uri: String) {
     playerViewModel.setUriToPlay(uri)
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 }

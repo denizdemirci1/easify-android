@@ -6,7 +6,12 @@ package com.easify.easify.ui.profile.playlists.create
  */
 
 sealed class CreatePlaylistViewEvent {
+
+  object Authenticate : CreatePlaylistViewEvent()
+
   object Navigate: CreatePlaylistViewEvent()
+
   object ShowUserIdNotFoundError: CreatePlaylistViewEvent()
-  data class ShowError(val message: String) : CreatePlaylistViewEvent()
+
+  data class ShowError(val message: String?) : CreatePlaylistViewEvent()
 }

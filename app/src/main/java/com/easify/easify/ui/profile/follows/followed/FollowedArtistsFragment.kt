@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFollowedArtistsBinding
 import com.easify.easify.model.util.EasifyArtist
@@ -20,6 +19,7 @@ import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.profile.follows.followed.data.FollowedArtistsDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_artists.*
 
@@ -61,6 +61,7 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
   private fun setupObservers() {
     followedArtistsViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        FollowedArtistsViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         FollowedArtistsViewEvent.GetDevices -> getDevices()
         FollowedArtistsViewEvent.Play -> playArtist()
         is FollowedArtistsViewEvent.ListenIconClicked -> setClickedArtistUri(event.uri)
@@ -73,12 +74,24 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
 
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
       easifyItemPagedListAdapter.submitList(list)
     })
+  }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> followedArtistsViewModel.saveToken(response)
+      AuthenticationResponse.Type.ERROR -> followedArtistsViewModel.clearToken()
+      else -> Unit
+    }
   }
 
   private fun handleDeviceIdSet(deviceId: String?) {
@@ -117,22 +130,6 @@ class FollowedArtistsFragment : BaseFragment(R.layout.fragment_followed_artists)
     val action =
       FollowedArtistsFragmentDirections.actionFollowedArtistsFragmentToArtistFragment(artist)
     findNavController().navigate(action)
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 
   override fun onDestroy() {

@@ -9,13 +9,13 @@ import com.adcolony.sdk.AdColony
 import com.adcolony.sdk.AdColonyAdSize
 import com.adcolony.sdk.AdColonyAdView
 import com.adcolony.sdk.AdColonyAdViewListener
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentCreatePlaylistBinding
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.extensions.hideKeyboard
 import com.easify.easify.util.EventObserver
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_create_playlist.*
 
@@ -63,6 +63,7 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
   private fun setupObservers() {
     createPlaylistViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        CreatePlaylistViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         CreatePlaylistViewEvent.Navigate -> findNavController().popBackStack()
         CreatePlaylistViewEvent.ShowUserIdNotFoundError -> {
           showError(getString(R.string.fragment_create_playlist_user_id_not_found_error))
@@ -70,6 +71,20 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
         is CreatePlaylistViewEvent.ShowError -> showError(event.message)
       }
     })
+  }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> {
+        createPlaylistViewModel.saveToken(response)
+        createPlaylistViewModel.createPlaylist(getName(), getDescription())
+      }
+      AuthenticationResponse.Type.ERROR -> createPlaylistViewModel.clearToken()
+      else -> Unit
+    }
   }
 
   private fun setupListeners() {
@@ -90,14 +105,6 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
     return if (binding.description.text.toString().isEmpty())
       getString(R.string.fragment_create_playlist_default_playlist_description) else
       binding.description.text.toString()
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 
   override fun onDestroyView() {

@@ -7,6 +7,8 @@ package com.easify.easify.ui.player
 
 sealed class PlayerViewEvent {
 
+  object Authenticate : PlayerViewEvent()
+
   object ShowOpenSpotifyWarning: PlayerViewEvent()
 
   data class DeviceIdSet(val deviceId: String?): PlayerViewEvent()
