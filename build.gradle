@@ -6,6 +6,7 @@ buildscript {
   ext.navigation_version = '2.3.2'
   ext.google_services_version = '4.3.4'
   ext.dagger_hilt_version = "2.28.3-alpha"
+  ext.crashlytics_version = "2.4.1"
   repositories {
     jcenter()
     mavenCentral()
@@ -21,6 +22,7 @@ buildscript {
     classpath "com.google.gms:google-services:$google_services_version"
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
     classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt_version"
+    classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlytics_version"
   }
 }
 
