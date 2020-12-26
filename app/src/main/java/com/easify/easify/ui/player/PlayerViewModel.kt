@@ -3,8 +3,10 @@ package com.easify.easify.ui.player
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.PlayerRepository
 import com.easify.easify.model.*
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ class PlayerViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playerRepository: PlayerRepository,
   private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel(userManager) {
 
   private var uriToPlay: String? = null
 
@@ -41,7 +43,8 @@ class PlayerViewModel @ViewModelInject constructor(
             sendEvent(PlayerViewEvent.DeviceIdSet(getDeviceId(result.data.devices)))
           }
           is Result.Error -> {
-            sendEvent(PlayerViewEvent.DeviceIdSet(null))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(PlayerViewEvent.DeviceIdSet(null)) }
           }
         }
       }
@@ -122,10 +125,17 @@ class PlayerViewModel @ViewModelInject constructor(
                 } ?: run { sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning) }
               }
             }
-            is Result.Error -> sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning)
+            is Result.Error -> {
+              val message = parseNetworkError(result.exception, ::onAuthError)
+              message?.let { sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning) }
+            }
           }
         }
       }
     } ?: run { sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning) }
+  }
+
+  private fun onAuthError() {
+    sendEvent(PlayerViewEvent.Authenticate)
   }
 }

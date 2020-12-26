@@ -27,7 +27,7 @@ class AddTrackToPlaylistViewModel @ViewModelInject constructor(
   private val playlistRepository: PlaylistRepository,
   private val libraryRepository: LibraryRepository,
   private val userManager: UserManager
-): BaseViewModel() {
+): BaseViewModel(userManager) {
 
   private lateinit var track: EasifyTrack
 

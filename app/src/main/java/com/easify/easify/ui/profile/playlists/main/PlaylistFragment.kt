@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentPlaylistBinding
 import com.easify.easify.model.util.EasifyItem
@@ -20,6 +19,7 @@ import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.profile.playlists.main.data.PlaylistDataSource
 import com.easify.easify.util.EventObserver
 import com.easify.easify.ui.player.PlayerViewModel
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist.*
 
@@ -48,6 +48,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
     }
     setupListeners()
     setupObservers()
+    setupPaging()
     setupPlaylistAdapter()
   }
 
@@ -60,6 +61,7 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
   private fun setupObservers() {
     playlistViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        PlaylistViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         PlaylistViewEvent.GetDevices -> getDevices()
         PlaylistViewEvent.Play -> playPlaylist()
         is PlaylistViewEvent.ListenIconClicked -> setClickedPlaylistUri(event.uri)
@@ -72,12 +74,29 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
+  }
 
+  private fun setupPaging() {
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
       easifyItemPagedListAdapter.submitList(list)
     })
+  }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> {
+        playlistViewModel.saveToken(response)
+        setupPaging()
+      }
+      AuthenticationResponse.Type.ERROR -> playlistViewModel.clearToken()
+      else -> Unit
+    }
   }
 
   private fun handleDeviceIdSet(deviceId: String?) {
@@ -115,21 +134,5 @@ class PlaylistFragment : BaseFragment(R.layout.fragment_playlist) {
   private fun openPlaylistDetailFragment(playlist: EasifyPlaylist) {
     val action = PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment(playlist)
     findNavController().navigate(action)
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 }

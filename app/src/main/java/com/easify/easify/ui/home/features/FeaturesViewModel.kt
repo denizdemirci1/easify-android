@@ -6,7 +6,9 @@ import androidx.lifecycle.*
 import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.TrackRepository
 import com.easify.easify.model.Result
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
+import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
 
 /**
@@ -16,8 +18,9 @@ import kotlinx.coroutines.launch
 
 class FeaturesViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
-  private val trackRepository: TrackRepository
-) : ViewModel() {
+  private val trackRepository: TrackRepository,
+  userManager: UserManager
+) : BaseViewModel(userManager) {
 
   private val _event = MutableLiveData<Event<FeaturesViewEvent>>()
   val event: LiveData<Event<FeaturesViewEvent>> = _event
@@ -32,10 +35,15 @@ class FeaturesViewModel @ViewModelInject constructor(
         when (result) {
           is Result.Success ->  sendEvent(FeaturesViewEvent.OnFeaturesReceived(result.data))
           is Result.Error -> {
-            sendEvent(FeaturesViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(FeaturesViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(FeaturesViewEvent.Authenticate)
   }
 }

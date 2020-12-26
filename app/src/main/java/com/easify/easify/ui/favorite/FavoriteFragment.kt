@@ -117,12 +117,4 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
     val action = FavoriteFragmentDirections.actionFavoriteFragmentToTopTracksFragment(timeRange)
     findNavController().navigate(action)
   }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
 }

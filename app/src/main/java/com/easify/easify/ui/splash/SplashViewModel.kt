@@ -1,6 +1,5 @@
 package com.easify.easify.ui.splash
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -9,10 +8,10 @@ import com.easify.easify.data.remote.util.parseNetworkError
 import com.easify.easify.data.repositories.UserRepository
 import com.easify.easify.model.Result.Error
 import com.easify.easify.model.Result.Success
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.Event
 import com.easify.easify.util.manager.UserManager
 import kotlinx.coroutines.launch
-import java.util.*
 
 /**
  * @author: deniz.demirci
@@ -23,7 +22,7 @@ class SplashViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val userManager: UserManager,
   private val userRepository: UserRepository
-) : ViewModel() {
+) : BaseViewModel(userManager) {
 
   private val _event = MutableLiveData<Event<SplashViewEvent>>()
   val event: LiveData<Event<SplashViewEvent>> = _event
@@ -43,12 +42,16 @@ class SplashViewModel @ViewModelInject constructor(
             sendEvent(SplashViewEvent.OpenHomePage)
           }
           is Error -> {
-            userManager.token = null
-            handleAuthError(parseNetworkError(result.exception))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(SplashViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(SplashViewEvent.Authenticate)
   }
 
   fun authenticateSpotify() {
@@ -64,7 +67,7 @@ class SplashViewModel @ViewModelInject constructor(
    * by authenticating again before showing error message.
    * If it fails again, then show the error.
    */
-  fun handleAuthError(message: String) {
+  fun handleAuthError(message: String?) {
     if (userManager.tokenRefreshed) {
       sendEvent(SplashViewEvent.ShowError(message))
       userManager.tokenRefreshed = false
@@ -72,13 +75,5 @@ class SplashViewModel @ViewModelInject constructor(
       userManager.tokenRefreshed = false
       authenticateSpotify()
     }
-  }
-
-  fun saveToken(accessToken: String) {
-    userManager.token = accessToken
-  }
-
-  fun clearToken() {
-    userManager.token = ""
   }
 }

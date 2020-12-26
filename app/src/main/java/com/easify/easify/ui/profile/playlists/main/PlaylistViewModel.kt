@@ -26,7 +26,7 @@ class PlaylistViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val playlistRepository: PlaylistRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
@@ -46,11 +46,16 @@ class PlaylistViewModel @ViewModelInject constructor(
         when (result) {
           is Success -> result.data.let(onSuccess)
           is Error -> {
-            sendEvent(PlaylistViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(PlaylistViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(PlaylistViewEvent.Authenticate)
   }
 
   override fun onItemClick(item: EasifyItem, position: Int) {

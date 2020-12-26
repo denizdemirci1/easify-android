@@ -9,6 +9,8 @@ import com.easify.easify.model.util.EasifyArtist
 
 sealed class TopArtistsViewEvent {
 
+  object Authenticate : TopArtistsViewEvent()
+
   object GetDevices: TopArtistsViewEvent()
 
   object Play: TopArtistsViewEvent()
@@ -17,5 +19,5 @@ sealed class TopArtistsViewEvent {
 
   data class OpenArtistFragment(val artist: EasifyArtist) : TopArtistsViewEvent()
 
-  data class ShowError(val message: String) : TopArtistsViewEvent()
+  data class ShowError(val message: String?) : TopArtistsViewEvent()
 }

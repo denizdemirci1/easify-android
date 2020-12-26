@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentTopTracksBinding
 import com.easify.easify.model.util.EasifyItem
@@ -21,6 +20,7 @@ import com.easify.easify.ui.favorite.tracks.data.TopTracksDataSource
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.EventObserver
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_top_tracks.*
 
@@ -50,12 +50,14 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
       binding = this
     }
     setupObservers()
+    setupPaging()
     setupTopArtistsAdapter()
   }
 
   private fun setupObservers() {
     topTracksViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        TopTracksViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         TopTracksViewEvent.GetDevices -> getDevices()
         TopTracksViewEvent.Play -> playTrack()
         is TopTracksViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
@@ -68,12 +70,29 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
+  }
 
+  private fun setupPaging() {
     buildPagedListLiveData().observe(viewLifecycleOwner, { list ->
       easifyItemPagedListAdapter.submitList(list)
     })
+  }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> {
+        topTracksViewModel.saveToken(response)
+        setupPaging()
+      }
+      AuthenticationResponse.Type.ERROR -> topTracksViewModel.clearToken()
+      else -> Unit
+    }
   }
 
   private fun setupTopArtistsAdapter() {
@@ -112,22 +131,6 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
     deviceId?.let {
       playTrack()
     } ?: run { showOpenSpotifyWarning() }
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 
   override fun onDestroyView() {

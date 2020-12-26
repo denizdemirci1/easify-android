@@ -9,6 +9,8 @@ import com.easify.easify.model.util.EasifyTrack
 
 sealed class TopTracksViewEvent {
 
+  object Authenticate : TopTracksViewEvent()
+
   object GetDevices: TopTracksViewEvent()
 
   object Play: TopTracksViewEvent()
@@ -17,5 +19,5 @@ sealed class TopTracksViewEvent {
 
   data class TrackClicked(val uri: String): TopTracksViewEvent()
 
-  data class ShowError(val message: String) : TopTracksViewEvent()
+  data class ShowError(val message: String?) : TopTracksViewEvent()
 }

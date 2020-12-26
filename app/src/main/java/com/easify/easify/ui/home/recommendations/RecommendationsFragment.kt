@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentRecommendationsBinding
 import com.easify.easify.model.util.EasifyTrack
@@ -20,6 +19,7 @@ import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.util.DateTimeHelper
 import com.easify.easify.util.EventObserver
 import com.google.android.material.snackbar.Snackbar
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -80,6 +80,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
   private fun setupObservers() {
     recommendationsViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        RecommendationsViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         RecommendationsViewEvent.GetDevices -> getDevices()
         RecommendationsViewEvent.Play -> playTrack()
         is RecommendationsViewEvent.TrackClicked -> setClickedTrackUri(event.uri)
@@ -88,10 +89,14 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
           easifyItemListAdapter.submitList(event.tracks)
         }
         RecommendationsViewEvent.ShowUserIdNotFoundError -> {
+          binding.createPlaylist.isEnabled = true
           showError(getString(R.string.fragment_create_playlist_user_id_not_found_error))
         }
         is RecommendationsViewEvent.OnCreatePlaylistResponse -> showSnackBar(event.isSuccessful)
-        is RecommendationsViewEvent.ShowError -> showError(event.message)
+        is RecommendationsViewEvent.ShowError -> {
+          binding.createPlaylist.isEnabled = true
+          showError(event.message)
+        }
       }
     })
 
@@ -99,8 +104,20 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
+        PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
     })
+  }
+
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> recommendationsViewModel.saveToken(response)
+      AuthenticationResponse.Type.ERROR -> recommendationsViewModel.clearToken()
+      else -> Unit
+    }
   }
 
   private fun setClickedTrackUri(uri: String) {
@@ -125,23 +142,6 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
     deviceId?.let {
       playTrack()
     } ?: run { showOpenSpotifyWarning() }
-  }
-
-  private fun showError(message: String) {
-    binding.createPlaylist.isEnabled = true
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
-  }
-
-  private fun showOpenSpotifyWarning() {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(R.string.dialog_should_open_spotify)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 
   private fun showSnackBar(isSuccess: Boolean) {

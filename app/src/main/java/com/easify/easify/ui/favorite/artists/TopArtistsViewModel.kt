@@ -23,7 +23,7 @@ class TopArtistsViewModel @ViewModelInject constructor(
   @Assisted private val savedStateHandle: SavedStateHandle,
   private val personalizationRepository: PersonalizationRepository,
   private val userManager: UserManager
-) : BaseViewModel() {
+) : BaseViewModel(userManager) {
 
   private val _loading = MutableLiveData(false)
   val loading: LiveData<Boolean> = _loading
@@ -47,11 +47,16 @@ class TopArtistsViewModel @ViewModelInject constructor(
         when (result) {
           is Success -> result.data.let(onSuccess)
           is Error -> {
-            sendEvent(TopArtistsViewEvent.ShowError(parseNetworkError(result.exception)))
+            val message = parseNetworkError(result.exception, ::onAuthError)
+            message?.let { sendEvent(TopArtistsViewEvent.ShowError(message)) }
           }
         }
       }
     }
+  }
+
+  private fun onAuthError() {
+    sendEvent(TopArtistsViewEvent.Authenticate)
   }
 
   override fun onListenIconClick(item: EasifyItem) {

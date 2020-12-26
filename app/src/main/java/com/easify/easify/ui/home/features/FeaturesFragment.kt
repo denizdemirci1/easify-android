@@ -7,12 +7,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentFeaturesBinding
 import com.easify.easify.model.FeaturesResponse
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.util.EventObserver
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -57,22 +57,29 @@ class FeaturesFragment : BaseFragment(R.layout.fragment_features) {
   private fun setupObservers() {
     featuresViewModel.event.observe(viewLifecycleOwner, EventObserver { event ->
       when (event) {
+        FeaturesViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
         is FeaturesViewEvent.OnFeaturesReceived -> setFeatures(event.features)
         is FeaturesViewEvent.ShowError -> showError(event.message)
       }
     })
   }
 
+  private fun afterLogin(
+    responseType: AuthenticationResponse.Type?,
+    response: String
+  ) {
+    when (responseType) {
+      AuthenticationResponse.Type.TOKEN -> {
+        featuresViewModel.saveToken(response)
+        args.track?.id?.let(featuresViewModel::getAudioFeatures)
+      }
+      AuthenticationResponse.Type.ERROR -> featuresViewModel.clearToken()
+      else -> Unit
+    }
+  }
+
   private fun setFeatures(features: FeaturesResponse) {
     this.features = features
     binding.features = features
-  }
-
-  private fun showError(message: String) {
-    MaterialDialog(requireContext()).show {
-      title(R.string.dialog_error_title)
-      message(text = message)
-      positiveButton(R.string.dialog_ok)
-    }
   }
 }

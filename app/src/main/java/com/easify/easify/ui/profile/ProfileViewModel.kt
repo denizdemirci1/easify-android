@@ -4,6 +4,7 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.easify.easify.ui.base.BaseViewModel
 import com.easify.easify.util.manager.UserManager
 
 /**
@@ -14,7 +15,7 @@ import com.easify.easify.util.manager.UserManager
 class ProfileViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val userManager: UserManager
-) : ViewModel() {
+) : BaseViewModel(userManager) {
 
   fun getUser() = userManager.user
 }
