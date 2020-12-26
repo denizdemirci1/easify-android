@@ -54,4 +54,13 @@ class SharedPreferencesStorage @Inject constructor(@ApplicationContext context: 
   }
 
   override fun getBoolean(key: String) = sharedPreferences.getBoolean(key, false)
+
+  override fun setLong(key: String, value: Long) {
+    with(sharedPreferences.edit()) {
+      putLong(key, value)
+      apply()
+    }
+  }
+
+  override fun getLong(key: String) = sharedPreferences.getLong(key, 0L)
 }

@@ -21,6 +21,7 @@ class UserManager @Inject constructor(
     const val DEVICE_ID = "easify.deviceId"
     const val USER = "easify.user"
     const val TOKEN_REFRESHED = "easify.tokenRefreshed"
+    const val IN_APP_REVIEW_LAST_SHOWN_TIME = "easify.inAppReviewLastShownTime"
   }
 
   private val gson: Gson = Gson()
@@ -40,4 +41,8 @@ class UserManager @Inject constructor(
   var deviceId: String?
     get() = storage.getString(DEVICE_ID)
     set(value) = storage.setString(DEVICE_ID, value)
+
+  var inAppReviewLastShownTime: Long
+    get() = storage.getLong(IN_APP_REVIEW_LAST_SHOWN_TIME)
+    set(value) = storage.setLong(IN_APP_REVIEW_LAST_SHOWN_TIME, value)
 }

@@ -17,4 +17,7 @@ interface Storage {
 
   fun setBoolean(key: String, value: Boolean)
   fun getBoolean(key: String): Boolean
+
+  fun setLong(key: String, value: Long)
+  fun getLong(key: String): Long
 }

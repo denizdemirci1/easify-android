@@ -28,7 +28,7 @@ class HomeViewModel @ViewModelInject constructor(
   private val firebaseRepository: FirebaseRepository,
   private val trackRepository: TrackRepository,
   private val artistRepository: ArtistRepository,
-  userManager: UserManager
+  val userManager: UserManager
 ) : BaseViewModel(userManager) {
 
   private val _event = MutableLiveData<Event<HomeViewEvent>>()
