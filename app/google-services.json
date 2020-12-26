@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "597099549100-o6975rt2llrrqc6soavlv5e18amajmi3.apps.googleusercontent.com",
+          "client_id": "597099549100-dl4g50r65klpuqh3l4i1e4pv6aa5b11u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.easify.easify",
-            "certificate_hash": "48d886d50813349efb7a1623b2e866d3ff8e344e"
+            "certificate_hash": "230e608728dd5df5a67aab4c70670b1d7bcf59b9"
           }
         },
         {
