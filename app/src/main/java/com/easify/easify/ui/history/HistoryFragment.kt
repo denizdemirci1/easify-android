@@ -54,7 +54,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       historyViewModel = this@HistoryFragment.historyViewModel
       binding = this
     }
-    requestAds()
+
+    //requestAds()
     setupObservers()
     setUpPaging()
     setupHistoryAdapter()

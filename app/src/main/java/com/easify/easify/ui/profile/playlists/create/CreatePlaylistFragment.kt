@@ -40,7 +40,7 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
       createPlaylistViewModel = this@CreatePlaylistFragment.createPlaylistViewModel
       binding = this
     }
-    requestAds()
+    //requestAds()
     setupObservers()
     setupListeners()
   }
