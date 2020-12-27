@@ -28,6 +28,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../keystore.jks")
+            storePassword "dnzdmrc93"
+            keyAlias "key0"
+            keyPassword "dnzdmrc93"
+        }
+    }
+
     buildTypes {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -48,6 +57,7 @@ android {
         }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
             buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
