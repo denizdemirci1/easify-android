@@ -23,6 +23,7 @@ class PlayerViewModel @ViewModelInject constructor(
 ) : BaseViewModel(userManager) {
 
   private var uriToPlay: String? = null
+  private var getCurrentPlaybackFailed = false
 
   private val _event = MutableLiveData<Event<PlayerViewEvent>>()
   val event: LiveData<Event<PlayerViewEvent>> = _event
@@ -114,20 +115,30 @@ class PlayerViewModel @ViewModelInject constructor(
               if (isTrack) {
                 result.data?.item?.uri?.let { playingUri ->
                   if (playingUri == uri) {
-                    // TODO: song is playing
+                    // song is playing
                   }
                 }
               } else {
                 result.data?.context?.let { currentPlaybackContext ->
                   if (currentPlaybackContext.uri.contains(playlistUri ?: uri)) {
-                    // TODO: song is playing
+                    // Song is playing
                   }
                 } ?: run { sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning) }
               }
             }
             is Result.Error -> {
-              val message = parseNetworkError(result.exception, ::onAuthError)
-              message?.let { sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning) }
+              when (result.exception) {
+                is KotlinNullPointerException -> {
+                  if (!getCurrentPlaybackFailed) {
+                    getCurrentPlaybackFailed = true
+                    sendEvent(PlayerViewEvent.ForceOpenSpotify(uri))
+                  }
+                }
+                else -> {
+                  val message = parseNetworkError(result.exception, ::onAuthError)
+                  message?.let { sendEvent(PlayerViewEvent.ShowOpenSpotifyWarning) }
+                }
+              }
             }
           }
         }

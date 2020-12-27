@@ -69,6 +69,7 @@ class TopTracksFragment : BaseFragment(R.layout.fragment_top_tracks) {
     playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        is PlayerViewEvent.ForceOpenSpotify -> openUriWithSpotify(event.uri)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
         PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }

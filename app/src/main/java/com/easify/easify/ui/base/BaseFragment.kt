@@ -1,6 +1,8 @@
 package com.easify.easify.ui.base
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
@@ -87,6 +89,24 @@ open class BaseFragment : Fragment {
       title(R.string.dialog_error_title)
       message(R.string.dialog_should_open_spotify)
       positiveButton(R.string.dialog_ok)
+    }
+  }
+
+  fun openUriWithSpotify(uri: String) {
+    if (isSpotifyInstalled()) {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
+    } else {
+      showOpenSpotifyWarning()
+    }
+  }
+
+  private fun isSpotifyInstalled(): Boolean {
+    val pm = requireActivity().packageManager
+    return try {
+      pm.getPackageInfo("com.spotify.music", 0)
+      true
+    } catch (e: PackageManager.NameNotFoundException) {
+      false
     }
   }
 
