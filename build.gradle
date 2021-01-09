@@ -3,14 +3,16 @@ buildscript {
   ext.kotlin_version = "1.4.0"
   ext.gradle_version = '4.0.1'
   ext.ktlint_version = '9.0.0'
-  ext.navigation_version = '2.3.0'
-  ext.google_services_version = '4.3.3'
+  ext.navigation_version = '2.3.2'
+  ext.google_services_version = '4.3.4'
   ext.dagger_hilt_version = "2.28.3-alpha"
+  ext.crashlytics_version = "2.4.1"
   repositories {
-    google()
     jcenter()
     mavenCentral()
     maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://adcolony.bintray.com/AdColony" }
+    google()
   }
   dependencies {
     classpath "com.android.tools.build:gradle:$gradle_version"
@@ -20,13 +22,14 @@ buildscript {
     classpath "com.google.gms:google-services:$google_services_version"
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
     classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt_version"
+    classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlytics_version"
   }
 }
 
 allprojects {
   repositories {
-    google()
     jcenter()
+    google()
   }
 }
 
@@ -37,20 +40,28 @@ task clean(type: Delete) {
 ext {
 
   // Main Dependencies
-  appCompat_version = '1.2.0'
-  constraint_layout_version = '2.0.1'
-  core_ktx_version = '1.3.1'
-  coroutines_version = '1.3.7'
+  adcolony_version = '4.3.0'
+  ad_version = '17.0.0'
+  androidx_hilt_version = '1.0.0-alpha02'
+  constraint_layout_version = '2.0.4'
+  core_ktx_version = '1.3.2'
+  coroutines_version = '1.4.1'
   dagger_hilt_version = '2.28.3-alpha'
   data_binding_version = '3.5.0'
+  firebase_bom_version = '26.1.1'
   glide_version = '4.11.0'
+  gson_version = '2.8.6'
   lifecycle_version = '2.2.0'
+  material_dialog_version = '3.3.0'
   multidex_version = '2.0.1'
   okHttp_version = '4.7.2'
+  paging_version = "2.1.2"
   retrofit_version = '2.9.0'
+  rounded_image_version = '2.3.0'
+  spotify_auth_version = '1.1.0'
 
   // Unit Test
-  test_junit_version = '4.13'
+  test_junit_version = '4.13.1'
 
   // UI Test
   test_espresso_version = '3.3.0'

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="position"
+            type="Integer" />
+        <variable
+            name="easifyItem"
+            type="com.easify.easify.model.util.EasifyItem" />
+        <variable
+            name="viewModel"
+            type="com.easify.easify.ui.base.BaseViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/playlist_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_holder_easify_margin_16"
+        android:background="@color/colorSpotifyBlack"
+        android:onClick="@{() -> viewModel.onItemClick(easifyItem, position)}">
+
+        <ImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="fitCenter"
+            android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+            android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+            app:playlistImage="@{easifyItem.playlist}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@drawable/ic_playlist"/>
+
+        <TextView
+            android:id="@+id/playlist_name"
+            style="@style/Material.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/view_holder_easify_margin_16"
+            android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+            android:text="@{easifyItem.playlist.name}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/playlist_image"
+            app:layout_constraintEnd_toStartOf="@id/listen_playlist"
+            tools:text="Best songs for me most listened in 2020"/>
+
+        <ImageView
+            android:id="@+id/listen_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/view_holder_easify_margin_16"
+            android:src="@drawable/ic_listen"
+            android:onClick="@{() -> viewModel.onListenIconClick(easifyItem)}"
+            android:visibility="@{easifyItem.playlist.listenable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
