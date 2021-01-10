@@ -13,17 +13,22 @@ insert them into your **(local.properties)** in your android project as follows:
 >- spotify_client_secret="your_secret_here"
 
 ## APIs and Libraries
-Here is a list of what this project contains. (Or will contain)
+Here is a list of what this project contains:
 
 >-  Jetpack Libraries: Navigation, Coroutines, ViewModel, DataBinding, Paging...
->-  Continuous Integration using Jenkins
 >-  Dagger Hilt for dependency injection
 >-  Material Design - Animations & Transitions
 >-  Ktlint for pretty coding
->-  Push notifications with Firebase
->-  Analytics events with Firebase
 >-  Realtime database with Firebase
->-  An example use of Navigation Component with Multiple Back Stack support
+>-  Navigation Component with Multiple Back Stack support
+
+And a list of what this project will contain in near future:
+
+>-  Modular architecture
 >-  Unit tests and UI tests with MockK and Espresso
+>-  Continuous Integration
+>-  Analytics events with Firebase
+>-  Push notifications with Firebase
+
 
 and many more to find along the way.

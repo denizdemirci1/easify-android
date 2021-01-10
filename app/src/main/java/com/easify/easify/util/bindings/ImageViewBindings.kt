@@ -27,6 +27,22 @@ fun loadTrackImage(view: ImageView, images: List<Image>?) {
   }
 }
 
+@BindingAdapter("trackHorizontalImage")
+fun loadTrackHorizontalImage(view: ImageView, images: List<Image>?) {
+  if (images.isNullOrEmpty()) {
+    view.setImageResource(R.drawable.ic_music_note)
+  } else {
+    if (images.size > 1) {
+      view.loadWithPlaceHolder(
+        url = images[1].url,
+        id = R.drawable.ic_music_note
+      )
+    } else {
+      view.setImageResource(R.drawable.ic_music_note)
+    }
+  }
+}
+
 @BindingAdapter("artistImage")
 fun loadArtistImage(view: ImageView, images: List<Image>?) {
   if (images.isNullOrEmpty()) {
