@@ -2,9 +2,9 @@ package com.easify.easify.ui.extensions
 
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import androidx.annotation.LayoutRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.easify.easify.model.Image
 
 /**
  * @author: deniz.demirci
@@ -12,9 +12,9 @@ import com.bumptech.glide.Glide
  */
 
 @BindingAdapter("load")
-fun ImageView.load(url: String?) {
-  url?.let { safeUrl ->
-    Glide.with(this).load(safeUrl).into(this)
+fun ImageView.load(images: List<Image>) {
+  if (images.isNullOrEmpty().not()) {
+    Glide.with(this).load(images[0].url).into(this)
   }
 }
 
