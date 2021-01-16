@@ -1,5 +1,6 @@
 package com.easify.easify.ui.home.recommendations
 
+import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -30,7 +31,9 @@ class RecommendationsViewModel @ViewModelInject constructor(
 
   val urisOfTracks = ArrayList<String>()
 
-  private var playlistNameToCreate: String? = null
+  @VisibleForTesting
+  var playlistNameToCreate: String? = null
+
   private var createdPlaylist : Playlist? = null
 
   private val _loading = MutableLiveData(false)
@@ -90,7 +93,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
     } ?: sendEvent(RecommendationsViewEvent.ShowUserIdNotFoundError)
   }
 
-  private fun findPlaylist() {
+  @VisibleForTesting
+  fun findPlaylist() {
     viewModelScope.launch {
       playlistRepository.fetchPlaylists(0).let { result ->
         when (result) {
@@ -108,7 +112,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun addTracksToThePlaylist(playlistId: String?) {
+  @VisibleForTesting
+  fun addTracksToThePlaylist(playlistId: String?) {
     playlistId?.let { id ->
       val uris = arrayListOf<String>()
       uris.addAll(recommendedTracks.map { it.uri })
@@ -130,7 +135,8 @@ class RecommendationsViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun onAuthError() {
+  @VisibleForTesting
+  fun onAuthError() {
     sendEvent(RecommendationsViewEvent.Authenticate)
   }
 
@@ -147,6 +153,7 @@ class RecommendationsViewModel @ViewModelInject constructor(
     }
   }
 
+  @VisibleForTesting
   override fun onAddIconClick(item: EasifyItem) {
     item.track?.let { track ->
       sendEvent(RecommendationsViewEvent.AddIconClicked(track))

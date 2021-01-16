@@ -1,5 +1,6 @@
 package com.easify.easify.ui.home.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -39,7 +40,7 @@ class HomeViewModel @ViewModelInject constructor(
   }
 
   init {
-    setListeners()
+    setFirebaseItemsReceivedListener()
   }
 
   /**
@@ -50,7 +51,8 @@ class HomeViewModel @ViewModelInject constructor(
     firebaseRepository.getFeaturedArtistsIds()
   }
 
-  private fun setListeners() {
+  @VisibleForTesting
+  fun setFirebaseItemsReceivedListener() {
     firebaseRepository.onTrackIdsReceived = { trackIds ->
       getTracks(trackIds)
     }
@@ -59,7 +61,8 @@ class HomeViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun getTracks(trackIds: String) {
+  @VisibleForTesting
+  fun getTracks(trackIds: String) {
     viewModelScope.launch {
       trackRepository.getTracks(trackIds).let { result ->
         when (result) {
@@ -75,7 +78,8 @@ class HomeViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun getArtists(artistIds: String) {
+  @VisibleForTesting
+  fun getArtists(artistIds: String) {
     viewModelScope.launch {
       artistRepository.getArtists(artistIds).let { result ->
         when (result) {
@@ -91,7 +95,8 @@ class HomeViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun onAuthError() {
+  @VisibleForTesting
+  fun onAuthError() {
     sendEvent(HomeViewEvent.Authenticate)
   }
 

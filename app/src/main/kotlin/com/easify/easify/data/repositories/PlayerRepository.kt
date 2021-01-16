@@ -22,7 +22,6 @@ interface PlayerRepository {
 }
 
 class PlayerRepositoryImpl @Inject constructor(
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val playerDataSource: PlayerDataSource
 ) : PlayerRepository {
 
