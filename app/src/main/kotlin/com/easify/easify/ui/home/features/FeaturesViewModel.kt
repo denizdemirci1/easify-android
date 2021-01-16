@@ -1,5 +1,6 @@
 package com.easify.easify.ui.home.features
 
+import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -43,7 +44,8 @@ class FeaturesViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun onAuthError() {
+  @VisibleForTesting
+  fun onAuthError() {
     sendEvent(FeaturesViewEvent.Authenticate)
   }
 }

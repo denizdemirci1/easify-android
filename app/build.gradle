@@ -37,6 +37,19 @@ android {
         }
     }
 
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/kotlin'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
     buildTypes {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -165,11 +178,17 @@ dependencies {
 
     // Unit Test
     testImplementation "junit:junit:$test_junit_version"
-
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:$test_androidx_arch_version"
+    testImplementation "io.mockk:mockk:$test_mockk_version"
+    testImplementation "com.google.truth:truth:$test_truth_version"
 
     // UI Test
     androidTestImplementation "androidx.test.ext:junit:$test_junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+
+    // Shared Test
+    androidTestImplementation "io.mockk:mockk:$test_mockk_version"
 
 }
 
