@@ -25,7 +25,7 @@ android {
         versionName "1.0.2"
         multiDexEnabled true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.easify.easify.util.CustomTestRunner"
     }
 
     signingConfigs {
@@ -175,6 +175,8 @@ dependencies {
     // Rounded Image
     implementation "com.makeramen:roundedimageview:$rounded_image_version"
 
+    implementation "androidx.test.espresso:espresso-idling-resource:$idling_resource_version"
+
 
     // Unit Test
     testImplementation "junit:junit:$test_junit_version"
@@ -186,9 +188,19 @@ dependencies {
     // UI Test
     androidTestImplementation "androidx.test.ext:junit:$test_junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation "androidx.navigation:navigation-testing:$test_navigation_version"
+    androidTestImplementation "androidx.navigation:navigation-runtime-ktx:$test_navigation_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$test_espresso_version"
+    androidTestImplementation "com.google.truth:truth:$test_truth_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$test_dagger_hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$test_dagger_hilt_version"
+
+    debugImplementation "androidx.fragment:fragment-testing:$test_fragment_version"
+    debugImplementation "androidx.test:core:$test_androidx_core_version"
 
     // Shared Test
-    androidTestImplementation "io.mockk:mockk:$test_mockk_version"
+    androidTestImplementation "io.mockk:mockk-android:$test_mockk_version"
 
 }
 
