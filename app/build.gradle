@@ -154,6 +154,7 @@ dependencies {
 
     // Google
     implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.google.android.play:core:$google_play_version"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

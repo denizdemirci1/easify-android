@@ -14,6 +14,7 @@ import com.easify.easify.model.util.EasifyItemType
 import com.easify.easify.model.util.EasifyTrack
 import com.easify.easify.ui.base.BaseFragment
 import com.easify.easify.ui.common.adapter.EasifyItemListAdapter
+import com.easify.easify.ui.extensions.requestInAppReviewDialog
 import com.easify.easify.ui.player.PlayerViewEvent
 import com.easify.easify.ui.player.PlayerViewModel
 import com.easify.easify.ui.search.SearchViewEvent
@@ -58,6 +59,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     setupObservers()
     setListeners()
     homeViewModel.getFeaturedItems()
+    activity?.requestInAppReviewDialog(homeViewModel.userManager)
   }
 
   private fun setListeners() {
