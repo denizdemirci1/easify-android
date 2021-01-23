@@ -11,5 +11,7 @@ sealed class PlayerViewEvent {
 
   object ShowOpenSpotifyWarning: PlayerViewEvent()
 
+  data class ForceOpenSpotify(val uri: String): PlayerViewEvent()
+
   data class DeviceIdSet(val deviceId: String?): PlayerViewEvent()
 }

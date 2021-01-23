@@ -74,6 +74,7 @@ class FollowFragment : BaseFragment(R.layout.fragment_follow) {
     playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        is PlayerViewEvent.ForceOpenSpotify -> openUriWithSpotify(event.uri)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
       }
     })
