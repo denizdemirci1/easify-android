@@ -69,7 +69,8 @@ android {
             buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
             buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
