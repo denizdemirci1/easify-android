@@ -123,6 +123,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     playerViewModel.event.observe(viewLifecycleOwner, EventObserver{ event ->
       when (event) {
         is PlayerViewEvent.DeviceIdSet -> handleDeviceIdSet(event.deviceId)
+        is PlayerViewEvent.ForceOpenSpotify -> openUriWithSpotify(event.uri)
         PlayerViewEvent.ShowOpenSpotifyWarning -> showOpenSpotifyWarning()
         PlayerViewEvent.Authenticate -> openSpotifyLoginActivity(::afterLogin)
       }
