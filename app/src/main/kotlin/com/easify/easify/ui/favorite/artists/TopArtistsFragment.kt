@@ -51,6 +51,7 @@ class TopArtistsFragment : BaseFragment(R.layout.fragment_top_artists) {
     setupObservers()
     setupPaging()
     setupTopArtistsAdapter()
+    requestAds(binding.topArtistsAdContainer)
   }
 
   private fun setupObservers() {

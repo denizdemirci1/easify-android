@@ -27,7 +27,7 @@
 
 # Add this global rule
 -keepattributes Signature
--keepclassmembers class com.easify.easify.model.* { *; }
--keepclassmembers class com.easify.easify.model.util.* { *; }
--keepclassmembers class com.easify.easify.model.request.* { *; }
--keepclassmembers class com.easify.easify.model.response.* { *; }
+-keep class com.easify.easify.model.* { *; }
+-keep class com.easify.easify.model.util.* { *; }
+-keep class com.easify.easify.model.request.* { *; }
+-keep class com.easify.easify.model.response.* { *; }

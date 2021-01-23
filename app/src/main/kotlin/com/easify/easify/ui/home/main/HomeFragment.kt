@@ -60,6 +60,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     setListeners()
     homeViewModel.getFeaturedItems()
     activity?.requestInAppReviewDialog(homeViewModel.userManager)
+    requestAds(binding.homeAdContainer)
   }
 
   private fun setListeners() {

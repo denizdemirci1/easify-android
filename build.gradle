@@ -40,7 +40,7 @@ task clean(type: Delete) {
 ext {
 
   // Main Dependencies
-  adcolony_version = '4.3.0'
+  adcolony_version = '4.4.0'
   ad_version = '17.0.0'
   androidx_hilt_version = '1.0.0-alpha02'
   constraint_layout_version = '2.0.4'

@@ -5,9 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.adcolony.sdk.AdColony
-import com.adcolony.sdk.AdColonyInterstitial
-import com.adcolony.sdk.AdColonyInterstitialListener
+import com.adcolony.sdk.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.easify.easify.BuildConfig
@@ -44,8 +42,9 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
       binding = this
     }
     initKeys()
-    //requestAds()
+    //requestInterstitialAds()
     setupListeners()
+    requestAds(binding.favoriteAdContainer)
   }
 
   private fun initKeys() {
@@ -56,7 +55,7 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
     trackKey = getString(R.string.fragment_favorites_tracks)
   }
 
-  private fun requestAds() {
+  private fun requestInterstitialAds() {
     AdColony.configure(
       requireActivity(),
       BuildConfig.ADCOLONY_APP_ID,

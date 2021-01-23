@@ -50,6 +50,7 @@ class RecommendationsFragment : BaseFragment(R.layout.fragment_recommendations) 
     setupObservers()
     setListeners()
     args.features?.let(recommendationsViewModel::getRecommendations)
+    requestAds(binding.recommendationsAdContainer)
   }
 
   private fun setAdapter() {

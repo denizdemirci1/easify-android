@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.adcolony.sdk.AdColony
+import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.ui.extensions.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +32,11 @@ class MainActivity : AppCompatActivity() {
     if (savedInstanceState == null) {
       setupBottomNavigationBar()
     }
+    AdColony.configure(
+      this,
+      BuildConfig.ADCOLONY_APP_ID,
+      BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID_HOME
+    )
   }
 
   override fun onRestoreInstanceState(savedInstanceState: Bundle) {

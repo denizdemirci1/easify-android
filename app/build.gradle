@@ -10,7 +10,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 allOpen {
     // allows mocking for classes w/o directly opening them for release builds
-    annotation 'com.deniz.easify.util.OpenClass'
+    annotation 'com.easify.easify.util.OpenClass'
 }
 
 android {
@@ -21,8 +21,8 @@ android {
         applicationId "com.easify.easify"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
         multiDexEnabled true
 
         testInstrumentationRunner "com.easify.easify.util.CustomTestRunner"
@@ -57,6 +57,8 @@ android {
         def spotify_client_secret = properties.getProperty('spotify_client_secret')
         def adcolony_app_id = properties.getProperty('adcolony_app_id')
         def adcolony_banner_ad_zone_id = properties.getProperty('adcolony_banner_ad_zone_id')
+        def adcolony_banner_ad_zone_id_history = properties.getProperty('adcolony_banner_ad_zone_id_history')
+        def adcolony_full_screen_ad_zone_id_home = properties.getProperty('adcolony_full_screen_ad_zone_id_home')
         def adcolony_full_screen_ad_zone_id = properties.getProperty('adcolony_full_screen_ad_zone_id')
 
         debug {
@@ -66,17 +68,21 @@ android {
             buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
             buildConfigField "String", "ADCOLONY_APP_ID", adcolony_app_id
             buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID", adcolony_banner_ad_zone_id
+            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID_HISTORY", adcolony_banner_ad_zone_id_history
+            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID_HOME", adcolony_full_screen_ad_zone_id_home
             buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
         }
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
             buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
             buildConfigField "String", "ADCOLONY_APP_ID", adcolony_app_id
             buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID", adcolony_banner_ad_zone_id
+            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID_HISTORY", adcolony_banner_ad_zone_id_history
+            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID_HOME", adcolony_full_screen_ad_zone_id_home
             buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
+            signingConfig signingConfigs.release
         }
     }
 

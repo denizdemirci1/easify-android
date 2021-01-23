@@ -3,7 +3,12 @@ package com.easify.easify.ui.base
 import android.content.Intent
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.adcolony.sdk.AdColony
+import com.adcolony.sdk.AdColonyAdSize
+import com.adcolony.sdk.AdColonyAdView
+import com.adcolony.sdk.AdColonyAdViewListener
 import com.afollestad.materialdialogs.MaterialDialog
 import com.easify.easify.BuildConfig
 import com.easify.easify.R
@@ -53,6 +58,16 @@ open class BaseFragment : Fragment {
       activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation_view)?.visibility =
         View.GONE
     }
+  }
+
+  fun requestAds(view: ConstraintLayout) {
+    val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
+      override fun onRequestFilled(ad: AdColonyAdView) {
+        view.addView(ad)
+      }
+    }
+
+    AdColony.requestAdView(BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID_HOME, listener, AdColonyAdSize.BANNER)
   }
 
   fun openSpotifyLoginActivity(
