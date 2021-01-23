@@ -1,5 +1,7 @@
 package com.easify.easify.ui.extensions
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
@@ -18,11 +20,11 @@ fun ImageView.load(images: List<Image>) {
   }
 }
 
-fun ImageView.loadWithPlaceHolder(url: String?, @DrawableRes id: Int) {
+fun ImageView.loadWithColorPlaceHolder(url: String?, color: Int) {
   url?.let { safeUrl ->
     Glide.with(this)
       .load(safeUrl)
-      .placeholder(id)
+      .placeholder(ColorDrawable(color))
       .into(this)
   }
 }

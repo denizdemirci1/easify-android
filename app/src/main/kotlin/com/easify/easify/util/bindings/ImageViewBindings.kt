@@ -1,14 +1,14 @@
 package com.easify.easify.util.bindings
 
+import android.graphics.Color
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.easify.easify.R
-import com.easify.easify.model.Context
 import com.easify.easify.model.Image
 import com.easify.easify.model.util.EasifyPlaylist
-import com.easify.easify.ui.extensions.loadWithPlaceHolder
+import com.easify.easify.ui.extensions.loadWithColorPlaceHolder
 
 /**
  * @author: deniz.demirci
@@ -20,10 +20,7 @@ fun loadTrackImage(view: ImageView, images: List<Image>?) {
   if (images.isNullOrEmpty()) {
     view.setImageResource(R.drawable.ic_music_note)
   } else {
-    view.loadWithPlaceHolder(
-      url = images[images.size -1].url,
-      id = R.drawable.ic_music_note
-    )
+    view.loadWithColorPlaceHolder(images[images.size -1].url, Color.BLACK)
   }
 }
 
@@ -33,10 +30,7 @@ fun loadTrackHorizontalImage(view: ImageView, images: List<Image>?) {
     view.setImageResource(R.drawable.ic_music_note)
   } else {
     if (images.size > 1) {
-      view.loadWithPlaceHolder(
-        url = images[1].url,
-        id = R.drawable.ic_music_note
-      )
+      view.loadWithColorPlaceHolder(url = images[1].url, Color.BLACK)
     } else {
       view.setImageResource(R.drawable.ic_music_note)
     }
@@ -60,7 +54,7 @@ fun loadBigArtistImage(view: ImageView, images: List<Image>?) {
   if (images.isNullOrEmpty()) {
     view.setImageResource(R.drawable.ic_person)
   } else {
-    Glide.with(view.context).load(images[0].url).into(view)
+    view.loadWithColorPlaceHolder(images[0].url, Color.BLACK)
   }
 }
 
