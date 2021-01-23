@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -53,7 +54,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
     findNavController().navigate(R.id.followedArtistsFragment)
   }
 
-  private fun openPlayStore() {
+  @VisibleForTesting
+  fun openPlayStore() {
     try {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(APP_URI)))
     } catch (e: ActivityNotFoundException) {
