@@ -42,27 +42,18 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def spotify_client_id = properties.getProperty('spotify_client_id')
         def spotify_client_secret = properties.getProperty('spotify_client_secret')
-        def adcolony_app_id = properties.getProperty('adcolony_app_id')
-        def adcolony_banner_ad_zone_id = properties.getProperty('adcolony_banner_ad_zone_id')
-        def adcolony_full_screen_ad_zone_id = properties.getProperty('adcolony_full_screen_ad_zone_id')
 
         debug {
             debuggable true
             minifyEnabled false
             buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
             buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
-            buildConfigField "String", "ADCOLONY_APP_ID", adcolony_app_id
-            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID", adcolony_banner_ad_zone_id
-            buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SPOTIFY_CLIENT_ID", spotify_client_id
             buildConfigField "String", "SPOTIFY_CLIENT_SECRET", spotify_client_secret
-            buildConfigField "String", "ADCOLONY_APP_ID", adcolony_app_id
-            buildConfigField "String", "ADCOLONY_BANNER_AD_ZONE_ID", adcolony_banner_ad_zone_id
-            buildConfigField "String", "ADCOLONY_FULL_SCREEN_AD_ZONE_ID", adcolony_full_screen_ad_zone_id
         }
     }
 
@@ -103,10 +94,6 @@ dependencies {
     // Spotify
     implementation project(':spotify-app-remote')
     implementation "com.spotify.android:auth:$spotify_auth_version"
-
-    // Ads
-    implementation "com.adcolony:sdk:$adcolony_version"
-    implementation "com.google.android.gms:play-services-ads-identifier:$ad_version"
 
     // AndroidX
     implementation "androidx.multidex:multidex:$multidex_version"

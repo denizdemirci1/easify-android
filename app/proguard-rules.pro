@@ -20,11 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# For communication with AdColony's WebView
--keepclassmembers class * {
-    @android.webkit.JavascriptInterface <methods>;
-}
-
 # Add this global rule
 -keepattributes Signature
 -keepclassmembers class com.easify.easify.model.* { *; }

@@ -9,10 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.adcolony.sdk.AdColony
-import com.adcolony.sdk.AdColonyAdSize
-import com.adcolony.sdk.AdColonyAdView
-import com.adcolony.sdk.AdColonyAdViewListener
 import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentHistoryBinding
@@ -45,8 +41,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   private lateinit var easifyItemPagedListAdapter: EasifyItemPagedListAdapter
 
-  private var adColonyAdView: AdColonyAdView? = null
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentHistoryBinding>(historyRoot)?.apply {
@@ -54,26 +48,9 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
       historyViewModel = this@HistoryFragment.historyViewModel
       binding = this
     }
-    requestAds()
     setupObservers()
     setUpPaging()
     setupHistoryAdapter()
-  }
-
-  private fun requestAds() {
-    AdColony.configure(
-      requireActivity(),
-      BuildConfig.ADCOLONY_APP_ID,
-      BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID
-    )
-    val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
-      override fun onRequestFilled(ad: AdColonyAdView) {
-        adColonyAdView = ad
-        binding.historyAdContainer.addView(ad)
-      }
-    }
-
-    AdColony.requestAdView(BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
   }
 
   private fun setupObservers() {
@@ -157,7 +134,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
   override fun onDestroyView() {
     historyViewModel.urisOfTracks.clear()
-    adColonyAdView?.destroy()
     super.onDestroyView()
   }
 }

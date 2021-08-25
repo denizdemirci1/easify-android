@@ -5,10 +5,6 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.adcolony.sdk.AdColony
-import com.adcolony.sdk.AdColonyAdSize
-import com.adcolony.sdk.AdColonyAdView
-import com.adcolony.sdk.AdColonyAdViewListener
 import com.easify.easify.BuildConfig
 import com.easify.easify.R
 import com.easify.easify.databinding.FragmentCreatePlaylistBinding
@@ -31,8 +27,6 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
 
   private lateinit var binding: FragmentCreatePlaylistBinding
 
-  private var adColonyAdView: AdColonyAdView? = null
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     DataBindingUtil.bind<FragmentCreatePlaylistBinding>(create_playlist_root)?.apply {
@@ -40,24 +34,8 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
       createPlaylistViewModel = this@CreatePlaylistFragment.createPlaylistViewModel
       binding = this
     }
-    requestAds()
     setupObservers()
     setupListeners()
-  }
-
-  private fun requestAds() {
-    AdColony.configure(
-      requireActivity(),
-      BuildConfig.ADCOLONY_APP_ID,
-      BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID
-    )
-    val listener: AdColonyAdViewListener = object : AdColonyAdViewListener() {
-      override fun onRequestFilled(ad: AdColonyAdView) {
-        adColonyAdView = ad
-        binding.createPlaylistAdContainer.addView(ad)
-      }
-    }
-    AdColony.requestAdView(BuildConfig.ADCOLONY_BANNER_AD_ZONE_ID, listener, AdColonyAdSize.BANNER)
   }
 
   private fun setupObservers() {
@@ -105,11 +83,6 @@ class CreatePlaylistFragment : BaseFragment(R.layout.fragment_create_playlist) {
     return if (binding.description.text.toString().isEmpty())
       getString(R.string.fragment_create_playlist_default_playlist_description) else
       binding.description.text.toString()
-  }
-
-  override fun onDestroyView() {
-    adColonyAdView?.destroy()
-    super.onDestroyView()
   }
 }
 

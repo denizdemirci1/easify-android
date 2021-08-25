@@ -52,17 +52,6 @@
             android:resource="@array/preloaded_fonts" />
         <!-- endregion -->
 
-        <!-- region ads -->
-        <activity android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:hardwareAccelerated="true"/>
-        <activity android:name="com.adcolony.sdk.AdColonyAdViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:hardwareAccelerated="true"/>
-        <!-- endregion -->
-
         <service
             android:name=".util.pushnotification.MyFirebaseMessagingService"
             android:exported="false">

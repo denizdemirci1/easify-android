@@ -5,9 +5,6 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.adcolony.sdk.AdColony
-import com.adcolony.sdk.AdColonyInterstitial
-import com.adcolony.sdk.AdColonyInterstitialListener
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.easify.easify.BuildConfig
@@ -54,20 +51,6 @@ class FavoriteFragment : BaseFragment(R.layout.fragment_favorite) {
     shortTerm = Pair(getString(R.string.fragment_favorites_short_term), "short_term")
     artistKey = getString(R.string.fragment_favorites_artists)
     trackKey = getString(R.string.fragment_favorites_tracks)
-  }
-
-  private fun requestAds() {
-    AdColony.configure(
-      requireActivity(),
-      BuildConfig.ADCOLONY_APP_ID,
-      BuildConfig.ADCOLONY_FULL_SCREEN_AD_ZONE_ID
-    )
-    val listener: AdColonyInterstitialListener = object : AdColonyInterstitialListener() {
-      override fun onRequestFilled(ad: AdColonyInterstitial) {
-        ad.show()
-      }
-    }
-    AdColony.requestInterstitial(BuildConfig.ADCOLONY_FULL_SCREEN_AD_ZONE_ID, listener)
   }
 
   private fun setupListeners() {
