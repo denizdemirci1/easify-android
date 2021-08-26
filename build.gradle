@@ -4,7 +4,7 @@ buildscript {
   ext.gradle_version = '4.0.1'
   ext.ktlint_version = '9.0.0'
   ext.navigation_version = '2.3.2'
-  ext.google_services_version = '4.3.4'
+  ext.google_services_version = '4.3.10'
   ext.dagger_hilt_version = "2.28.3-alpha"
   ext.crashlytics_version = "2.4.1"
   repositories {
@@ -45,7 +45,7 @@ ext {
   coroutines_version = '1.4.1'
   dagger_hilt_version = '2.28.3-alpha'
   data_binding_version = '3.5.0'
-  firebase_bom_version = '26.1.1'
+  firebase_bom_version = '28.4.0'
   glide_version = '4.11.0'
   gson_version = '2.8.6'
   lifecycle_version = '2.2.0'
